@@ -1,0 +1,35 @@
+import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
+})
+export class DashboardComponent implements OnInit {
+
+  public canva: string = '/' + environment.routes.CANVA;
+  public drawingBoard: string = '/' + environment.routes.DRAWINGBOARD;
+
+  public boardItems!: Array<any>;
+
+  constructor() { }
+
+  ngOnInit(): void {
+    this.boardItems = JSON.parse(localStorage.getItem('boardsArray')!) || [];
+  }
+
+  public removeMe(id: string, localeStorageKey: string = 'boardsArray'): void {
+    const index = this.boardItems.findIndex(el => el.id === id);
+
+    if (index === - 1) {
+      return;
+    }
+
+    this.boardItems.splice(index, 1);
+    localStorage.setItem(localeStorageKey, JSON.stringify(this.boardItems));
+
+  }
+
+
+}

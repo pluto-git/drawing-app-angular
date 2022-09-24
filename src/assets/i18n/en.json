@@ -1,0 +1,88 @@
+{
+    "aboutComponent": {
+        "header": "About",
+        "text1": "Visualize your ideas in a new way",
+        "text2": "Unleash your creativity with Draw0.",
+        "text3": "Sketch your ideas whiteboard-style while benefiting from the access of interactive canvas right from your web browser. ",
+        "launchBtn": "Launch Draw0",
+        "altImg": "visualize image"
+    },
+    "pageNotFoundComponent": {
+        "text1": "Opps!",
+        "text2": "Page not found. ",
+        "text3": "The page you’re looking for doesn’t exist.",
+        "goBackBtn": "Go Back"
+    },
+    "canvaComponent": {
+        "tools": {
+            "pen": "Pen",
+            "eraser": "Eraser",
+            "select": "Select",
+            "textarea": "Textarea",
+            "note": "Note"
+        }
+    },
+    "canvaToolsHorizontalComponent": {
+        "buttons": {
+            "redo": "Redo button",
+            "undo": "Undo button",
+            "clearFrame": "Clear Frame",
+            "save" : "Save"
+        }
+    },
+    "contactUsComponent": {
+        "header": "Contact Us",
+        "name": "Name",
+        "email": "Email",
+        "message": "Message...",
+        "nameReq": "Name is required.",
+        "nameLength": "Not less than 3 letters!",
+        "emailReq": "Email is required.",
+        "emailWrongFormat": "Email format is wrong.",
+        "subjectHeader": "Subject",
+        "subjectReq": "Subject is required.",
+        "option0": "Choose an option",
+        "option1": "Feedback",
+        "option2": "Report a bug",
+        "option3": "Request",
+        "messageReq": "Message is required.",
+        "messageLength": "Message must be at least 10 characters long.",
+        "sendBtn": "Send"
+    },
+    "dashboardComponent": {
+        "header": "Dashboard",
+        "text1": "Right now you don't have any board-files.",
+        "text2": "To start please click \"+\" ",
+        "alt": "New Canva board",
+        "editBoard" : "Edit Board",
+        "altTrashCan": "Remove Board"
+    },
+    "footbarComponent": {
+        "dashboard": "Dashboard",
+        "about": "About",
+        "contactUs": "Contact Us"
+    },
+    "navbarComponent": {
+        "dashboard": "Dashboard",
+        "about": "About",
+        "contactUs": "Contact Us",
+        "langs": {
+            "en": "en",
+            "uk": "uk"
+        },
+        "loginBtn": "Login"
+    },
+    "popupNoteComponent":{
+        "header" : "Sticker",
+        "cancel": "Cancel",
+        "save": "Save",
+        "colors":{
+            "yellow" : "yellow",
+            "green" : "green",
+            "cyan": "cyan",
+            "pink": "pink",
+            "orange": "orange",
+            "white": "white"
+        }
+    }
+}

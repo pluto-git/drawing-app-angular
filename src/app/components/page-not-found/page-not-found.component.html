@@ -1,0 +1,15 @@
+<section class="container h-100">
+    <div class="h-100 d-flex flex-column justify-content-center">
+        <div class="text-center" *transloco="let t">
+            <h1 class="display-1 fw-bold" >404</h1>
+            <p class="fs-3">
+                <span class="text-danger" >{{t('pageNotFoundComponent.text1')}}</span>
+                {{t('pageNotFoundComponent.text2')}}
+            </p>
+            <p class="lead" >
+                {{t('pageNotFoundComponent.text3')}}
+            </p>
+            <a (click)="goBack()" class="btn btn-primary" >{{t('pageNotFoundComponent.goBackBtn')}}</a>
+        </div>
+    </div>
+</section>

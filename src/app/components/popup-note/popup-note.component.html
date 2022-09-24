@@ -1,0 +1,87 @@
+<!-- Modal -->
+<div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title mx-2" id="noteModalLabel" *transloco="let t">{{t('popupNoteComponent.header')}}
+                </h4>
+                <div>
+                    <svg class="modal-color" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                        viewBox="0 -2 30 30" (click)="changeTextareaColor(colors.yellow.id)">
+                        <ellipse [id]="colors.yellow.id" [attr.fill]="colors.yellow.value" width="26px" height="26px"
+                            viewBox="0 0 30 30" cx="13" cy="13" rx="13" ry="13" class="with-arrow" />
+                        <path class="d-none" d="M 7,12 L 11,17 M 10,17 L19,8 " stroke="rgb(250,250,250)"
+                            stroke-width="2.5" />
+
+                    </svg>
+                    <svg class="modal-color" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                        viewBox="0 -2 30 30" (click)="changeTextareaColor(colors.green.id)">
+                        <ellipse [id]="colors.green.id" [attr.fill]="colors.green.value" width="26px" height="26px"
+                            viewBox="0 0 26 26" cx="13" cy="13" rx="13" ry="13" class="with-arrow" />
+                        <path class="d-none" d="M 7,12 L 11,17 M 10,17 L19,8 " stroke="rgb(250,250,250)"
+                            stroke-width="2.5" />
+                    </svg>
+                    <svg class="modal-color" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                        viewBox="0 -2 30 30" (click)="changeTextareaColor(colors.cyan.id)">
+                        <ellipse [id]="colors.cyan.id" [attr.fill]="colors.cyan.value" width="26px" height="26px"
+                            viewBox="0 0 26 26" cx="13" cy="13" rx="13" ry="13" class="with-arrow" />
+                        <path class="d-none" d="M 7,12 L 11,17 M 10,17 L19,8 " stroke="rgb(250,250,250)"
+                            stroke-width="2.5" />
+                    </svg>
+                    <svg class="modal-color" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                        viewBox="0 -2 30 30" (click)="changeTextareaColor(colors.pink.id)">
+                        <ellipse [id]="colors.pink.id" [attr.fill]="colors.pink.value" width="26px" height="26px"
+                            viewBox="0 0 26 26" cx="13" cy="13" rx="13" ry="13" class="with-arrow" />
+                        <path class="d-none" d="M 7,12 L 11,17 M 10,17 L19,8 " stroke="rgb(250,250,250)"
+                            stroke-width="2.5" />
+                    </svg>
+                    <svg class="modal-color" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                        viewBox="0 -2 30 30" (click)="changeTextareaColor(colors.orange.id)">
+                        <ellipse [id]="colors.orange.id" [attr.fill]="colors.orange.value" width="26px" height="26px"
+                            viewBox="0 0 26 26" cx="13" cy="13" rx="13" ry="13" class="with-arrow" />
+                        <path class="d-none" d="M 7,12 L 11,17 M 10,17 L19,8 " stroke="rgb(250,250,250)"
+                            stroke-width="2.5" />
+                    </svg>
+                    <svg class="modal-color" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                        viewBox="0 -2 30 30" (click)="changeTextareaColor(colors.white.id)">
+                        <ellipse [id]="colors.white.id" [attr.fill]="colors.white.value" width="26px" height="26px"
+                            viewBox="0 0 26 26" cx="13" cy="13" rx="13" ry="13" stroke="#e6e6e6" />
+                        <path d="M 6,6 L 20,20" stroke="#bfbfbf" stroke-width="1" />
+                        <ellipse cx="13" cy="13" rx="5" ry="5" fill="gray" />
+                    </svg>
+                    <svg height="0" width="0" (click)="changeTextareaColor(colors.yellow.id)">
+
+                        <filter id='inset-shadow'>
+                            <!-- Shadow offset -->
+                            <feOffset dx='0' dy='0' />
+                            <!-- Shadow blur -->
+                            <feGaussianBlur stdDeviation='1.5' result='offset-blur' />
+                            <!-- Invert drop shadow to make an inset shadow-->
+                            <feComposite operator='out' in='SourceGraphic' in2='offset-blur' result='inverse' />
+                            <!-- Cut colour inside shadow -->
+                            <feFlood flood-color='black' flood-opacity='.95' result='color' />
+                            <feComposite operator='in' in='color' in2='inverse' result='shadow' />
+                            <!-- Placing shadow over element -->
+                            <feComposite operator='over' in='shadow' in2='SourceGraphic' />
+                        </filter>
+                        <filter id="shadow2">
+                            <feDropShadow dx="0" dy="0" stdDeviation="1" flood-color="gray" />
+                        </filter>
+                    </svg>
+                </div>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body p-0" [formGroup]="form">
+                <textarea formControlName="modalNote" class="note-textarea form-control"
+                    id="exampleFormControlTextarea1" rows="5"></textarea>
+                    <p>Form Valid: {{ form.valid }}</p>
+            </div>
+            <div class="modal-footer" *transloco="let t">
+                <button type="button" class="btn border border-secondary px-4 " data-bs-dismiss="modal"
+                    (click)="closeModal('noteModal')">{{t('popupNoteComponent.cancel')}}</button>
+                <button type="button" class="btn btn-primary save-btn" [disabled]="!form.valid"
+                    (click)="onSaveNote('noteModal')">{{t('popupNoteComponent.save')}}</button>
+            </div>
+        </div>
+    </div>
+</div>

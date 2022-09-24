@@ -1,0 +1,36 @@
+section {
+    background-color: #f1f3f4;
+    text-align: center;
+}
+
+.tools {
+    width: 3em;
+    padding: 0px;
+    z-index: 10;
+    background-color: #ffffff;
+    border-radius: 2em;
+    border: 2px solid #dadce0;
+
+}
+
+svg {
+    cursor: pointer;
+}
+
+#svgElement {
+    background-color: white;
+    /* border: 1px solid; */
+    cursor: default;
+    overflow: hidden;
+    height: auto;
+    height: max-content;
+    
+}
+
+
+#svg-container {
+ 
+    width: 100%;
+
+    overflow: hidden;
+}

@@ -1,0 +1,19 @@
+svg:hover {
+    fill: url(#header-shape-gradient) rgb(88, 83, 193);
+}
+
+
+.trash-can{
+    color: red
+}
+
+.trash-can:hover{
+    cursor: pointer;
+}
+
+.card{
+    font-size: 1.25rem;
+}
+/* .lower-cart-body{
+    font-size: 1.5rem;
+} */

@@ -1,0 +1,16 @@
+div.c1 {
+    background-image: url('https://lh3.googleusercontent.com/H6Vdy9V61-1si9fO5YiO2me0h3-jmu-A-EcLyLcDYFYVIAe5LYTFJHHlzsFKusg2drV_tRF4310OHTivo8qH8GLxPXl4evFxrTAN=w1400');
+}
+
+/* * {
+    font-family: 'Helvetica Now Display', "Helvetica Neue", Helvetica, Arial, sans-serif;
+} */
+
+.logo {
+    font-family: 'Helvetica Now Display', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    font-style: normal;
+    letter-spacing: 2px;
+    color: orange;
+}
