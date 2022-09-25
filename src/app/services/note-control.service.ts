@@ -224,4 +224,18 @@ export class NoteControlService {
     component.instance.isHidden = isHidden;
   }
 
+
+  // public resizeScreen(winRatio: number, components: Array<any> = this.op.opData): void {
+
+  //   console.log(this.op.opData)
+  //   components && components.forEach((el: any) => {
+
+  //     if (typeof el === 'object' && el !== null && el.instance !== undefined) {
+  //       el.instance.positionX = el.instance.positionX * (window.innerWidth / 799);
+  //       el.instance.positionY = el.instance.positionY * (window.innerHeight / 831);
+  //     }
+
+  //   }
+  //   );
+  // }
 }

@@ -1,7 +1,9 @@
 import { Component, AfterViewChecked } from '@angular/core';
+import { Location } from '@angular/common';
 import { CanvaFreeDrawingService } from '../../services/canva-free-drawing.service';
 import { OperationControlService } from '../../services/operation-control.service';
 import { NoteControlService } from '../../services/note-control.service';
+import { ActivatedRoute } from '@angular/router';
 /* eslint-disable */
 // @ts-ignore 
 
@@ -9,6 +11,9 @@ import { NoteControlService } from '../../services/note-control.service';
 
 import { Note } from 'src/app/models/note';
 import { Board } from 'src/app/models/board';
+import { environment } from 'src/environments/environment';
+
+declare let html2canvas: any;
 
 @Component({
   selector: 'app-canva-tools-horizontal',
@@ -17,7 +22,12 @@ import { Board } from 'src/app/models/board';
 })
 export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
-  constructor(private drawingSvc: CanvaFreeDrawingService, private op: OperationControlService, private noteSvc: NoteControlService) { }
+
+  private screenshotDataUrl?: string;
+
+  constructor(private drawingSvc: CanvaFreeDrawingService, private op: OperationControlService, private noteSvc: NoteControlService,
+    private route: ActivatedRoute,
+    private location: Location) { }
 
   ngAfterViewChecked(): void {
     const cStep = this.op.actStep;
@@ -125,7 +135,7 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
   }
 
-  public onSave(opData: Array<any> = this.op.opData, operations: Array<string> = this.op.operations): void {
+  public async onSave(type: string = 'same', opData: Array<any> = this.op.opData, operations: Array<string> = this.op.operations): Promise<void> {
 
     const oldItems: any = JSON.parse(localStorage.getItem('boardsArray')!) || [];
 
@@ -143,11 +153,23 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
         width: this.op.opDataDimensions[lastDrawIndex].width,
         height: this.op.opDataDimensions[lastDrawIndex].height
       },
-      notesData: this.getNotesData(this.op.visibleNotesIds)
+      notesData: this.getNotesData(this.op.visibleNotesIds),
+      previewImage: await this.getScreenShot()
     };
 
 
-    oldItems.push(newBoard);
+    const routeId = this.route.snapshot.paramMap.get('id');
+    if (type !== 'new' && routeId !== 'new') {
+
+      const foundIdx = oldItems.findIndex((x: Board) => x.id.toString() === routeId);
+      newBoard.id = Number(this.route.snapshot.paramMap.get('id'))!;
+      oldItems[foundIdx] = newBoard;
+
+    } else if (type === 'new' || routeId === 'new') {
+      oldItems.push(newBoard);
+      this.location.go(environment.routes.CANVA + `/${(oldItems.length - 1)}`);
+    }
+
     localStorage.setItem('boardsArray', JSON.stringify(oldItems));
 
   }
@@ -173,8 +195,25 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
     })
 
     return notes;
+
   }
 
+  //get screenshot as a promise with async/await
+  private async getScreenShot(id: string = 'screenshot-area'): Promise<string> {
+    const c = document.getElementById(id);
+    const canvas = await html2canvas(c);
+    const MIME_TYPE = "image/png";
+    return canvas.toDataURL(MIME_TYPE);
+  }
+
+  private downloadBase64File(contentType: any, base64Data: any, fileName: any): void {
+    // this.downloadBase64File('image/png',t.replace("data:image/png;base64,", ""),'image');
+    const linkSource = `data:${contentType};base64,${base64Data}`;
+    const downloadLink = document.createElement("a");
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName;
+    downloadLink.click();
+  }
 
 }
 

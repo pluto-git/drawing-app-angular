@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CanvaFreeDrawingService } from './canva-free-drawing.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,6 @@ export class OperationControlService {
   public initialStep!: number; //depends if the sata
 
   constructor() { }
-
 
 
 }

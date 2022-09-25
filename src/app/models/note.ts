@@ -1,4 +1,3 @@
-
 export interface Note {
     type: string,
     id: string,

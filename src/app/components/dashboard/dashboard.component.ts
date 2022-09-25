@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, AfterViewInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -16,7 +16,15 @@ export class DashboardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.updateItems();
+  }
+
+  private updateItems(): void {
     this.boardItems = JSON.parse(localStorage.getItem('boardsArray')!) || [];
+  }
+
+  ngAfterViewChecked(): void {
+    this.updateItems();
   }
 
   public removeMe(id: string, localeStorageKey: string = 'boardsArray'): void {

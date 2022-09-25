@@ -14,7 +14,7 @@ export class CanvaFreeDrawingService {
 
   public cx!: CanvasRenderingContext2D;// context needed to set up drawing
   private ratio = window.devicePixelRatio; //for different screens.
-  private currentTool!: string;
+  public currentTool!: string;
   public mainSub!: Subscription; //to draw
   public mouseUpSub!: Subscription; //to push canva states for redo/undo
 
@@ -42,8 +42,9 @@ export class CanvaFreeDrawingService {
 
     if ((tool === tools.pen) || (tool === tools.eraser)) {
       this.DrawingImplementation(canvas, mouseDown, mouseMove, mouseUp);
-    } else if (tool === tools.textarea) {
-      //this.textareaImplementation(canvasEl);
+      // } else if (tool === tools.textarea) {
+      //   //this.textareaImplementation(canvasEl);
+      // } 
     } else {
       this.DrawingImplementation(canvas, mouseDown, mouseMove, mouseUp);
     }
@@ -137,6 +138,7 @@ export class CanvaFreeDrawingService {
   //Resizing canvas with not clearing them
   public resizeScreen(canvas: HTMLCanvasElement, currentTool: string): void {
 
+    console.log(this.ratio);
     //console.log(currentTool);
     //creating 2nd/hidden canva to store context from first canva
     const hiddenCnv: HTMLCanvasElement = document.createElement("canvas");
@@ -175,6 +177,7 @@ export class CanvaFreeDrawingService {
     this.op.actStep++;
     this.op.opData[this.op.actStep] = canvas.toDataURL();
     this.op.opDataDimensions[this.op.actStep] = { width: canvas.width, height: canvas.height };
+
     // if (this.op.opData.length > maxPushes) {
     //   this.op.opData.shift();
     //   this.op.opDataDimensions.shift();

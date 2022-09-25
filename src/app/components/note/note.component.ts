@@ -52,6 +52,10 @@ export class NoteComponent implements AfterViewInit {
     // console.log(offsets);
     this.positionX = offsets.top;
     this.positionY = offsets.left;
+    console.log(this.positionX);
+    console.log(this.positionY);
+    // note.style.top = this.positionX + 'px';
+    // note.style.left = this.positionY + 'px';
     // console.log(this.isHidden);
   }
 

@@ -13,7 +13,7 @@ import { OperationControlService } from '../../services/operation-control.servic
 import { Board } from 'src/app/models/board';
 import { ActivatedRoute } from '@angular/router';
 
-declare var bootstrap: any;
+// declare var bootstrap: any;
 
 @Component({
   selector: 'app-canva',
@@ -52,6 +52,7 @@ export class CanvaComponent implements AfterViewInit {
     if (this.resizeTimeout) { clearTimeout(this.resizeTimeout); }
     this.resizeTimeout = setTimeout((() => {
       this.drawingSvc.resizeScreen(this.canvas.nativeElement, this.currentTool);
+      //this.noteSvc.resizeScreen(this.ratio);
     }).bind(this), debounceTime);
 
   }

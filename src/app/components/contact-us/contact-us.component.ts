@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { Feedback } from 'src/app/models/feedback.model';
@@ -21,12 +21,12 @@ export class ContactUsComponent {
 
   feedbacks?: Feedback[];
   isSuccess: boolean = false;
+  selectOption: boolean = false;
 
   constructor(private feedbackSvc: FeedbackService) {
   }
 
   ngOnInit(): void {
-
 
     this.contactUsForm = new FormGroup({
       firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -34,7 +34,14 @@ export class ContactUsComponent {
       subject: new FormControl('', [Validators.required]),
       message: new FormControl('', [Validators.required, Validators.minLength(10)])
     });
+    this.selectOption = true;
+  }
 
+  ngAfterViewInit(): void {
+    this.selectOption = true;
+  }
+  ngDoCheck(): void {
+    this.selectOption = true;
   }
 
   get firstName() {

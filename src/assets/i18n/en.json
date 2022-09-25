@@ -27,7 +27,8 @@
             "redo": "Redo button",
             "undo": "Undo button",
             "clearFrame": "Clear Frame",
-            "save" : "Save"
+            "save" : "Save",
+            "saveNew": "Save as New"
         }
     },
     "contactUsComponent": {

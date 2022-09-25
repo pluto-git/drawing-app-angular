@@ -36,14 +36,20 @@
     <!-- Subject -->
     <div class="form-group mb-4" *transloco="let t">
         <label>{{t('contactUsComponent.subjectHeader')}}</label>
+
         <select class="browser-default custom-select mx-2" formControlName="subject" required name="subject"
             id="subject">
-            <option [value]="'contactUsComponent.option0' | transloco" disabled>{{t('contactUsComponent.option0')}}</option>
-            <option [value]="'contactUsComponent.option1' | transloco" selected>{{t('contactUsComponent.option1')}}
+            <option [selected]="selectOption" disabled>
+                {{t('contactUsComponent.option0')}}
             </option>
-            <option [value]="'contactUsComponent.option2' | transloco">{{t('contactUsComponent.option2')}}</option>
-            <option [value]="'contactUsComponent.option3' | transloco">{{t('contactUsComponent.option3')}}</option>
+            <option>{{t('contactUsComponent.option1')}}</option>
+            <option>{{t('contactUsComponent.option2')}}</option>
+            <option>
+                {{t('contactUsComponent.option3')}}</option>
+
         </select>
+
+
         <div *ngIf="subject!.invalid && (subject!.dirty || subject!.touched)" class="alert alert-danger">
             <div *ngIf="subject!.errors?.['required']">
                 {{t('contactUsComponent.subjectReq')}}

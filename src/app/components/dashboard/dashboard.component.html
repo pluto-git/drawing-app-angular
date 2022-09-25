@@ -10,9 +10,8 @@
         </div>
         <div class="row">
             <div class="col-lg-4 col-md-6 mb-2" *ngFor="let col of boardItems; let index = index">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Horizontal/Food/full page/2.jpg"
-                        alt="Card image cap">
+                <div class="card">
+                    <img class="card-img-top card-img" [src]='col.previewImage' alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">{{col.title}}</h5>
 

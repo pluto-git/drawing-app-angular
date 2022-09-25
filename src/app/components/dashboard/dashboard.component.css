@@ -2,6 +2,10 @@ svg:hover {
     fill: url(#header-shape-gradient) rgb(88, 83, 193);
 }
 
+.card-img{
+    width: 100%;
+    height: 200px;
+}
 
 .trash-can{
     color: red

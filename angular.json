@@ -27,8 +27,7 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "flat",
-              "canvas-to-image"
+              "flat"
             ]
           },
           "configurations": {
