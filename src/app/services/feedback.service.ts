@@ -18,7 +18,7 @@ export class FeedbackService {
   }
 
   create(data: any): Observable<any> {
-    return this.http.post(baseUrl+"/create", data);
+    return this.http.post(baseUrl + "/create", data);
   }
-
+  
 }

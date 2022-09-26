@@ -35,7 +35,6 @@ import {
   TRANSLOCO_PERSIST_LANG_STORAGE,
   TranslocoPersistLangModule,
 } from '@ngneat/transloco-persist-lang';
-import { SvgDrawingSheetComponent } from './not-needed/svg-drawing-sheet/svg-drawing-sheet.component';
 import { MaterialModule } from './material.module';
 import { NoteComponent } from './components/note/note.component';
 
@@ -53,7 +52,6 @@ import { NoteComponent } from './components/note/note.component';
     HomeComponent,
     CanvaToolsHorizontalComponent,
     ContactUsComponent,
-    SvgDrawingSheetComponent,
     PopupNoteComponent,
     NoteComponent
   ],

@@ -48,10 +48,18 @@ export class PopupNoteComponent {
     this.noteSvc.isEdit && this.handleNote(modalId, id, 'edit');
   }
 
-  private handleNote(modalId: string, id: string = 'exampleFormControlTextarea1', mode: string): void {
+  private handleNote(modalId: string, id: string = 'exampleFormControlTextarea1', mode: string = 'add'): void {
 
     const bgClr = getComputedStyle(document.getElementById(id)!, null).getPropertyValue("background-color");
+
     this.noteSvc.note = { id: 'noteId' + this.id, message: this.form.controls['modalNote'].value!, color: bgClr, positionX: 300, positionY: 300 + 5 * (this.id + 1), editId: '', isHidden: false, isDisabled: false, dragZone: '.outer-canva', type: 'note', dragDisabled: false };
+
+    //set the edited note's position if we are in the edit more:
+    if (mode === 'edit') {
+      const prevNote = this.noteSvc.getComponentById(this.noteSvc.clickedDOMElementId);
+      this.noteSvc.note.positionX = prevNote.instance.positionX;
+      this.noteSvc.note.positionY = prevNote.instance.positionY;
+    }
     this.id += 1;
 
     //closing modal and changing the cursor
@@ -145,4 +153,8 @@ export class PopupNoteComponent {
 
   }
 
+
+  ngOnDestroy(): void {
+    //this.noteSvc.isEdit = false;
+  }
 }

@@ -1,8 +1,8 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, Injector, ViewContainerRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Injector, ChangeDetectorRef } from '@angular/core';
 import { PopupNoteComponent } from '../popup-note/popup-note.component';
 import { NoteControlService } from '../../services/note-control.service';
-
-// declare var bootstrap: any;
+import { CanvaComponent } from '../canva/canva.component';
+import { tools } from '../canva/tools';
 
 
 @Component({
@@ -23,19 +23,20 @@ export class NoteComponent implements AfterViewInit {
   public positionY!: number;
   public popupNoteComponent!: PopupNoteComponent;
   public isHidden: boolean = false;
-  public dragDisabled: boolean = false;
+  public dragDisabled!: boolean;
 
   public unique_key!: number;
 
   @ViewChild('note') public note!: ElementRef;
 
-
-  constructor(private _injector: Injector, private noteSVC: NoteControlService) {
-    this.popupNoteComponent = this._injector.get<PopupNoteComponent>(PopupNoteComponent);
+  constructor(private _injector: Injector, private noteSVC: NoteControlService, private cd: ChangeDetectorRef, private canvaComponent: CanvaComponent) {
+    this.popupNoteComponent = this._injector.get<PopupNoteComponent>(PopupNoteComponent,
+    );
   }
 
   ngAfterViewInit(): void {
-    
+
+    // this.cd.detectChanges();
     const note = this.note.nativeElement;
     note.style.backgroundColor = this.color;
 
@@ -46,6 +47,9 @@ export class NoteComponent implements AfterViewInit {
 
 
   ngAfterViewChecked(): void {
+
+    this.setUIBehaviour();
+
     const note = this.note.nativeElement;
     this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
     const offsets = note.getBoundingClientRect();
@@ -59,24 +63,29 @@ export class NoteComponent implements AfterViewInit {
     // console.log(this.isHidden);
   }
 
-  addClassName(className: string = 'no-select'): void {
-    const note = this.note.nativeElement;
-
-    note.classList.contains(className) && note.classList.addList('no-select');
+  private setUIBehaviour(): void {
+    console.log(this.canvaComponent.currentTool);
+    if (this.canvaComponent.currentTool !== tools.select) {
+      this.dragDisabled = true;
+      this.note.nativeElement.classList.remove('dragging-cursor');
+    } else {
+      this.dragDisabled = false;
+      this.note.nativeElement.classList.add('dragging-cursor');
+    }
+    this.cd.detectChanges();
   }
-  removeClassName(className: string = 'no-select'): void {
-    const note = this.note.nativeElement;
 
-    note.classList.contains(className) && note.classList.remove('no-select');
-  }
-
-  remove(event: Event): void {
+  removeCurrentNote(event: Event): void {
     const target = event.target as Element;
     const id = target.parentElement?.id;
     console.log(id);
     if (id) {
       this.noteSVC.removeNote(id);
     }
+  }
+
+  ngOnDestroy(): void {
+    //this.dragDisabled = true;
   }
 
 }

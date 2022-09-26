@@ -1,5 +1,5 @@
 import {
-  Component, Type, ElementRef, AfterViewInit, HostListener, ViewChild, ViewContainerRef, ChangeDetectorRef
+  Component, Type, ElementRef, HostListener, ViewChild, ViewContainerRef, ChangeDetectorRef
 } from '@angular/core';
 
 
@@ -12,6 +12,10 @@ import { OperationControlService } from '../../services/operation-control.servic
 
 import { Board } from 'src/app/models/board';
 import { ActivatedRoute } from '@angular/router';
+import { CanvaToolsHorizontalComponent } from '../canva-tools-horizontal/canva-tools-horizontal.component';
+
+// import { browserRefresh } from '../app/app.component';
+
 
 // declare var bootstrap: any;
 
@@ -19,12 +23,13 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-canva',
   templateUrl: './canva.component.html',
   styleUrls: ['./canva.component.css'],
-  providers: []
+  providers: [CanvaToolsHorizontalComponent]
 })
-export class CanvaComponent implements AfterViewInit {
+export class CanvaComponent {
 
   constructor(private drawingSvc: CanvaFreeDrawingService, private noteSvc: NoteControlService, private op: OperationControlService,
     private route: ActivatedRoute, private cd: ChangeDetectorRef,
+    private toolComponent: CanvaToolsHorizontalComponent,
   ) {
 
   }
@@ -41,8 +46,15 @@ export class CanvaComponent implements AfterViewInit {
   public currentTool!: string;// selected tool
   public previousTool!: string; // previous selected tool (for stickers);
   private resizeTimeout!: ReturnType<typeof setTimeout>; //for resizing.
+  private id!: string | null; //url param
 
-  private id!: string | null;
+
+  @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
+    console.log("Processing beforeunload...");
+    event.preventDefault();
+    this.toolComponent.onSave();
+    event.returnValue = false;
+  }
 
   //listening to window resize
   @HostListener("window:resize", [])
@@ -61,7 +73,14 @@ export class CanvaComponent implements AfterViewInit {
     //for dpi
     this.ratio = window.devicePixelRatio;
     this.id = this.route.snapshot.paramMap.get('id');
+
   }
+
+  canExit(): boolean {
+    this.toolComponent.onSave();
+    return true;
+  }
+
 
   public ngAfterViewInit(): void {
     // console.log("ngAfterViewInit in CanvasComponent fired!!!");
@@ -85,7 +104,7 @@ export class CanvaComponent implements AfterViewInit {
       this.op.actStep++;
       this.op.opData[this.op.actStep] = foundBoard.canvasData;
       this.op.opDataDimensions[this.op.actStep] = { width: foundBoard.canvasDimensions.width, height: foundBoard.canvasDimensions.height };
-      this.op.initialStep = this.op.operations.length -1;
+      this.op.initialStep = this.op.operations.length - 1;
     }
     //pick Pen and start drawing...
     this.pickTool(tools.pen, "canvas");
@@ -138,8 +157,9 @@ export class CanvaComponent implements AfterViewInit {
   }
 
   private callDrawingMethod(tool: string, canvas: HTMLCanvasElement): void {
-    //calling methods depending on the conditions
 
+    console.log(this.op.opData);
+    //calling methods depending on the conditions
     tool === tools.pen && this.drawingSvc.pickPen(canvas);
     tool === tools.eraser && this.drawingSvc.pickEraser(canvas, 10);
     tool === tools.select && this.drawingSvc.pickSelect();
@@ -156,6 +176,7 @@ export class CanvaComponent implements AfterViewInit {
       this.previousTool = tools.select;
       //console.log(this.previousTool);
       this.callDrawingMethod(this.previousTool, canvasEl);
+      this.currentTool = tools.select;
     }
     this.removeClassFromHTMLCollection(<HTMLCollectionOf<Element>>document.getElementsByClassName('tool'), 'selected');
 
@@ -165,15 +186,16 @@ export class CanvaComponent implements AfterViewInit {
     //set tool cursor
     this.setCursor(canvasEl);
 
-    (className !== tools.select) && this.onSelectBehaviour(NoteComponent, true);
-    (className === tools.select) && this.noteSvc.toggleDragging(NoteComponent, false);
+    // (className === tools.select) && this.onSelectBehaviour(NoteComponent, false);
+    // (className !== tools.select) && this.onSelectBehaviour(NoteComponent, true);
   }
 
-  private onSelectBehaviour(component: Type<any>, disableDragging: boolean): void {
-    this.noteSvc.toggleDragging(component, disableDragging);
-    // if (disableDragging === true) {
+  private onSelectBehaviour(component: Type<any>, disableDraggingCursor: boolean = false): void {
 
-    // }
+    //this.noteSvc.toggleDragging(component, disableDragging);
+    // this.noteSvc.disableDraggingForAllComponents(disableDragging);
+    // this.cd.detectChanges();
+
   }
 
 
@@ -194,13 +216,23 @@ export class CanvaComponent implements AfterViewInit {
 
   }
 
+
+
+
+
+
   ngOnDestroy(): void {
+
     this.op.actStep = -1;
     this.op.opData = [];
     this.op.opDataDimensions = [];
     this.op.operations = [];
     this.op.visibleNotesIds = [];
     this.op.initialStep = -1;
+    this.op.isLastSave = true;
     this.drawingSvc.unsubscribeDrawing();
+    this.currentTool = '';
+    this.previousTool = '';
+
   }
 }

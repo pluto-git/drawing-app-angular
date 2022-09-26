@@ -10,7 +10,7 @@ import { OperationControlService } from './operation-control.service';
 })
 export class NoteControlService {
 
-  public note!: Note; // an array of notes where we ll keep data to insert stickers/notes... for an easier backend mostly.
+  public note!: Note; // one note
   public canvaComponent!: CanvaComponent;
   public isEdit: boolean = false; //to check if it is the edit mode. for UI...
   public clickedDOMElementId!: string; //to get the right component when editing
@@ -212,6 +212,16 @@ export class NoteControlService {
       (el.instance.isHidden = true)) || true
   }
 
+  public disableDraggingForAllComponents(isDragDisabled: boolean = true, components: Array<any> = this.op.opData): void {
+    components && components.forEach((el: any) => {
+      if (typeof el === 'object' && el !== null && el.instance !== undefined) {
+        el.instance.isDisabled = isDragDisabled;
+        console.log(el.instance.isDisabled);
+      }
+    }
+    );
+  }
+
   public toggleHidingForAllComponents(isHidden: boolean = true, components: Array<any> = this.op.opData): void {
     components && components.forEach((el: any) =>
       (typeof el === 'object' && el !== null && el.instance !== undefined) &&
@@ -224,6 +234,9 @@ export class NoteControlService {
     component.instance.isHidden = isHidden;
   }
 
+  ngOnDestroy(): void {
+    
+  }
 
   // public resizeScreen(winRatio: number, components: Array<any> = this.op.opData): void {
 

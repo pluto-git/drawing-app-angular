@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { Feedback } from 'src/app/models/feedback.model';
@@ -21,9 +21,18 @@ export class ContactUsComponent {
 
   feedbacks?: Feedback[];
   isSuccess: boolean = false;
-  selectOption: boolean = false;
+  selectOption: boolean = true;
 
   constructor(private feedbackSvc: FeedbackService) {
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadHandler(event: Event) {
+    if (this.contactUsForm.dirty) {
+      event!.preventDefault();
+      this.canExit();
+      event!.returnValue = false;
+    }
   }
 
   ngOnInit(): void {
@@ -37,12 +46,6 @@ export class ContactUsComponent {
     this.selectOption = true;
   }
 
-  ngAfterViewInit(): void {
-    this.selectOption = true;
-  }
-  ngDoCheck(): void {
-    this.selectOption = true;
-  }
 
   get firstName() {
     return this.contactUsForm.get('firstName');
@@ -60,6 +63,7 @@ export class ContactUsComponent {
   onSubmit(): void {
     // TODO: Use EventEmitter with form value
     this.saveFeedback(this.contactUsForm.value);
+    this.contactUsForm.markAsPristine();
     //this.retrieveFeedbacks();
   }
 
@@ -94,6 +98,14 @@ export class ContactUsComponent {
 
   }
 
+  canExit(): boolean {
+
+    if (confirm("Form data will be lost. Leave?")) {
+      return true
+    } else {
+      return false
+    }
+  }
 
 
   //to retrieve all feedbacks.

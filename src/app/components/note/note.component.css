@@ -21,6 +21,10 @@
         0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
+.dragging-cursor{
+    cursor: grab;
+}
+
 .noselect {
     -webkit-touch-callout: none;
     /* iOS Safari */

@@ -6,14 +6,13 @@ import { NoteControlService } from '../../services/note-control.service';
 import { ActivatedRoute } from '@angular/router';
 /* eslint-disable */
 // @ts-ignore 
-
+declare let html2canvas: any;
 /* eslint-enable */
 
-import { Note } from 'src/app/models/note';
 import { Board } from 'src/app/models/board';
 import { environment } from 'src/environments/environment';
 
-declare let html2canvas: any;
+
 
 @Component({
   selector: 'app-canva-tools-horizontal',
@@ -22,18 +21,17 @@ declare let html2canvas: any;
 })
 export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
-
-  private screenshotDataUrl?: string;
-
   constructor(private drawingSvc: CanvaFreeDrawingService, private op: OperationControlService, private noteSvc: NoteControlService,
     private route: ActivatedRoute,
     private location: Location) { }
 
+
+
+
   ngAfterViewChecked(): void {
     const cStep = this.op.actStep;
     const cOperations = this.op.opData;
-    // console.log(this.op.visibleNotesIds);
-    //console.log(this.op.initialStep);
+
 
     this.addClassOnCondition(cStep <= this.op.initialStep, document.getElementsByClassName("undoBtn")[0], "disabled");
     this.removeClassOnCondition(cStep > this.op.initialStep, document.getElementsByClassName("undoBtn")[0], "disabled");
@@ -82,7 +80,6 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
       this.op.actStep--;
 
-
     }
 
   }
@@ -94,6 +91,7 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
     } else if (this.op.operations[this.op.actStep + 1].includes('note')) {
       this.noteSvc.noteRedo();
     } else if (this.op.operations[this.op.actStep + 1].includes('clear')) {
+
       console.log('exception redo');
       this.drawingSvc.clearCanvas(document.getElementById(id) as HTMLCanvasElement);
       console.log(this.op.opData[this.op.actStep + 1][1].length);
@@ -110,7 +108,6 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
     const canvasEl = document.getElementById(id) as HTMLCanvasElement;
 
     if (this.op.operations[this.op.actStep] === 'clear') return;
-
 
     this.op.visibleNotesIds = this.noteSvc.getShownComponentsIds(this.op.opData);
 
@@ -131,15 +128,11 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
       this.op.operations[this.op.actStep] = 'clear-everything';
     }
 
-
-
   }
 
   public async onSave(type: string = 'same', opData: Array<any> = this.op.opData, operations: Array<string> = this.op.operations): Promise<void> {
 
     const oldItems: any = JSON.parse(localStorage.getItem('boardsArray')!) || [];
-
-    console.log(oldItems);
 
     const lastDrawIndex = operations.lastIndexOf('draw');
     this.op.visibleNotesIds = this.noteSvc.getShownComponentsIds(opData);
@@ -153,7 +146,7 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
         width: this.op.opDataDimensions[lastDrawIndex].width,
         height: this.op.opDataDimensions[lastDrawIndex].height
       },
-      notesData: this.getNotesData(this.op.visibleNotesIds),
+      notesData: this.op.getNotesData(this.op.visibleNotesIds),
       previewImage: await this.getScreenShot()
     };
 
@@ -171,48 +164,15 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
     }
 
     localStorage.setItem('boardsArray', JSON.stringify(oldItems));
+    this.op.isLastSave = true;
 
   }
 
-  private getNotesData(visibleNotesIds: Array<string> = this.op.visibleNotesIds): Array<Note> {
-
-    const notes: Note[] = [];
-    visibleNotesIds && visibleNotesIds.forEach((id: any) => {
-      const foundNote = this.noteSvc.getComponentById(id).instance;
-      foundNote && notes.push({
-        id: foundNote.id,
-        positionX: foundNote.positionX,
-        positionY: foundNote.positionY,
-        type: foundNote.type,
-        color: foundNote.color,
-        message: foundNote.message,
-        editId: foundNote.editId,
-        isHidden: foundNote.isHidden,
-        isDisabled: foundNote.isDisabled,
-        dragDisabled: foundNote.dragDisabled,
-        dragZone: foundNote.dragZone
-      })
-    })
-
-    return notes;
-
-  }
-
-  //get screenshot as a promise with async/await
   private async getScreenShot(id: string = 'screenshot-area'): Promise<string> {
     const c = document.getElementById(id);
-    const canvas = await html2canvas(c);
+    const canvas = await html2canvas(c, { scale: "3" });
     const MIME_TYPE = "image/png";
     return canvas.toDataURL(MIME_TYPE);
-  }
-
-  private downloadBase64File(contentType: any, base64Data: any, fileName: any): void {
-    // this.downloadBase64File('image/png',t.replace("data:image/png;base64,", ""),'image');
-    const linkSource = `data:${contentType};base64,${base64Data}`;
-    const downloadLink = document.createElement("a");
-    downloadLink.href = linkSource;
-    downloadLink.download = fileName;
-    downloadLink.click();
   }
 
 }

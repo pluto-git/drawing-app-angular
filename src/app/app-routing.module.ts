@@ -9,6 +9,9 @@ import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 import { environment } from 'src/environments/environment';
+// import { CanDeactivateGuard } from './can-deactivate.guard';
+import { CanDeactivateCanvaService } from './services/can-deactivate-canva.service';
+import { CanDeactivateFormService } from './services/can-deactivate-form.service';
 
 const routes: Routes = [
   {
@@ -17,10 +20,10 @@ const routes: Routes = [
       { path: '', redirectTo: '/' + environment.routes.DASHBOARD, pathMatch: 'full' },
       { path: environment.routes.DASHBOARD, component: DashboardComponent },
       { path: environment.routes.ABOUT, component: AboutComponent },
-      { path: environment.routes.CONTACT, component: ContactUsComponent }
+      { path: environment.routes.CONTACT, component: ContactUsComponent, canDeactivate: [CanDeactivateFormService] }
     ], component: HomeComponent
   },
-  { path: environment.routes.CANVA+'/:id', component: CanvaComponent },
+  { path: environment.routes.CANVA + '/:id', component: CanvaComponent, canDeactivate: [CanDeactivateCanvaService] },
   // { path: ROUTES.DRAWINGBOARD, component: SvgDrawingSheetComponent },
   { path: '**', component: PageNotFoundComponent }
 

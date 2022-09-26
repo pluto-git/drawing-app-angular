@@ -42,9 +42,6 @@ export class CanvaFreeDrawingService {
 
     if ((tool === tools.pen) || (tool === tools.eraser)) {
       this.DrawingImplementation(canvas, mouseDown, mouseMove, mouseUp);
-      // } else if (tool === tools.textarea) {
-      //   //this.textareaImplementation(canvasEl);
-      // } 
     } else {
       this.DrawingImplementation(canvas, mouseDown, mouseMove, mouseUp);
     }
@@ -54,6 +51,7 @@ export class CanvaFreeDrawingService {
       //to add 'draw' to an array of operations
       // console.log(this.op.actStep + ' is here');
       this.op.operations[this.op.actStep] = 'draw';
+      this.op.isLastSave = false;
     });
 
   }
