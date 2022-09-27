@@ -31,3 +31,8 @@
     /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
 }
+
+ul>li>a,
+.langs {
+    font-size: 1rem;
+}

@@ -194,7 +194,6 @@ export class CanvaComponent {
 
     //this.noteSvc.toggleDragging(component, disableDragging);
     // this.noteSvc.disableDraggingForAllComponents(disableDragging);
-    // this.cd.detectChanges();
 
   }
 

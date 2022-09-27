@@ -5,7 +5,7 @@ instead of overcomplicating our Router Module more. Check it out at app-routing.
     <app-navbar></app-navbar>
     <app-canva-tools-horizontal></app-canva-tools-horizontal>
     <div class="container h-100 my-5 d-flex flex-row overflow-auto">
-        <div class="bg-primary mx-2 bg-light tools d-flex flex-column">
+        <div class="bg-primary mx-2 bg-light tools d-flex flex-column my-5">
             <div class="my-3 vertical-tool" [id]="tools.pen" (click)="pickTool(tools.pen, 'canvas')"
                 data-bs-toggle="tooltip" data-bs-placement="auto" [title]="'canvaComponent.tools.pen' | transloco">
                 <svg [class]="tools.pen" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"

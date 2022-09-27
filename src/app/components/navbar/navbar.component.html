@@ -20,10 +20,10 @@
           <a class="nav-link active" aria-current="page" [routerLink]="contact">{{t('navbarComponent.contactUs')}}</a>
         </li>
       </ul>
-      <div class="d-flex align-items-center" *transloco="let t">
-        <div class="btn" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" (click)="change('en')">
+      <div class="d-flex align-items-center " *transloco="let t">
+        <div class="btn langs" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" (click)="change('en')">
           {{t('navbarComponent.langs.en')}}</div>
-        <div class="btn" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" (click)="change('uk')">
+        <div class="btn langs" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" (click)="change('uk')">
           {{t('navbarComponent.langs.uk')}}</div>
       </div>
     </div>

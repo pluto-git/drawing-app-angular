@@ -14,3 +14,7 @@ div.c1 {
     letter-spacing: 2px;
     color: orange;
 }
+
+ul>li{
+    font-size: 1rem;
+}
