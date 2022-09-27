@@ -53,7 +53,7 @@ export class NoteComponent implements AfterViewInit {
     const note = this.note.nativeElement;
     this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
     const offsets = note.getBoundingClientRect();
-    // console.log(offsets);
+
     this.positionX = offsets.top;
     this.positionY = offsets.left;
     console.log(this.positionX);

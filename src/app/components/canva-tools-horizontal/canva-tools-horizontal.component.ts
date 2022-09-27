@@ -1,13 +1,15 @@
-import { Component, AfterViewChecked } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { CanvaFreeDrawingService } from '../../services/canva-free-drawing.service';
 import { OperationControlService } from '../../services/operation-control.service';
 import { NoteControlService } from '../../services/note-control.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 /* eslint-disable */
 // @ts-ignore 
 declare let html2canvas: any;
 /* eslint-enable */
+
+
+import { Subscription } from 'rxjs';
 
 import { Board } from 'src/app/models/board';
 import { environment } from 'src/environments/environment';
@@ -22,18 +24,14 @@ import { environment } from 'src/environments/environment';
 export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
   constructor(private drawingSvc: CanvaFreeDrawingService, private op: OperationControlService, private noteSvc: NoteControlService,
-    private route: ActivatedRoute,
-    private location: Location) { }
-
-
-
+    private router: Router) { }
 
   ngAfterViewChecked(): void {
     const cStep = this.op.actStep;
     const cOperations = this.op.opData;
 
-    console.log('init step : '+ this.op.initialStep);
-    console.log('actual step: '+ this.op.actStep);
+    console.log('init step : ' + this.op.initialStep);
+    console.log('actual step: ' + this.op.actStep);
 
     this.addClassOnCondition(cStep <= this.op.initialStep, document.getElementsByClassName("undoBtn")[0], "disabled");
     this.removeClassOnCondition(cStep > this.op.initialStep, document.getElementsByClassName("undoBtn")[0], "disabled");
@@ -153,21 +151,25 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
     };
 
 
-    const routeId = this.route.snapshot.paramMap.get('id');
-    if (type !== 'new' && routeId !== 'new') {
 
-      const foundIdx = oldItems.findIndex((x: Board) => x.id.toString() === routeId);
-      newBoard.id = Number(this.route.snapshot.paramMap.get('id'))!;
+    //if we save the same or new
+    if (type !== 'new') {
+
+      const foundIdx = oldItems.findIndex((x: Board) => x.id.toString() === this.op.queryId);
+      newBoard.id = Number(this.op.queryId);
       oldItems[foundIdx] = newBoard;
 
-    } else if (type === 'new' || routeId === 'new') {
+    }
+    if (type === 'new' || this.op.queryId === 'new') {
       console.log('here');
+      newBoard.id = oldItems.length;
       oldItems.push(newBoard);
-      this.location.go(environment.routes.CANVA + `/${(oldItems.length - 1)}`);
+      //changing url (query params) without refresh and Angular now 
+      //knows the URL unlike with Location!
+      this.router.navigate([environment.routes.CANVA], { queryParams: { id: (newBoard.id).toString() } });
     }
 
     localStorage.setItem('boardsArray', JSON.stringify(oldItems));
-    this.op.isLastSave = true;
 
   }
 
@@ -177,6 +179,8 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
     const MIME_TYPE = "image/png";
     return canvas.toDataURL(MIME_TYPE);
   }
+
+
 
 }
 

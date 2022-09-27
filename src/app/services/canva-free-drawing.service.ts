@@ -51,7 +51,6 @@ export class CanvaFreeDrawingService {
       //to add 'draw' to an array of operations
       // console.log(this.op.actStep + ' is here');
       this.op.operations[this.op.actStep] = 'draw';
-      this.op.isLastSave = false;
     });
 
   }

@@ -23,7 +23,7 @@ const routes: Routes = [
       { path: environment.routes.CONTACT, component: ContactUsComponent, canDeactivate: [CanDeactivateFormService] }
     ], component: HomeComponent
   },
-  { path: environment.routes.CANVA + '/:id', component: CanvaComponent, canDeactivate: [CanDeactivateCanvaService] },
+  { path: environment.routes.CANVA, component: CanvaComponent, canDeactivate: [CanDeactivateCanvaService] },
   // { path: ROUTES.DRAWINGBOARD, component: SvgDrawingSheetComponent },
   { path: '**', component: PageNotFoundComponent }
 

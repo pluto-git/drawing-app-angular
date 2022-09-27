@@ -17,30 +17,21 @@ declare var bootstrap: any;
 
 export class PopupNoteComponent {
 
-  //public disabled!: boolean;
-  ngDoCheck() {
-    // this.disabled = this.form.valid;
-    // console.log(this.noteSvc.isEdit);
-    // console.log(this.clickedDOMId);
-  }
-
   public colors = colors;
   private canvaComponent!: CanvaComponent; // to be injected.
   private id: number = 0;
-  //public clickedDOMId!: string;
 
   constructor(private _injector: Injector, private noteSvc: NoteControlService) {
     this.canvaComponent = this._injector.get<CanvaComponent>(CanvaComponent);
   }
 
-  //public modalNote = new FormControl('', Validators.required); // our textarea inside our modal body
   public form = new FormGroup({
     modalNote: new FormControl('', Validators.required)
   });
 
   ngAfterViewInit() {
     this.noteSvc.canvaComponent = this.canvaComponent;
-    //this.disabled = false;
+
   }
 
   public onSaveNote(modalId: string, id: string = 'exampleFormControlTextarea1'): void {
@@ -52,7 +43,7 @@ export class PopupNoteComponent {
 
     const bgClr = getComputedStyle(document.getElementById(id)!, null).getPropertyValue("background-color");
 
-    this.noteSvc.note = { id: 'noteId' + this.id, message: this.form.controls['modalNote'].value!, color: bgClr, positionX: 300, positionY: 300 + 5 * (this.id + 1), editId: '', isHidden: false, isDisabled: false, dragZone: '.outer-canva', type: 'note', dragDisabled: false };
+    this.noteSvc.note = { id: 'noteId' + this.id, message: this.form.controls['modalNote'].value!, color: bgClr, positionX: 200, positionY: 200 + 5 * (this.id + 1), editId: '', isHidden: false, isDisabled: false, dragZone: '.outer-canva', type: 'note', dragDisabled: false };
 
     //set the edited note's position if we are in the edit more:
     if (mode === 'edit') {

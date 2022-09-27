@@ -11,7 +11,6 @@ import { NoteControlService } from '../../services/note-control.service';
 import { OperationControlService } from '../../services/operation-control.service';
 
 import { Board } from 'src/app/models/board';
-import { ActivatedRoute } from '@angular/router';
 import { CanvaToolsHorizontalComponent } from '../canva-tools-horizontal/canva-tools-horizontal.component';
 
 // import { browserRefresh } from '../app/app.component';
@@ -28,7 +27,7 @@ import { CanvaToolsHorizontalComponent } from '../canva-tools-horizontal/canva-t
 export class CanvaComponent {
 
   constructor(private drawingSvc: CanvaFreeDrawingService, private noteSvc: NoteControlService, private op: OperationControlService,
-    private route: ActivatedRoute, private cd: ChangeDetectorRef,
+    private cd: ChangeDetectorRef,
     private toolComponent: CanvaToolsHorizontalComponent
   ) {
 
@@ -46,7 +45,6 @@ export class CanvaComponent {
   public currentTool!: string;// selected tool
   public previousTool!: string; // previous selected tool (for stickers);
   private resizeTimeout!: ReturnType<typeof setTimeout>; //for resizing.
-  private id!: string | null; //url param
 
 
   // @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
@@ -72,8 +70,7 @@ export class CanvaComponent {
   public ngOnInit(): void {
     //for dpi
     this.ratio = window.devicePixelRatio;
-    this.id = this.route.snapshot.paramMap.get('id');
-
+    this.op.subsToQueryParams();
   }
 
   canExit(): boolean {
@@ -92,7 +89,8 @@ export class CanvaComponent {
 
     //finding an item in array
 
-    const foundBoard = this.findBoard(Number(this.id));
+    console.log(this.op.queryId);
+    const foundBoard = this.findBoard(Number(this.op.queryId));
     foundBoard && this.uploadSavedData(canvasEl, foundBoard);
     //console.log(foundBoard);
 
@@ -232,10 +230,12 @@ export class CanvaComponent {
     this.op.operations = [];
     this.op.visibleNotesIds = [];
     this.op.initialStep = -1;
-    this.op.isLastSave = true;
     this.drawingSvc.unsubscribeDrawing();
     this.currentTool = '';
     this.previousTool = '';
+
+    ///for our query params
+    this.op.idSubs && this.op.unsubToQueryParams();
 
   }
 }

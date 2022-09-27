@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Note } from '../models/note';
+import { Subscription } from "rxjs";
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +13,27 @@ export class OperationControlService {
   public opDataDimensions: Array<any> = []; //keeping track of height, width for canvas. or false for other elements.
   public actStep: number = -1; //the current operation step
   public visibleNotesIds: Array<string> = [];// for undo clearing everything.
-  public initialStep: number = -1; //depends
-  public isLastSave: boolean = true;
+  public initialStep: number = -1; //needed to correctly do undo/redo operations; especially after uploading saved data on the Board!
+
+  public idSubs!: Subscription; // our query params' subs
+  public queryId!: string; // our query parameters!
+
+  constructor(private activatedRoute: ActivatedRoute, private router: Router) { }
 
 
-  constructor() { }
+
+  public subsToQueryParams(): void {
+    this.idSubs = this.activatedRoute.queryParams
+      .subscribe(params => {
+        this.queryId = params['id'];
+      }
+      );
+  }
+
+  public unsubToQueryParams(): void {
+    this.idSubs.unsubscribe();
+  }
+
 
   public getNotesData(visibleNotesIds: Array<string> = this.visibleNotesIds): Array<Note> {
 
@@ -48,6 +66,7 @@ export class OperationControlService {
       component.instance.id === id
     );
   }
+
 
   // private downloadBase64File(contentType: any, base64Data: any, fileName: any): void {
   //   // this.downloadBase64File('image/png',t.replace("data:image/png;base64,", ""),'image');
