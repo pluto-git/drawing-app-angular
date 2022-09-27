@@ -13,7 +13,7 @@ declare global {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
   ngOnInit(): void {
 
@@ -24,9 +24,9 @@ export class AppComponent implements OnInit {
     // };
     // if (window.mobileAndTabletCheck()) {
     // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-    let vh = window.innerHeight * 0.01;
-    document.getElementById('selector')!.style.setProperty('--vh', `${vh}px`);
-    console.log(vh);
+    // let vh = window.innerHeight * 0.01;
+    // document.documentElement!.style.setProperty('--vh', `100px`);
+    // console.log(vh);
   }
 
 }
