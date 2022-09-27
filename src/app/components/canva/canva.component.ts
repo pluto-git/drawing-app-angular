@@ -107,7 +107,7 @@ export class CanvaComponent {
       this.op.initialStep = this.op.operations.length - 1;
     }
     //pick Pen and start drawing...
-    this.pickTool(tools.pen, "canvas");
+    this.pickTool(tools.select, "canvas");
 
     //if a new board:
     if (!foundBoard) {

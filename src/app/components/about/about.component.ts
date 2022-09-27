@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -6,13 +6,12 @@ import { environment } from 'src/environments/environment';
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.css']
 })
-export class AboutComponent implements OnInit {
+export class AboutComponent {
 
   dashboard = '/' + environment.routes.DASHBOARD;
 
-  constructor() { }
+  constructor() {
 
-  ngOnInit(): void {
   }
 
 }
