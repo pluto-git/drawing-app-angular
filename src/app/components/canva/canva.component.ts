@@ -49,12 +49,12 @@ export class CanvaComponent {
   private id!: string | null; //url param
 
 
-  @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
-    console.log("Processing beforeunload...");
-    event.preventDefault();
-    this.toolComponent.onSave();
-    event.returnValue = false;
-  }
+  // @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
+  //   console.log("Processing beforeunload...");
+  //   event.preventDefault();
+  //   this.toolComponent.onSave();
+  //   event.returnValue = false;
+  // }
 
   //listening to window resize
   @HostListener("window:resize", [])
