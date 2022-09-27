@@ -15,8 +15,6 @@ declare global {
 })
 export class AppComponent implements OnInit {
 
-
-
   ngOnInit(): void {
 
     // window.mobileAndTabletCheck = function () {
@@ -25,14 +23,10 @@ export class AppComponent implements OnInit {
     //   return check;
     // };
     // if (window.mobileAndTabletCheck()) {
-      function calcVH() {
-        var vH = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-        document.getElementById("selector")!.setAttribute("style", "height:" + vH + "px;");
-      }
-      calcVH();
-      window.addEventListener('onorientationchange', calcVH, true);
-    }
-  // }
+    // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
 
+  }
 
 }
