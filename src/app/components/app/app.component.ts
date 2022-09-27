@@ -25,8 +25,8 @@ export class AppComponent implements OnInit {
     // if (window.mobileAndTabletCheck()) {
     // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
     let vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-
+    document.getElementById('selector')!.style.setProperty('--vh', `${vh}px`);
+    console.log(vh);
   }
 
 }
