@@ -11,7 +11,7 @@ export class OperationControlService {
   public opDataDimensions: Array<any> = []; //keeping track of height, width for canvas. or false for other elements.
   public actStep: number = -1; //the current operation step
   public visibleNotesIds: Array<string> = [];// for undo clearing everything.
-  public initialStep!: number; //depends if the sata
+  public initialStep: number = -1; //depends
   public isLastSave: boolean = true;
 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -13,7 +13,7 @@ export class DashboardComponent implements OnInit {
 
   public boardItems!: Array<any>;
 
-  constructor() { }
+  constructor(private cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.updateItems();
@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
 
   ngAfterViewChecked(): void {
     this.updateItems();
+    this.cd.detectChanges();
   }
 
   public removeMe(id: string, localeStorageKey: string = 'boardsArray'): void {

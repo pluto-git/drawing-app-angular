@@ -56,3 +56,16 @@ section {
     fill: gold;
 }
 
+
+@media (max-height: 560px) {  
+    .vertical-tool {
+        margin-top: 0px !important;
+    }
+}
+
+@media (max-height: 480px) {  
+    .vertical-tool {
+        margin-bottom: 1px !important;
+    }
+}
+

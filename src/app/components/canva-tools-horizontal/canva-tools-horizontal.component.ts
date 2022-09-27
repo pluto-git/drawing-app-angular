@@ -32,6 +32,8 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
     const cStep = this.op.actStep;
     const cOperations = this.op.opData;
 
+    console.log('init step : '+ this.op.initialStep);
+    console.log('actual step: '+ this.op.actStep);
 
     this.addClassOnCondition(cStep <= this.op.initialStep, document.getElementsByClassName("undoBtn")[0], "disabled");
     this.removeClassOnCondition(cStep > this.op.initialStep, document.getElementsByClassName("undoBtn")[0], "disabled");
@@ -159,6 +161,7 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
       oldItems[foundIdx] = newBoard;
 
     } else if (type === 'new' || routeId === 'new') {
+      console.log('here');
       oldItems.push(newBoard);
       this.location.go(environment.routes.CANVA + `/${(oldItems.length - 1)}`);
     }

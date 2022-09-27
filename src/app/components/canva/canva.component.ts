@@ -29,7 +29,7 @@ export class CanvaComponent {
 
   constructor(private drawingSvc: CanvaFreeDrawingService, private noteSvc: NoteControlService, private op: OperationControlService,
     private route: ActivatedRoute, private cd: ChangeDetectorRef,
-    private toolComponent: CanvaToolsHorizontalComponent,
+    private toolComponent: CanvaToolsHorizontalComponent
   ) {
 
   }
@@ -96,24 +96,28 @@ export class CanvaComponent {
     foundBoard && this.uploadSavedData(canvasEl, foundBoard);
     //console.log(foundBoard);
 
-    //pushing for undo/redo
 
-    this.op.operations.push('draw');
 
     if (foundBoard) {
       this.op.actStep++;
       this.op.opData[this.op.actStep] = foundBoard.canvasData;
       this.op.opDataDimensions[this.op.actStep] = { width: foundBoard.canvasDimensions.width, height: foundBoard.canvasDimensions.height };
-      this.op.initialStep = this.op.operations.length - 1;
+      this.op.initialStep = this.op.operations.length;
     }
-    //pick Pen and start drawing...
-    this.pickTool(tools.select, "canvas");
-
     //if a new board:
     if (!foundBoard) {
       this.drawingSvc.cPush(canvasEl);
       this.op.initialStep = 0;
     }
+    //pushing for undo/redo as the above 2 conditions don't add the operation name!
+    this.op.operations.push('draw');
+
+    //pick Pen and start drawing... to not make errors with later operations.
+    this.pickTool(tools.pen, "canvas");
+    //pick the standard tool!
+    this.pickTool(tools.select, 'canvas');
+
+    this.cd.detectChanges();
   }
 
   private findBoard(id: number): Board | undefined {

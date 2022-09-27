@@ -21,3 +21,22 @@ a {
               user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
   }
+
+@media (max-width: 440px) {  
+    div>li>a{
+        font-size: large;
+        padding-left: 0px !important;
+    }
+}
+@media (max-width: 374px) {  
+    div>li>a{
+        font-size: medium;
+        padding-left: 0px !important;
+    }
+}
+@media (max-width: 340px) {  
+    div>li>a{
+        font-size: small;
+        padding-left: 0px !important;
+    }
+}
