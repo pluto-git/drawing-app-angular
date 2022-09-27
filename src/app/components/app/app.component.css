@@ -1,3 +1,7 @@
 /* :host /deep/ router-outlet+* {
     min-height: 100%;
 } */
+
+.selector{
+    height: 100vh;
+}
