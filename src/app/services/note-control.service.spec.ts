@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-
+import { ChangeDetectorRef } from '@angular/core';
 import { NoteControlService } from './note-control.service';
 
 describe('NoteControlService', () => {

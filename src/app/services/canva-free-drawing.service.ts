@@ -54,6 +54,14 @@ export class CanvaFreeDrawingService {
     });
 
   }
+  private fixCanvasSizes(): void {
+    const canvases = document.getElementsByTagName("canvas");
+    for (var i = 0; i < canvases.length; i++) {
+      let canvas = canvases[i];
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+  }
 
   private DrawingImplementation(canvas: HTMLCanvasElement, mouseDown: any, mouseMove: any, mouseUp: ObservableInput<any>) {
     this.mainSub = mouseDown
@@ -109,18 +117,19 @@ export class CanvaFreeDrawingService {
   }
 
   private getPosition(res: any, isTouch: boolean, rect: DOMRect): { x: number, y: number } {
+    console.log(rect);
     //returning positions for mouse events.
     if (isTouch === true) {
       //if it is a touch event
       return {
-        x: (res.changedTouches[0].clientX - rect.left) * this.ratio as number,
-        y: (res.changedTouches[0].clientY - rect.top) * this.ratio as number
+        x: (res.changedTouches[0].clientX - rect.left)  as number,
+        y: (res.changedTouches[0].clientY - rect.top) as number
       };
     } else {
       //if mouse event:
       return {
-        x: (res.clientX - rect.left) * this.ratio as number,
-        y: (res.clientY - rect.top) * this.ratio as number
+        x: (res.clientX - rect.left) as number,
+        y: (res.clientY - rect.top)  as number
       };
     }
 
@@ -148,12 +157,14 @@ export class CanvaFreeDrawingService {
     hiddenCnv.height = canvas.offsetHeight * this.ratio;
 
     //storing old context in the hidden one.
+    hiddenCx.imageSmoothingEnabled = false;
     hiddenCx?.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, hiddenCnv.width, hiddenCnv.height);
 
     //clearing the original canvas because of assigning width and height to the canva
     canvas.width = canvas.offsetWidth * this.ratio;
     canvas.height = canvas.offsetHeight * this.ratio;
 
+    cx.imageSmoothingEnabled = false;
     //redrawing on the original canva after refresh because of the above parts.
     cx.drawImage(hiddenCnv, 0, 0, hiddenCnv.width, hiddenCnv.height, 0, 0, canvas.width, canvas.height);
 
@@ -192,7 +203,9 @@ export class CanvaFreeDrawingService {
     canvasPic.src = source;
     this.clearCanvas(canvas);
     canvasPic.onload = () => {
-      canvas.getContext('2d')!.drawImage(canvasPic, 0, 0, canvasWidth, canvasHeight, 0, 0, canvas.width, canvas.height);
+      const ctx = canvas.getContext('2d');
+      ctx!.imageSmoothingEnabled = false;
+      ctx!.drawImage(canvasPic, 0, 0, canvasWidth, canvasHeight, 0, 0, canvas.width, canvas.height);
     }
 
   }

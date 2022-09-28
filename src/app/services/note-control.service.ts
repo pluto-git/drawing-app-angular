@@ -1,10 +1,13 @@
-import { Injectable, Type, Injector, Component } from '@angular/core';
+import { Injectable, Type, ApplicationRef } from '@angular/core';
 
 import { Note } from '../models/note';
 import { NoteComponent } from '../components/note/note.component';
 import { CanvaComponent } from '../components/canva/canva.component';
 
 import { OperationControlService } from './operation-control.service';
+
+declare let html2canvas: any;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,7 +18,7 @@ export class NoteControlService {
   public isEdit: boolean = false; //to check if it is the edit mode. for UI...
   public clickedDOMElementId!: string; //to get the right component when editing
 
-  constructor(private op: OperationControlService) { }
+  constructor(private op: OperationControlService, private af: ApplicationRef) { }
 
   public addNote(): void {
     //console.log('here we are adding note');
@@ -99,7 +102,7 @@ export class NoteControlService {
     }
   }
 
-  private addDraggableNote(componentClass: Type<any>, note: Note): void {
+  private async addDraggableNote(componentClass: Type<any>, note: Note): Promise<void> {
     // message: string = "Default message", color: string = 'gold', positionX: number, positionY: number, editId: string = '', id: string = 'noteId0', disabled: boolean = false, dragZone: string = '.outer-canva'
     // Create component dynamically inside the ng-template
 
@@ -113,6 +116,52 @@ export class NoteControlService {
     this.op.opDataDimensions[this.op.actStep] = false;
     //allow dragging...
     this.toggleDragging(NoteComponent, false);
+
+
+
+    this.af.tick();//to later be able to find the element by id!
+    const component = childComponentRef.instance;
+    const noteEl = document.getElementById(component.id);
+    console.log(childComponentRef.instance);
+    const srcCanva = await html2canvas(noteEl, { scale: window.devicePixelRatio * 5 });
+
+    const destCanvas = <HTMLCanvasElement>document.getElementById('canvas');
+
+
+    const hiddenCanva = document.createElement('canvas');
+    hiddenCanva.getContext('2d')?.drawImage(destCanvas, 0, 0);
+    this.fixCanvasSizes(); //to draw correctly!
+    // srcCanva.width = srcCanva.offsetWidth;
+    // srcCanva.height = srcCanva.offsetHeight;
+    // destCanvas.width = destCanvas.offsetWidth;
+    // destCanvas.height = destCanvas.offsetHeight;
+
+    // const canvasPic = new Image();
+    // canvasPic.src = srcCanva.toDataURL();
+    //destCanvas.getContext('2d')?.clearRect(component.positionX, component.positionY, destCanvas.width, destCanvas.height);
+
+    const destCtx = destCanvas.getContext('2d');
+    destCtx!.imageSmoothingEnabled = false;
+    destCtx?.drawImage(hiddenCanva, 0, 0);
+    destCtx!.drawImage(srcCanva, component.positionX, component.positionY, srcCanva.width / window.devicePixelRatio / 5, srcCanva.height / window.devicePixelRatio / 5);
+
+    // canvasPic.onload = () => {
+    // const destCtx = destCanvas.getContext('2d');
+    // destCtx!.imageSmoothingEnabled = false;
+    // destCanvas.getContext('2d')!.drawImage(srcCanva, component.positionX, component.positionY, srcCanva.width /5, srcCanva.height / 5);
+    // }
+
+
+  }
+
+  private fixCanvasSizes(): void {
+    const canvases = document.getElementsByTagName("canvas");
+    console.log(canvases)
+    for (var i = 0; i < canvases.length ; i++) {
+      let canvas = canvases[i];
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
   }
 
   public createNoteComponent(componentClass: Type<any>, note: Note): any {
@@ -235,7 +284,7 @@ export class NoteControlService {
   }
 
   ngOnDestroy(): void {
-    
+
   }
 
   // public resizeScreen(winRatio: number, components: Array<any> = this.op.opData): void {

@@ -43,7 +43,7 @@ export class PopupNoteComponent {
 
     const bgClr = getComputedStyle(document.getElementById(id)!, null).getPropertyValue("background-color");
 
-    this.noteSvc.note = { id: 'noteId' + this.id, message: this.form.controls['modalNote'].value!, color: bgClr, positionX: 200, positionY: 200 + 5 * (this.id + 1), editId: '', isHidden: false, isDisabled: false, dragZone: '.outer-canva', type: 'note', dragDisabled: false };
+    this.noteSvc.note = { id: 'noteId' + this.id, message: this.form.controls['modalNote'].value!, color: bgClr, positionX: 200, positionY: 200 + 5 * (this.id + 1), editId: '', isHidden: false, isDisabled: false, dragZone: '.outer-container', type: 'note', dragDisabled: false };
 
     //set the edited note's position if we are in the edit more:
     if (mode === 'edit') {

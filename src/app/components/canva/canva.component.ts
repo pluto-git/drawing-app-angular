@@ -41,7 +41,6 @@ export class CanvaComponent {
   @ViewChild('container', { read: ViewContainerRef }) public container!: ViewContainerRef;
 
   public tools = tools; //our all tools.
-  private ratio!: number; // device pixel ratio.
   public currentTool!: string;// selected tool
   public previousTool!: string; // previous selected tool (for stickers);
   private resizeTimeout!: ReturnType<typeof setTimeout>; //for resizing.
@@ -69,8 +68,33 @@ export class CanvaComponent {
 
   public ngOnInit(): void {
     //for dpi
-    this.ratio = window.devicePixelRatio;
     this.op.subsToQueryParams();
+
+    //this.fixCanvasSizes();
+
+
+    // const canvas = <HTMLCanvasElement>document.getElementById('canvas');
+    // canvas!.height = canvas.offsetHeight;
+    // canvas!.width = canvas.offsetWidth;
+    // canvas.style.width = canvas.width + 'px';
+    // canvas.style.height = canvas.height + 'px';
+
+    // const canvas = document.querySelector('canvas')
+    // canvas!.addEventListener('mousedown', function (event) {
+    //   const rect = canvas!.getBoundingClientRect()
+    //   const x = event.clientX - rect.left
+    //   const y = event.clientY - rect.top
+    //   alert("x: " + x + " y: " + y)
+    // })
+  }
+
+  private fixCanvasSizes(): void {
+    const canvases = document.getElementsByTagName("canvas");
+    for (var i = 0; i < canvases.length; i++) {
+      let canvas = canvases[i];
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
   }
 
   canExit(): boolean {
@@ -84,8 +108,8 @@ export class CanvaComponent {
 
     //setting up dimensions...
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-    canvasEl.width = this.canvas.nativeElement.offsetWidth * this.ratio;
-    canvasEl.height = this.canvas.nativeElement.offsetHeight * this.ratio;
+    canvasEl.width = this.canvas.nativeElement.offsetWidth;
+    canvasEl.height = this.canvas.nativeElement.offsetHeight;
 
     //finding an item in array
 

@@ -16,7 +16,7 @@ export class NoteComponent implements AfterViewInit {
 
   public type: string = "note";
   public id!: string;
-  public dragZone: string = ".draging-zone"; //draging zone for our component
+  public dragZone: string = ".outer-container"; //draging zone for our component
   public message: string = "Works!";
   public color: string = "gold";
   public positionX!: number;
@@ -40,8 +40,12 @@ export class NoteComponent implements AfterViewInit {
     const note = this.note.nativeElement;
     note.style.backgroundColor = this.color;
 
+    note.style.position = 'absolute';
     note.style.top = this.positionX + 'px';
     note.style.left = this.positionY + 'px';
+
+
+
   }
 
 
@@ -52,14 +56,14 @@ export class NoteComponent implements AfterViewInit {
 
     const note = this.note.nativeElement;
     this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
+    //this.isHidden && (note.style.display = 'none');
     const offsets = note.getBoundingClientRect();
 
-    this.positionX = offsets.top;
-    this.positionY = offsets.left;
+    this.positionX = offsets.x - document.getElementById('canvas')?.getBoundingClientRect().x!;
+    this.positionY = offsets.y - document.getElementById('canvas')?.getBoundingClientRect().y!;;
+
     console.log(this.positionX);
     console.log(this.positionY);
-    // note.style.top = this.positionX + 'px';
-    // note.style.left = this.positionY + 'px';
     // console.log(this.isHidden);
   }
 
