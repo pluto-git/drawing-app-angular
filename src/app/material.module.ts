@@ -5,7 +5,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [],
   exports: [
-    DragDropModule
+    DragDropModule,
   ],
   imports: [
     CommonModule

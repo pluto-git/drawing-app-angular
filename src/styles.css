@@ -5,8 +5,9 @@ html {
 }
 
 body {
-    height: 100vh;
     /* fallback for Js load */
+    height: 100vh;
+    /* actual height for mobile browsers specially */
     height: var(--doc-height);
     margin-bottom: 0;
     margin-top: 0;

@@ -3,18 +3,31 @@
     height: 100%;
     overflow: hidden;
     position: relative;
+    transform: scale(var(--scaleX), var(--scaleY));
     /* z-index: 21; */
 }
 
 .canvas {
-    /* width: inherit;
-    height: inherit; */
+
     height: inherit;
     width: 100%;
     background-color: white;
     overflow: hidden;
     z-index: 20;
 }
+/* 
+.hidden-canvas{
+
+    height: inherits;
+    width: 100%;
+    background-color: grey;
+    overflow: hidden;
+    z-index: -19;
+
+    
+} */
+
+
 
 
 section {
@@ -59,15 +72,14 @@ section {
 }
 
 
-@media (max-height: 560px) {  
+@media (max-height: 560px) {
     .vertical-tool {
         margin-top: 0px !important;
     }
 }
 
-@media (max-height: 480px) {  
+@media (max-height: 480px) {
     .vertical-tool {
         margin-bottom: 1px !important;
     }
 }
-

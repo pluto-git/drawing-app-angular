@@ -26,7 +26,7 @@ export class PopupNoteComponent {
   }
 
   public form = new FormGroup({
-    modalNote: new FormControl('', Validators.required)
+    modalNote: new FormControl('', [Validators.required, Validators.maxLength(50)])
   });
 
   ngAfterViewInit() {
@@ -35,19 +35,25 @@ export class PopupNoteComponent {
   }
 
   public onSaveNote(modalId: string, id: string = 'exampleFormControlTextarea1'): void {
-    !this.noteSvc.isEdit && this.handleNote(modalId, id, 'add');
-    this.noteSvc.isEdit && this.handleNote(modalId, id, 'edit');
+
+    this.noteSvc.isEdit === false && this.handleNote(modalId, id, 'add');
+    this.noteSvc.isEdit === true && this.handleNote(modalId, id, 'edit');
   }
 
   private handleNote(modalId: string, id: string = 'exampleFormControlTextarea1', mode: string = 'add'): void {
 
-    const bgClr = getComputedStyle(document.getElementById(id)!, null).getPropertyValue("background-color");
+    const bgClr = getComputedStyle(<HTMLElement>document.getElementById(id), null).getPropertyValue("background-color");
 
-    this.noteSvc.note = { id: 'noteId' + this.id, message: this.form.controls['modalNote'].value!, color: bgClr, positionX: 200, positionY: 200 + 5 * (this.id + 1), editId: '', isHidden: false, isDisabled: false, dragZone: '.outer-container', type: 'note', dragDisabled: false };
+    this.noteSvc.note = {
+      id: 'noteId' + this.id, message: this.form.controls['modalNote'].value!, color: bgClr, positionX: 200, positionY: 200 + 5 * (this.id + 1), editId: '',
+      isHidden: false,
+      isDisabled: false, dragZone: '.outer-container', type: 'note', dragDisabled: false
+    };
 
     //set the edited note's position if we are in the edit more:
     if (mode === 'edit') {
       const prevNote = this.noteSvc.getComponentById(this.noteSvc.clickedDOMElementId);
+      this.noteSvc.note.editId = this.noteSvc.clickedDOMElementId; //needed for undo/redo!
       this.noteSvc.note.positionX = prevNote.instance.positionX;
       this.noteSvc.note.positionY = prevNote.instance.positionY;
     }
@@ -84,7 +90,7 @@ export class PopupNoteComponent {
     myModal.show();
 
     //find Note component
-    this.noteSvc.clickedDOMElementId = this.getCurrentId(event);
+    this.noteSvc.clickedDOMElementId = (event.target as Element).id;
     const foundNoteComponent = this.noteSvc.getComponentById(this.noteSvc.clickedDOMElementId);
 
     // //set color, message in our modal

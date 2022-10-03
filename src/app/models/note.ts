@@ -5,9 +5,14 @@ export interface Note {
     color: string,
     positionX: number,
     positionY: number,
-    editId: string,
     isHidden: boolean,
-    isDisabled: boolean,
     dragDisabled: boolean,
-    dragZone : string
+    editId?: string,
+    dragZone: string,
+    isDisabled?: boolean,
+    initialCanvasX?: number,
+    initialCanvasY?: number,
+    initialPercX?: number,
+    initialPercY?: number,
+    lastRelativeCoordinates?: Array<{ x: number, y: number }>
 }

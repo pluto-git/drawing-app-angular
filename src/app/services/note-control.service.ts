@@ -26,20 +26,22 @@ export class NoteControlService {
     this.op.operations[this.op.actStep] = 'add-note';
   }
 
-  public editNote(editId: string): void {
+  public editNote(editId: string, operationName: string = 'edit-note'): void {
     //add the new version, after editing
+
     this.addDraggableNote(NoteComponent, this.note);
 
     //locate previous component
     const component = this.getComponentById(editId);
     //hide it
     component.instance.isHidden = true;
-    this.op.operations[this.op.actStep] = 'edit-note';
+    this.op.operations[this.op.actStep] = operationName;
   }
 
   public noteUndo(): void {
 
     if (this.op.actStep > 0) {
+
       const operData = this.op.opData[this.op.actStep];
       const operation = this.op.operations[this.op.actStep];
 
@@ -50,10 +52,11 @@ export class NoteControlService {
       } else if (operation === 'edit-note') {
         const note = operData;
         note.instance.isHidden = true;
-        //get the last edited id;
+
         const prevEditedId = note.instance.editId;
         const prevEditedNote = this.getComponentById(prevEditedId);
-        prevEditedNote.instance.isHidden = false;
+
+        prevEditedNote ? prevEditedNote.instance.isHidden = false : console.log('no componentRef found/ check id');
 
       } else if (operation === 'remove-note') {
         const id = operData;
@@ -106,62 +109,19 @@ export class NoteControlService {
     // message: string = "Default message", color: string = 'gold', positionX: number, positionY: number, editId: string = '', id: string = 'noteId0', disabled: boolean = false, dragZone: string = '.outer-canva'
     // Create component dynamically inside the ng-template
 
+    console.log(note);
     const childComponentRef = this.createNoteComponent(componentClass, note);
-
     this.op.actStep++;
     //for adding during some undos.
     this.op.actStep < this.op.operations.length - 1 && this.fixOperations(this.op.actStep);
     // Push the component so that we can keep track of which components are created
     this.op.opData[this.op.actStep] = childComponentRef;
     this.op.opDataDimensions[this.op.actStep] = false;
+
     //allow dragging...
     this.toggleDragging(NoteComponent, false);
+    //console.log(this.op.opData[this.op.actStep]);
 
-
-
-    this.af.tick();//to later be able to find the element by id!
-    const component = childComponentRef.instance;
-    const noteEl = document.getElementById(component.id);
-    console.log(childComponentRef.instance);
-    const srcCanva = await html2canvas(noteEl, { scale: window.devicePixelRatio * 5 });
-
-    const destCanvas = <HTMLCanvasElement>document.getElementById('canvas');
-
-
-    const hiddenCanva = document.createElement('canvas');
-    hiddenCanva.getContext('2d')?.drawImage(destCanvas, 0, 0);
-    this.fixCanvasSizes(); //to draw correctly!
-    // srcCanva.width = srcCanva.offsetWidth;
-    // srcCanva.height = srcCanva.offsetHeight;
-    // destCanvas.width = destCanvas.offsetWidth;
-    // destCanvas.height = destCanvas.offsetHeight;
-
-    // const canvasPic = new Image();
-    // canvasPic.src = srcCanva.toDataURL();
-    //destCanvas.getContext('2d')?.clearRect(component.positionX, component.positionY, destCanvas.width, destCanvas.height);
-
-    const destCtx = destCanvas.getContext('2d');
-    destCtx!.imageSmoothingEnabled = false;
-    destCtx?.drawImage(hiddenCanva, 0, 0);
-    destCtx!.drawImage(srcCanva, component.positionX, component.positionY, srcCanva.width / window.devicePixelRatio / 5, srcCanva.height / window.devicePixelRatio / 5);
-
-    // canvasPic.onload = () => {
-    // const destCtx = destCanvas.getContext('2d');
-    // destCtx!.imageSmoothingEnabled = false;
-    // destCanvas.getContext('2d')!.drawImage(srcCanva, component.positionX, component.positionY, srcCanva.width /5, srcCanva.height / 5);
-    // }
-
-
-  }
-
-  private fixCanvasSizes(): void {
-    const canvases = document.getElementsByTagName("canvas");
-    console.log(canvases)
-    for (var i = 0; i < canvases.length ; i++) {
-      let canvas = canvases[i];
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    }
   }
 
   public createNoteComponent(componentClass: Type<any>, note: Note): any {
@@ -178,7 +138,14 @@ export class NoteControlService {
       childComponent.positionY = note.positionY;
       childComponent.editId = note.editId;
       childComponent.id = note.id;
+      childComponent.isHidden = note.isHidden;
       childComponent.dragDisabled = note.isDisabled;
+      childComponent.initialCanvasX = note.initialCanvasX;
+      childComponent.initialCanvasY = note.initialCanvasY;
+      childComponent.initialPercX = note.initialPercX;
+      childComponent.initialPercY = note.initialPercY;
+      childComponent.lastRelativeCoordinates = [{ x: 0, y: 0 }];
+
     }
     return childComponentRef;
   }
@@ -193,16 +160,17 @@ export class NoteControlService {
 
   //remove Note by DOM Element Id
   public removeNote(id: string, components: Array<any> = this.op.opData): void {
-    const component = this.getComponentById(id, this.op.opData);
 
-    component && (component.instance.isHidden = true);
+    const componentRef = this.getComponentById(id, components);
+
+    componentRef && (componentRef.instance.isHidden = true);
+    //console.log(componentRef.instance.isHidden);
     //remove note, in reality hide note (as it is needed later for redo, undo)
     this.op.actStep++;
-
     this.op.actStep < this.op.operations.length - 1 && this.fixOperations(this.op.actStep);
 
     this.op.operations[this.op.actStep] = 'remove-note';
-    this.op.opData[this.op.actStep] = component.instance.id;//removed note id
+    this.op.opData[this.op.actStep] = componentRef.instance.id;//removed note id
     this.op.opDataDimensions[this.op.actStep] = false;
 
   }
@@ -239,7 +207,6 @@ export class NoteControlService {
     return shownIds;
 
   }
-
 
 
   public hideAllComponents(isHidden: boolean = true, components: Array<any> = this.op.opData): void {
@@ -287,17 +254,14 @@ export class NoteControlService {
 
   }
 
-  // public resizeScreen(winRatio: number, components: Array<any> = this.op.opData): void {
-
-  //   console.log(this.op.opData)
-  //   components && components.forEach((el: any) => {
-
-  //     if (typeof el === 'object' && el !== null && el.instance !== undefined) {
-  //       el.instance.positionX = el.instance.positionX * (window.innerWidth / 799);
-  //       el.instance.positionY = el.instance.positionY * (window.innerHeight / 831);
-  //     }
-
+  // private fixCanvasSizes(): void {
+  //   const canvases = document.getElementsByTagName("canvas");
+  //   console.log(canvases)
+  //   for (var i = 0; i < canvases.length ; i++) {
+  //     let canvas = canvases[i];
+  //     canvas.width = canvas.offsetWidth;
+  //     canvas.height = canvas.offsetHeight;
   //   }
-  //   );
   // }
+
 }

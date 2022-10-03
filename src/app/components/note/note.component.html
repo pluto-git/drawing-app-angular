@@ -1,6 +1,7 @@
-<div [id]="id" class="note-box noselect" [cdkDragBoundary]="dragZone" cdkDrag [cdkDragDisabled]="dragDisabled"
-    (dblclick)="this.popupNoteComponent.editModal('noteModal', $event)" #note>
-    <b>{{message}}</b>
-    <img src="../../assets/icons8-trash.svg" height="24" width="24" class="bottomright"
-        (click)="removeCurrentNote($event)">
+<div [id]="id" class="note-box noselect text-fit padding-vert justify-content-center"
+    (dblclick)="this.popupNoteComponent.editModal('noteModal', $event)" [cdkDragBoundary]="dragZone" cdkDrag
+    [cdkDragDisabled]="dragDisabled" (cdkDragEnded)="dragEnd($event)" [cdkDragFreeDragPosition]="dragPosition"
+ [style.left.px]="initialPosition.x" [style.top.px]="initialPosition.y" #note>
+    {{message}}
+    <img src="../../assets/icons8-trash.svg" height="24" width="24" class="bottomright" (click)="removeMe($event)">
 </div>

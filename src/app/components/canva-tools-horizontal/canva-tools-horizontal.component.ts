@@ -1,18 +1,16 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { CanvaFreeDrawingService } from '../../services/canva-free-drawing.service';
 import { OperationControlService } from '../../services/operation-control.service';
 import { NoteControlService } from '../../services/note-control.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 /* eslint-disable */
 // @ts-ignore 
 declare let html2canvas: any;
 /* eslint-enable */
 
-
-import { Subscription } from 'rxjs';
-
 import { Board } from 'src/app/models/board';
 import { environment } from 'src/environments/environment';
+import { CdkDrag } from '@angular/cdk/drag-drop';
 
 
 
@@ -23,15 +21,19 @@ import { environment } from 'src/environments/environment';
 })
 export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
+
+
   constructor(private drawingSvc: CanvaFreeDrawingService, private op: OperationControlService, private noteSvc: NoteControlService,
-    private router: Router) { }
+    private router: Router,
+    private cd: ChangeDetectorRef) {
+  }
 
   ngAfterViewChecked(): void {
     const cStep = this.op.actStep;
     const cOperations = this.op.opData;
 
-    console.log('init step : ' + this.op.initialStep);
-    console.log('actual step: ' + this.op.actStep);
+    // console.log('init step : ' + this.op.initialStep);
+    // console.log('actual step: ' + this.op.actStep);
 
     this.addClassOnCondition(cStep <= this.op.initialStep, document.getElementsByClassName("undoBtn")[0], "disabled");
     this.removeClassOnCondition(cStep > this.op.initialStep, document.getElementsByClassName("undoBtn")[0], "disabled");
@@ -63,7 +65,7 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
       console.log(tempDrawStep);
       //canvas
       while (this.op.operations[tempDrawStep] !== 'draw') { tempDrawStep--; }
-      console.log(this.op.operations[tempDrawStep]);
+      //console.log(this.op.operations[tempDrawStep]);
       const canvasPic = new Image();
       canvasPic.src = this.op.opData[tempDrawStep];
       this.drawingSvc.clearCanvas(canvas);
@@ -73,13 +75,18 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
       }
 
       //notes
-      console.log(this.op.opData[this.op.actStep][1]);
+      //console.log(this.op.opData[this.op.actStep][1]);
       this.op.opData[this.op.actStep][1].forEach((noteId: string) =>
         this.noteSvc.toggleHidingForComponentById(noteId, false, this.op.opData)
       );
 
       this.op.actStep--;
+    } else if (this.op.operations[this.op.actStep].includes('drag')) {
 
+      const componentRef = this.op.getComponentById(this.op.opData[this.op.actStep]);
+      componentRef.instance.moveToPrevPos();
+
+      this.op.actStep--;
     }
 
   }
@@ -99,6 +106,12 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
       this.op.actStep++;
 
+    } else if (this.op.operations[this.op.actStep + 1].includes('drag')) {
+
+      const componentRef = this.op.getComponentById(this.op.opData[this.op.actStep + 1]);
+      componentRef.instance.moveToNextPos();
+      
+      this.op.actStep++;
     }
 
   }

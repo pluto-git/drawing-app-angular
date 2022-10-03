@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, merge, ObservableInput, Subscription } from 'rxjs';
-import { switchMap, pairwise, takeUntil } from 'rxjs/operators';
+import { switchMap, pairwise, takeUntil, scan } from 'rxjs/operators';
 
 import { tools } from '.././components/canva/tools';
 import { OperationControlService } from './operation-control.service';
 
+
+interface Position {
+  x: number,
+  y: number
+};
 
 @Injectable({
   providedIn: 'root'
@@ -88,14 +93,16 @@ export class CanvaFreeDrawingService {
 
         const prevPos = this.getPosition(res[0], isTouch, rect);
         const currentPos = this.getPosition(res[1], isTouch, rect);
+        // const prevPos = this.scalePosition(this.getPosition(res[0], isTouch, rect));
+        // const currentPos = this.scalePosition(this.getPosition(res[1], isTouch, rect));
         this.drawOnCanvas(prevPos, currentPos);
       });
   }
 
   //drawing on Canvas.
   private drawOnCanvas(
-    prevPos: { x: number, y: number },
-    currentPos: { x: number, y: number }
+    prevPos: Position,
+    currentPos: Position
   ) {
     // incase the context is not set
     if (!this.cx) { return; }
@@ -116,25 +123,35 @@ export class CanvaFreeDrawingService {
     }
   }
 
-  private getPosition(res: any, isTouch: boolean, rect: DOMRect): { x: number, y: number } {
-    console.log(rect);
+  private getPosition(res: any, isTouch: boolean, rect: DOMRect): Position {
+    //console.log(rect);
     //returning positions for mouse events.
     if (isTouch === true) {
       //if it is a touch event
       return {
-        x: (res.changedTouches[0].clientX - rect.left)  as number,
+        x: (res.changedTouches[0].clientX - rect.left) as number,
         y: (res.changedTouches[0].clientY - rect.top) as number
       };
     } else {
       //if mouse event:
       return {
-        x: (res.clientX - rect.left) as number,
-        y: (res.clientY - rect.top)  as number
-      };
+        x: (res.clientX - rect.left) * this.ratio as number,
+        y: (res.clientY - rect.top) * this.ratio as number
+      }
     }
 
   }
 
+  // private scalePosition(pos: Position, scale: number = this.op.scaleRatio): Position {
+  //   const canvas = <HTMLCanvasElement>document.getElementById('canvas');
+  //   console.log(canvas.offsetWidth);
+  //   const scaledlPos = {
+  //     x: pos.x * (canvas.width
+  //       / canvas.offsetWidth),
+  //     y: pos.y
+  //   };
+  //   return scaledlPos;
+  // }
 
   //Clear Canvas
   public clearCanvas(canvas: HTMLCanvasElement): void {
@@ -144,8 +161,19 @@ export class CanvaFreeDrawingService {
   //Resizing canvas with not clearing them
   public resizeScreen(canvas: HTMLCanvasElement, currentTool: string): void {
 
-    console.log(this.ratio);
-    //console.log(currentTool);
+    // const outerContainer = <HTMLElement>document.getElementsByClassName('outer-container')[0];
+
+    // //const scaleRatio = canvas.offsetWidth / this.op.initCanvasContainerWidth;
+    // let scaleRatio = window.innerWidth / this.op.initWindowWidth;
+    // if (scaleRatio >= 1) { scaleRatio = 1; }
+
+    // outerContainer.style.setProperty('--scaleX', `${scaleRatio}`);
+    // outerContainer.style.setProperty('--scaleY', `${scaleRatio}`);
+
+    // outerContainer.style.setProperty('--scaleX', `0.5`);
+    // outerContainer.style.setProperty('--scaleY', `0.5`);
+
+
     //creating 2nd/hidden canva to store context from first canva
     const hiddenCnv: HTMLCanvasElement = document.createElement("canvas");
     const hiddenCx: CanvasRenderingContext2D = hiddenCnv.getContext('2d')!;
@@ -175,6 +203,33 @@ export class CanvaFreeDrawingService {
     //subscribe latest subs:
     this.captureEvents(canvas, this.currentTool);
     this.getContextFromTools(currentTool, canvas);
+
+
+    ////////with notes...
+
+    this.op.opData && this.op.opData.forEach((el: any) => {
+      const noteComponent = el.instance;
+      if ((typeof el === 'object' && el !== null && el.instance !== undefined) &&
+        !el.instance.isHidden) {
+
+        //resizing notes -external to canvas objects:
+
+        noteComponent.positionX = canvas.offsetWidth * noteComponent.initialPercX;
+        noteComponent.positionY = canvas.offsetHeight * noteComponent.initialPercY;
+        // noteComponent.note.nativeElement.style.position = 'absolute';
+        noteComponent.note.nativeElement.style.left = noteComponent.positionX + 'px';
+        noteComponent.note.nativeElement.style.top = noteComponent.positionY + 'px';
+
+        //new values after done changing...
+        noteComponent.initialCanvasX = canvas.offsetWidth;
+        noteComponent.initialCanvasY = canvas.offsetHeight;
+        noteComponent.initialPercX = noteComponent.positionX / noteComponent.initialCanvasX;
+        noteComponent.initialPercY = noteComponent.positionY / noteComponent.initialCanvasY;
+
+      }
+    }
+    );
+
 
     console.log('Resize completed');
   }
