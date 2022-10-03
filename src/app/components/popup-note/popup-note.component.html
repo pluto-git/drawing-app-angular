@@ -71,15 +71,17 @@
                 </div>
                 <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
-            <div class="modal-body p-0" [formGroup]="form">
+            <div class="modal-body p-0" [formGroup]="form" *transloco="let t">
                 <textarea formControlName="modalNote" class="note-textarea form-control"
                     id="exampleFormControlTextarea1" rows="5"></textarea>
-                    <p>Form Valid: {{ form.valid }}</p>
+                <p *ngIf="form.controls['modalNote'].value!.toString().length>30">{{t('popupNoteComponent.limit')}}</p>
             </div>
             <div class="modal-footer" *transloco="let t">
                 <button type="button" class="btn border border-secondary px-4 " data-bs-dismiss="modal"
                     (click)="closeModal('noteModal')">{{t('popupNoteComponent.cancel')}}</button>
-                <button type="button" class="btn btn-primary save-btn" [disabled]="!form.valid"
+                
+                <button type="button" class="btn btn-primary save-btn"
+                    [disabled]="form.valid === false"
                     (click)="onSaveNote('noteModal')">{{t('popupNoteComponent.save')}}</button>
             </div>
         </div>

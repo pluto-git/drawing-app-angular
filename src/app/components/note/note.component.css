@@ -4,7 +4,7 @@
     height: 6rem;
     box-sizing: border-box;
     border: solid 1px #ccc;
-    word-break: break-all;
+    word-break: break-word;
     font-size: calc(4px+ 1.3vw);
     color: rgba(0, 0, 0, 0.87);
     align-items: center;

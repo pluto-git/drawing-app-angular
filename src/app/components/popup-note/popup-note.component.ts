@@ -19,6 +19,7 @@ declare var bootstrap: any;
 export class PopupNoteComponent {
 
   public colors = colors;
+  public colorChanged: boolean = false;
   private canvaComponent!: CanvaComponent; // to be injected.
 
   constructor(private _injector: Injector, private noteSvc: NoteControlService, private cd: ChangeDetectorRef) {
@@ -29,20 +30,29 @@ export class PopupNoteComponent {
     modalNote: new FormControl('', [Validators.required, Validators.maxLength(30)])
   });
 
-  ngOnInit(): void {
 
-
-  }
   ngAfterViewInit(): void {
     this.noteSvc.canvaComponent = this.canvaComponent;
 
   }
 
-
+  onDisabled(): boolean {
+  
+    if (this.colorChanged === false) {
+      return true;
+    } else if (this.form.valid === false) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
   public onSaveNote(modalId: string, id: string = 'exampleFormControlTextarea1'): void {
 
     this.noteSvc.isEdit === false && this.handleNote(modalId, id, 'add');
     this.noteSvc.isEdit === true && this.handleNote(modalId, id, 'edit');
+
+    this.colorChanged = false;
   }
 
   private handleNote(modalId: string, id: string = 'exampleFormControlTextarea1', mode: string = 'add'): void {
@@ -84,6 +94,7 @@ export class PopupNoteComponent {
     this.form.controls['modalNote'].setValue('');
     //and change cursor by selecting the previous tool or actually the 'select' tool
     this.canvaComponent.previousTool && this.canvaComponent.selectToolUI(this.canvaComponent.previousTool);
+    this.colorChanged = false;
   }
 
   public editModal(modalId: string, event: Event, modalTextareaId: string = 'exampleFormControlTextarea1'): void {
@@ -135,6 +146,8 @@ export class PopupNoteComponent {
     //applying additional styles for not white circles!
     this.hideCircleArrows();
     colorCircleId !== colors.white.id && this.styleColorButton(colorCircleId);
+
+    this.colorChanged = true;
   }
 
   private hideCircleArrows(): void {
@@ -157,6 +170,6 @@ export class PopupNoteComponent {
 
 
   ngOnDestroy(): void {
-    this.noteSvc.noteId = 0;
+    this.colorChanged = false;
   }
 }

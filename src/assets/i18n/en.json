@@ -84,6 +84,7 @@
             "pink": "pink",
             "orange": "orange",
             "white": "white"
-        }
+        },
+        "limit" : "Maximum is 30 characters"
     }
 }

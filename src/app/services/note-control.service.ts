@@ -18,7 +18,7 @@ export class NoteControlService {
   public isEdit: boolean = false; //to check if it is the edit mode. for UI...
   public clickedDOMElementId!: string; //to get the right component when editing
 
-  noteId: number = 0; //needed to be set up in components! at least to 0
+  public noteId: number = 0; //needed to be set up in components! at least to 0
 
   constructor(private op: OperationControlService, private af: ApplicationRef) { }
 
