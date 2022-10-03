@@ -55,7 +55,7 @@ export class NoteComponent implements AfterViewInit, Note {
   ngOnInit(): void {
     //setting up our initial positions...
     this.initialPosition = { x: this.positionX, y: this.positionY };
-  
+
   }
 
   ngAfterViewInit(): void {
@@ -74,11 +74,11 @@ export class NoteComponent implements AfterViewInit, Note {
     //   this.positionY = this.initialPercY * canvas.offsetHeight;
     // }
 
-    // this.initialCanvasX = canvas.offsetWidth;
-    // this.initialCanvasY = canvas.offsetHeight;
-    // this.initialPercX = this.positionX / this.initialCanvasX;
-    // this.initialPercY = this.positionY / this.initialCanvasY;
-
+    this.initialCanvasX = canvas.offsetWidth;
+    this.initialCanvasY = canvas.offsetHeight;
+    this.initialPercX = this.positionX / this.initialCanvasX;
+    this.initialPercY = this.positionY / this.initialCanvasY;
+    this.cd.detectChanges();
     //this.fitText(note.id);
 
   }
