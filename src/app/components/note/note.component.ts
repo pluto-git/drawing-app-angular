@@ -69,10 +69,11 @@ export class NoteComponent implements AfterViewInit, Note {
     this.cd.detectChanges();
 
     // because of resizing...
-    if (this.initialCanvasX !== undefined && this.initialCanvasY !== undefined && this.initialPercX !== undefined && this.initialPercY !== undefined) {
-      this.positionX = this.initialPercX * canvas.offsetWidth;
-      this.positionY = this.initialPercY * canvas.offsetHeight;
-    }
+    // if (this.initialCanvasX !== undefined && this.initialCanvasY !== undefined && this.initialPercX !== undefined && this.initialPercY !== undefined) {
+    //   this.positionX = this.initialPercX * canvas.offsetWidth;
+    //   this.positionY = this.initialPercY * canvas.offsetHeight;
+    // }
+
     this.initialCanvasX = canvas.offsetWidth;
     this.initialCanvasY = canvas.offsetHeight;
     this.initialPercX = this.positionX / this.initialCanvasX;
