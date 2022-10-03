@@ -55,6 +55,7 @@ export class NoteComponent implements AfterViewInit, Note {
   ngOnInit(): void {
     //setting up our initial positions...
     this.initialPosition = { x: this.positionX, y: this.positionY };
+  
   }
 
   ngAfterViewInit(): void {
@@ -64,29 +65,32 @@ export class NoteComponent implements AfterViewInit, Note {
     const canvas = <HTMLCanvasElement>document.getElementById('canvas');
     note.style.backgroundColor = this.color;
 
+
+    this.cd.detectChanges();
+
     //because of resizing...
-    if (this.initialCanvasX !== undefined && this.initialCanvasY !== undefined && this.initialPercX !== undefined && this.initialPercY !== undefined) {
-      this.positionX = this.initialPercX * canvas.offsetWidth;
-      this.positionY = this.initialPercY * canvas.offsetHeight;
-    }
-    this.initialCanvasX = canvas.offsetWidth;
-    this.initialCanvasY = canvas.offsetHeight;
-    this.initialPercX = this.positionX / this.initialCanvasX;
-    this.initialPercY = this.positionY / this.initialCanvasY;
+    // if (this.initialCanvasX !== undefined && this.initialCanvasY !== undefined && this.initialPercX !== undefined && this.initialPercY !== undefined) {
+    //   this.positionX = this.initialPercX * canvas.offsetWidth;
+    //   this.positionY = this.initialPercY * canvas.offsetHeight;
+    // }
+    // this.initialCanvasX = canvas.offsetWidth;
+    // this.initialCanvasY = canvas.offsetHeight;
+    // this.initialPercX = this.positionX / this.initialCanvasX;
+    // this.initialPercY = this.positionY / this.initialCanvasY;
 
     //this.fitText(note.id);
 
   }
 
   ngAfterViewChecked(): void {
-
+    // console.log(document.getElementsByClassName('note-box').length);
     this.setUIBehaviour();
 
 
     const note = this.note.nativeElement;
     this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
-    console.log(this.op.opData);
-    console.log(this.op.operations);
+    // console.log(this.op.opData);
+    // console.log(this.op.operations);
 
   }
 

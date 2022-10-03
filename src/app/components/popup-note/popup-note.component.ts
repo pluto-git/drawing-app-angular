@@ -1,10 +1,11 @@
-import { Component, OnInit, Type, Injector, ChangeDetectorRef } from '@angular/core';
+import { Component, Injector, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { colors } from './colors';
 import { CanvaComponent } from '../canva/canva.component';
 import { NoteControlService } from '../../services/note-control.service';
 import { Note } from '../../models/note';
+
 
 declare var bootstrap: any;
 
@@ -19,20 +20,24 @@ export class PopupNoteComponent {
 
   public colors = colors;
   private canvaComponent!: CanvaComponent; // to be injected.
-  private id: number = 0;
 
-  constructor(private _injector: Injector, private noteSvc: NoteControlService) {
+  constructor(private _injector: Injector, private noteSvc: NoteControlService, private cd: ChangeDetectorRef) {
     this.canvaComponent = this._injector.get<CanvaComponent>(CanvaComponent);
   }
 
   public form = new FormGroup({
-    modalNote: new FormControl('', [Validators.required, Validators.maxLength(50)])
+    modalNote: new FormControl('', [Validators.required, Validators.maxLength(30)])
   });
 
-  ngAfterViewInit() {
+  ngOnInit(): void {
+
+
+  }
+  ngAfterViewInit(): void {
     this.noteSvc.canvaComponent = this.canvaComponent;
 
   }
+
 
   public onSaveNote(modalId: string, id: string = 'exampleFormControlTextarea1'): void {
 
@@ -45,7 +50,7 @@ export class PopupNoteComponent {
     const bgClr = getComputedStyle(<HTMLElement>document.getElementById(id), null).getPropertyValue("background-color");
 
     this.noteSvc.note = {
-      id: 'noteId' + this.id, message: this.form.controls['modalNote'].value!, color: bgClr, positionX: 200, positionY: 200 + 5 * (this.id + 1), editId: '',
+      id: 'noteId' + this.noteSvc.noteId, message: this.form.controls['modalNote'].value!, color: bgClr, positionX: 200, positionY: 200 + 5 * (this.noteSvc.noteId + 1), editId: '',
       isHidden: false,
       isDisabled: false, dragZone: '.outer-container', type: 'note', dragDisabled: false
     };
@@ -57,7 +62,7 @@ export class PopupNoteComponent {
       this.noteSvc.note.positionX = prevNote.instance.positionX;
       this.noteSvc.note.positionY = prevNote.instance.positionY;
     }
-    this.id += 1;
+    this.noteSvc.noteId += 1;
 
     //closing modal and changing the cursor
     this.closeModal(modalId, mode);
@@ -152,6 +157,6 @@ export class PopupNoteComponent {
 
 
   ngOnDestroy(): void {
-    //this.noteSvc.isEdit = false;
+    this.noteSvc.noteId = 0;
   }
 }

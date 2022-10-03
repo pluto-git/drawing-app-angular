@@ -72,6 +72,8 @@ export class CanvaComponent {
     this.ratio = window.devicePixelRatio;
     this.op.subsToQueryParams();
 
+    this.noteSvc.noteId = 0;
+
     // const canvas = document.querySelector('canvas')
     // canvas!.addEventListener('mousedown', function (event) {
     //   const rect = canvas!.getBoundingClientRect()
@@ -98,10 +100,7 @@ export class CanvaComponent {
 
 
   public ngAfterViewInit(): void {
-    // console.log("ngAfterViewInit in CanvasComponent fired!!!");
-    // const outerContainer = document.getElementById('outer-container');
-    // outerContainer!.style.transform = "scale(0.5,0.5)";
-    // console.log(outerContainer?.style.transform);
+
 
     //setting up dimensions...
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
@@ -110,7 +109,7 @@ export class CanvaComponent {
 
     //finding an item in array
 
-    console.log(this.op.queryId);
+    // console.log(this.op.queryId);
     const foundBoard = this.findBoard(Number(this.op.queryId));
     foundBoard && this.uploadSavedData(canvasEl, foundBoard);
     //console.log(foundBoard);
@@ -136,7 +135,20 @@ export class CanvaComponent {
     //pick the standard tool!
     this.pickTool(tools.select, 'canvas');
 
+
     this.cd.detectChanges();
+
+    //important for uploads! as id will be counted from the right one! not 0 
+    // if it is 0 then after uploads you can get an undesirable behaviour...
+    if (document.getElementsByClassName('note-box').length > 0) {
+      Array.from(document.getElementsByClassName('note-box')).forEach((note: any) => {
+
+        const numId = parseInt(note.id.replace(/\D/g, ''));
+        if (numId >= this.noteSvc.noteId) { this.noteSvc.noteId = numId + 1 }
+        console.log(this.noteSvc.noteId);
+      }
+      )
+    }
   }
 
   private findBoard(id: number): Board | undefined {
@@ -181,7 +193,7 @@ export class CanvaComponent {
 
   private callDrawingMethod(tool: string, canvas: HTMLCanvasElement): void {
 
-    console.log(this.op.opData);
+    // console.log(this.op.opData);
     //calling methods depending on the conditions
     tool === tools.pen && this.drawingSvc.pickPen(canvas);
     tool === tools.eraser && this.drawingSvc.pickEraser(canvas, 10);
@@ -258,5 +270,6 @@ export class CanvaComponent {
     ///for our query params
     this.op.idSubs && this.op.unsubToQueryParams();
 
+    this.noteSvc.noteId = 0;
   }
 }

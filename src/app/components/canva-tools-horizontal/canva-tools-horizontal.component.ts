@@ -110,7 +110,7 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
       const componentRef = this.op.getComponentById(this.op.opData[this.op.actStep + 1]);
       componentRef.instance.moveToNextPos();
-      
+
       this.op.actStep++;
     }
 
@@ -148,8 +148,11 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
     const oldItems: any = JSON.parse(localStorage.getItem('boardsArray')!) || [];
 
     const lastDrawIndex = operations.lastIndexOf('draw');
+
     this.op.visibleNotesIds = this.noteSvc.getShownComponentsIds(opData);
 
+    console.log(this.op.visibleNotesIds);
+    
     const newBoard: Board = {
       id: oldItems.length,
       title: 'Example Board Name',

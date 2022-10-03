@@ -18,6 +18,8 @@ export class NoteControlService {
   public isEdit: boolean = false; //to check if it is the edit mode. for UI...
   public clickedDOMElementId!: string; //to get the right component when editing
 
+  noteId: number = 0; //needed to be set up in components! at least to 0
+
   constructor(private op: OperationControlService, private af: ApplicationRef) { }
 
   public addNote(): void {
@@ -109,7 +111,7 @@ export class NoteControlService {
     // message: string = "Default message", color: string = 'gold', positionX: number, positionY: number, editId: string = '', id: string = 'noteId0', disabled: boolean = false, dragZone: string = '.outer-canva'
     // Create component dynamically inside the ng-template
 
-    console.log(note);
+    // console.log(note);
     const childComponentRef = this.createNoteComponent(componentClass, note);
     this.op.actStep++;
     //for adding during some undos.
@@ -201,8 +203,8 @@ export class NoteControlService {
   public getShownComponentsIds(components: Array<any> = this.op.opData): Array<string> {
     const shownIds: Array<string> = [];
     components && components.forEach((el: any) =>
-      (typeof el === 'object' && el !== null && el.instance !== undefined) &&
-      !el.instance.isHidden && shownIds.push(el.instance.id)
+      (typeof el === 'object' && el !== null && el.instance !== undefined && el.instance.isHidden !== true) &&
+      shownIds.push(el.instance.id)
     );
     return shownIds;
 
