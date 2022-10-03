@@ -129,8 +129,8 @@ export class CanvaFreeDrawingService {
     if (isTouch === true) {
       //if it is a touch event
       return {
-        x: (res.changedTouches[0].clientX - rect.left) as number,
-        y: (res.changedTouches[0].clientY - rect.top) as number
+        x: (res.changedTouches[0].clientX - rect.left)* this.ratio as number,
+        y: (res.changedTouches[0].clientY - rect.top)*this.ratio as number
       };
     } else {
       //if mouse event:
@@ -142,17 +142,6 @@ export class CanvaFreeDrawingService {
 
   }
 
-  // private scalePosition(pos: Position, scale: number = this.op.scaleRatio): Position {
-  //   const canvas = <HTMLCanvasElement>document.getElementById('canvas');
-  //   console.log(canvas.offsetWidth);
-  //   const scaledlPos = {
-  //     x: pos.x * (canvas.width
-  //       / canvas.offsetWidth),
-  //     y: pos.y
-  //   };
-  //   return scaledlPos;
-  // }
-
   //Clear Canvas
   public clearCanvas(canvas: HTMLCanvasElement): void {
     canvas.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height);
@@ -160,19 +149,6 @@ export class CanvaFreeDrawingService {
 
   //Resizing canvas with not clearing them
   public resizeScreen(canvas: HTMLCanvasElement, currentTool: string): void {
-
-    // const outerContainer = <HTMLElement>document.getElementsByClassName('outer-container')[0];
-
-    // //const scaleRatio = canvas.offsetWidth / this.op.initCanvasContainerWidth;
-    // let scaleRatio = window.innerWidth / this.op.initWindowWidth;
-    // if (scaleRatio >= 1) { scaleRatio = 1; }
-
-    // outerContainer.style.setProperty('--scaleX', `${scaleRatio}`);
-    // outerContainer.style.setProperty('--scaleY', `${scaleRatio}`);
-
-    // outerContainer.style.setProperty('--scaleX', `0.5`);
-    // outerContainer.style.setProperty('--scaleY', `0.5`);
-
 
     //creating 2nd/hidden canva to store context from first canva
     const hiddenCnv: HTMLCanvasElement = document.createElement("canvas");
