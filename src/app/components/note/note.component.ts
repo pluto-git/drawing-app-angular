@@ -66,8 +66,6 @@ export class NoteComponent implements AfterViewInit, Note {
     note.style.backgroundColor = this.color;
 
 
-    this.cd.detectChanges();
-
     // because of resizing...
     // if (this.initialCanvasX !== undefined && this.initialCanvasY !== undefined && this.initialPercX !== undefined && this.initialPercY !== undefined) {
     //   this.positionX = this.initialPercX * canvas.offsetWidth;
