@@ -1,5 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef , ViewChild} from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,11 +14,25 @@ export class DashboardComponent implements OnInit {
 
   public boardItems!: Array<any>;
 
+  @ViewChild('languageMenuTrigger') menuTrigger!: MatMenuTrigger;
+
   constructor(private cd: ChangeDetectorRef) { }
+
+  openMenu() {
+    this.menuTrigger.openMenu();
+  }
+  
+  closeMenu() {
+    this.menuTrigger.closeMenu();
+  }
 
   ngOnInit(): void {
     this.updateItems();
   }
+
+  public alert(): void {
+    alert('hello');
+  };
 
   private updateItems(): void {
     this.boardItems = JSON.parse(localStorage.getItem('boardsArray')!) || [];

@@ -27,7 +27,7 @@ export class PopupNoteComponent {
   }
 
   public form = new FormGroup({
-    modalNote: new FormControl('', [Validators.required, Validators.maxLength(30)])
+    modalNote: new FormControl('', [Validators.required, Validators.maxLength(25)])
   });
 
 

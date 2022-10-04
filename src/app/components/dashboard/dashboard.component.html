@@ -22,25 +22,45 @@
 
                         <div class="d-flex justify-content-between lower-cart-body">
                             <div><i class="fa-regular fa-calendar"></i>{{" "+col.date}}</div>
+
                             <div (click)="removeMe(col.id)" data-bs-toggle="tooltip" data-bs-placement="me-auto"
                                 [title]="'dashboardComponent.altTrashCan' | transloco"><i
                                     class="fa-regular fa-trash-can trash-can"></i></div>
                         </div>
+
                     </div>
+
                 </div>
+                <!-- <mat-card class="example-card">
+                    <mat-card-header>
+                        <div mat-card-avatar class="example-header-image"></div>
+                        <mat-card-title>{{col.title}}</mat-card-title>
+                    </mat-card-header>
+                    <img mat-card-image [src]='col.previewImage' alt="Board's screenshot"/>
+                    <mat-card-actions>
+                        <button mat-button [routerLink]="canva" [queryParams]="{id: col.id}" data-bs-toggle="tooltip"
+                            data-bs-placement="me-auto" [title]="'dashboardComponent.editBoard' | transloco">
+                            {{t('dashboardComponent.editBoard')}}</button>
+                        <button mat-button (click)="removeMe(col.id)" data-bs-toggle="tooltip"
+                            data-bs-placement="me-auto" [title]="'dashboardComponent.altTrashCan' | transloco"><i
+                                class="fa-regular fa-trash-can trash-can"></i></button>
+                    </mat-card-actions>
+                </mat-card> -->
             </div>
         </div>
     </div>
     <!-- Card end -->
 
+    <!-- Create new board button -->
     <div class="pt-3 pb-3 text-center">
         <div class="" *ngIf="boardItems.length === 0">
             <p>{{t('dashboardComponent.text1')}}</p>
             <p>{{t('dashboardComponent.text2')}}</p>
         </div>
-        <div class="">
-            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="rgb(82, 197, 94)"
-                class="bi bi-plus-circle" role="button" viewBox="0 0 16 16"
+        <div>
+            <svg matTooltip="Create new board" aria-label="Button that displays 'Create new board'"
+                matTooltipClass="tooltipStyle" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
+                fill="rgb(82, 197, 94)" class="bi bi-plus-circle" role="button" viewBox="0 0 16 16"
                 [title]="'dashboardComponent.alt' | transloco" [routerLink]="canva" [queryParams]="{id: 'new'}">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                 <path

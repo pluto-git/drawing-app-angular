@@ -6,6 +6,10 @@
     font-weight: 300;
     line-height: 26.4px;
 }
+.mat-tooltip.tooltipStyle {
+    font-size: 11px;
+    color: red;
+}
 
 .logo {
     font-family: 'Helvetica Now Display';

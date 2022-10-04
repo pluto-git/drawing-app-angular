@@ -71,6 +71,8 @@
             "en": "анг",
             "uk": "укр"
         },
+        "goToDashboard": "До Дошки",
+        "changeLang": "Змінити мову",
         "loginBtn": "Логін"
     },
     "popupNoteComponent": {
@@ -85,6 +87,16 @@
             "orange": "Помаранчевий",
             "white": "Білий"
         },
-        "limit": "Не більше 30 символів"
+        "limit": "Не більше 25 символів"
+    },
+    "noteComponent": {
+        "removeBtn": "Видалити",
+        "boardLabel": "Ім'я дошки"
+    },
+    "saveAsDialogComponent": {
+        "saveAsBtn": "Зберегти як",
+        "boardLabel": "Ім'я дошки",
+        "cancelBtn": "Відмінити",
+        "proceedBtn": "Зберегти"
     }
 }

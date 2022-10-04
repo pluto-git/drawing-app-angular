@@ -1,4 +1,4 @@
-import { Component, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+import { Component, AfterViewChecked } from '@angular/core';
 import { CanvaFreeDrawingService } from '../../services/canva-free-drawing.service';
 import { OperationControlService } from '../../services/operation-control.service';
 import { NoteControlService } from '../../services/note-control.service';
@@ -10,9 +10,10 @@ declare let html2canvas: any;
 
 import { Board } from 'src/app/models/board';
 import { environment } from 'src/environments/environment';
-import { CdkDrag } from '@angular/cdk/drag-drop';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 
-
+import { SaveAsDialogComponent } from 'src/app/save-as-dialog/save-as-dialog.component';
 
 @Component({
   selector: 'app-canva-tools-horizontal',
@@ -24,14 +25,16 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
 
   constructor(private drawingSvc: CanvaFreeDrawingService, private op: OperationControlService, private noteSvc: NoteControlService,
-    private router: Router,
-    private cd: ChangeDetectorRef) {
+    private router: Router, private _snackBar: MatSnackBar,
+    public dialog: MatDialog
+  ) {
   }
 
   ngAfterViewChecked(): void {
     const cStep = this.op.actStep;
     const cOperations = this.op.opData;
 
+    console.log(this.op.boardName);
     // console.log('init step : ' + this.op.initialStep);
     // console.log('actual step: ' + this.op.actStep);
 
@@ -49,6 +52,36 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
   private removeClassOnCondition(condition: boolean, element: Element, className: string): void {
     (condition) && element.classList.remove(className);
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 1000,
+      panelClass: ['green-snackbar'],
+      verticalPosition: 'bottom',
+      horizontalPosition: 'center'
+    });
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(SaveAsDialogComponent, {
+      width: '250px',
+      data: { boardName: '', status: '' },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result.status !== 'cancel') {
+        this.op.boardName = result.boardName;
+        this.onSaveBtn('new', this.op.boardName);
+      }
+
+    });
+
+  }
+
+  getBoardName(): string {
+    return this.op.boardName;
   }
 
   public onUndo(id: string): void {
@@ -143,19 +176,23 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
   }
 
-  public async onSave(type: string = 'same', opData: Array<any> = this.op.opData, operations: Array<string> = this.op.operations): Promise<void> {
+  public onSaveBtn(type: string = 'same', boardName: string = 'Example Board Name'): void {
+    this.onSave(type, boardName);
+    this.openSnackBar('Saved successfully!', 'Dismiss');
+  }
+
+  public async onSave(type: string = 'same', boardName: string = 'Example Board Name', opData: Array<any> = this.op.opData, operations: Array<string> = this.op.operations): Promise<void> {
 
     const oldItems: any = JSON.parse(localStorage.getItem('boardsArray')!) || [];
-
     const lastDrawIndex = operations.lastIndexOf('draw');
 
     this.op.visibleNotesIds = this.noteSvc.getShownComponentsIds(opData);
 
-    console.log(this.op.visibleNotesIds);
-    
+    //console.log(this.op.visibleNotesIds);
+
     const newBoard: Board = {
-      id: oldItems.length,
-      title: 'Example Board Name',
+      id: 0,
+      title: boardName,
       date: new Date().toLocaleDateString(),
       canvasData: this.op.opData[lastDrawIndex],
       canvasDimensions: {
@@ -178,7 +215,10 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
     }
     if (type === 'new' || this.op.queryId === 'new') {
       console.log('here');
-      newBoard.id = oldItems.length;
+      let id = 0;
+      (oldItems.length > 0) && (id = Math.max(...oldItems.map((o: any) => o.id)) + 1);
+      (oldItems.length === 0) && (id = 0);
+      newBoard.id = id;
       oldItems.push(newBoard);
       //changing url (query params) without refresh and Angular now 
       //knows the URL unlike with Location!
@@ -186,6 +226,8 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
     }
 
     localStorage.setItem('boardsArray', JSON.stringify(oldItems));
+
+    this.op.addOperation('save-data', 0, 0);
 
   }
 

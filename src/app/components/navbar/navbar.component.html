@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand noselect" routerLink="/">
+    <a class="navbar-brand noselect" routerLink="/" [matTooltip]="'navbarComponent.goToDashboard' | transloco"
+      aria-label="Button that displays a Dashboard tooltip" matTooltipClass="tooltipStyle">
       <img src="../../assets/candy-corn.svg" height="32" alt="Draw0"> <i class="logo">Draw0</i>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -21,45 +22,16 @@
         </li>
       </ul>
       <div class="d-flex align-items-center " *transloco="let t">
-        <div class="btn langs" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" (click)="change('en')">
+        <!-- <mat-slide-toggle>en</mat-slide-toggle> -->
+        <div class="btn langs" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" (click)="change('en')"
+          [matTooltip]="'navbarComponent.changeLang' | transloco"
+          aria-label="Button that displays a change language tooltip" matTooltipClass="tooltipStyle">
           {{t('navbarComponent.langs.en')}}</div>
-        <div class="btn langs" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" (click)="change('uk')">
+        <div class="btn langs" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" (click)="change('uk')"
+          [matTooltip]="'navbarComponent.changeLang' | transloco"
+          aria-label="Button that displays a change language tooltip" matTooltipClass="tooltipStyle">
           {{t('navbarComponent.langs.uk')}}</div>
       </div>
     </div>
   </div>
 </nav>
-
-
-
-<!-- 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand noselect" routerLink="/">
-      <img src="../../assets/candy-corn.svg" height="32" alt="Draw0"> <i class="logo">Draw0</i>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
-      (click)="isCollapsed = !isCollapsed">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent" [collapse]=isCollapsed>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" *transloco="let t">
-        <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
-          <a class="nav-link active" aria-current="page" [routerLink]="dashboard">{{t('navbarComponent.dashboard')}}</a>
-        </li>
-        <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
-          <a class="nav-link active" aria-current="page" [routerLink]="about">{{t('navbarComponent.about')}}</a>
-        </li>
-        <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
-          <a class="nav-link active" aria-current="page" [routerLink]="contact">{{t('navbarComponent.contactUs')}}</a>
-        </li>
-      </ul>
-
-      <div class="d-flex align-items-center" *transloco="let t">
-        <div class="btn" (click)="change('en')">{{t('navbarComponent.langs.en')}}</div>
-        <div class="btn" (click)="change('uk')">{{t('navbarComponent.langs.uk')}}</div>
-      </div>
-    </div>
-  </div>
-</nav> -->

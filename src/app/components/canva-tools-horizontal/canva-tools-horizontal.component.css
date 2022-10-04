@@ -22,6 +22,8 @@ a {
                                     supported by Chrome, Edge, Opera and Firefox */
   }
 
+
+
 @media (max-width: 440px) {  
     div>li>a{
         font-size: large;

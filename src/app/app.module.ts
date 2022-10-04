@@ -37,6 +37,7 @@ import {
 } from '@ngneat/transloco-persist-lang';
 import { MaterialModule } from './material.module';
 import { NoteComponent } from './components/note/note.component';
+import { SaveAsDialogComponent } from './save-as-dialog/save-as-dialog.component';
 
 
 
@@ -53,7 +54,8 @@ import { NoteComponent } from './components/note/note.component';
     CanvaToolsHorizontalComponent,
     ContactUsComponent,
     PopupNoteComponent,
-    NoteComponent
+    NoteComponent,
+    SaveAsDialogComponent
   ],
   imports: [
     CommonModule,

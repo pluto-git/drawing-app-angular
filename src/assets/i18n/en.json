@@ -71,6 +71,8 @@
             "en": "en",
             "uk": "uk"
         },
+        "goToDashboard": "Go To Dashboard",
+        "changeLang" : "Change the language",
         "loginBtn": "Login"
     },
     "popupNoteComponent":{
@@ -85,6 +87,15 @@
             "orange": "orange",
             "white": "white"
         },
-        "limit" : "Maximum is 30 characters"
+        "limit" : "Maximum is 25 characters"
+    },
+    "noteComponent":{
+        "removeBtn" : "Remove"
+    },
+    "saveAsDialogComponent":{
+        "saveAsBtn" : "Save board as",
+        "boardLabel": "Board Name",
+        "cancelBtn" : "Cancel",
+        "proceedBtn": "Proceed"
     }
 }

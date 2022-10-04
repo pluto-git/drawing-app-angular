@@ -1,4 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+/* for material */
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+/* snackbar */
+.green-snackbar {
+    background-color: lawngreen;
+    color: grey;
+}
+/* action for the snackbar */
+.mat-simple-snackbar-action>button {
+    color: red;
+}
+
+.mat-tooltip.tooltipStyle {
+    background-color: white;
+    color: black;
+    font-size: calc(12px);
+}
 
 html {
     height: 100%;

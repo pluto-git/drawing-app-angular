@@ -9,11 +9,8 @@ import { cursors } from './cursors';
 import { NoteComponent } from '../note/note.component';
 import { NoteControlService } from '../../services/note-control.service';
 import { OperationControlService } from '../../services/operation-control.service';
-
 import { Board } from 'src/app/models/board';
 import { CanvaToolsHorizontalComponent } from '../canva-tools-horizontal/canva-tools-horizontal.component';
-
-// import { browserRefresh } from '../app/app.component';
 
 
 // declare var bootstrap: any;
@@ -62,7 +59,6 @@ export class CanvaComponent {
     if (this.resizeTimeout) { clearTimeout(this.resizeTimeout); }
     this.resizeTimeout = setTimeout((() => {
       this.drawingSvc.resizeScreen(this.canvas.nativeElement, this.currentTool);
-      //this.noteSvc.resizeScreen(this.ratio);
     }).bind(this), debounceTime);
 
   }
@@ -94,7 +90,9 @@ export class CanvaComponent {
   }
 
   canExit(): boolean {
-    this.toolComponent.onSave();
+    if (this.op.operations[this.op.actStep] !== 'save-data') {
+      this.toolComponent.onSave('same', this.op.boardName);
+    }
     return true;
   }
 
@@ -114,9 +112,8 @@ export class CanvaComponent {
     foundBoard && this.uploadSavedData(canvasEl, foundBoard);
     //console.log(foundBoard);
 
-
-
     if (foundBoard) {
+      this.op.boardName = foundBoard.title;
       this.op.actStep++;
       this.op.opData[this.op.actStep] = foundBoard.canvasData;
       this.op.opDataDimensions[this.op.actStep] = { width: foundBoard.canvasDimensions.width, height: foundBoard.canvasDimensions.height };
@@ -263,6 +260,8 @@ export class CanvaComponent {
     this.op.operations = [];
     this.op.visibleNotesIds = [];
     this.op.initialStep = -1;
+    this.op.boardName = 'Example Board Name';
+
     this.drawingSvc.unsubscribeDrawing();
     this.currentTool = '';
     this.previousTool = '';

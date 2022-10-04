@@ -50,6 +50,24 @@
     right: 0;
 }
 
+.hide{
+    display:none;
+}
+
+.show{
+    display: flex;
+}
+
+.menu{
+    position: absolute;
+    bottom:0;
+    right:0;
+}
+
+
+.menu-pointer{
+    cursor:  pointer !important;
+}
 /* 
 .note-box:active {
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),

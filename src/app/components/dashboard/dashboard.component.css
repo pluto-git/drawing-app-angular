@@ -2,23 +2,34 @@ svg:hover {
     fill: url(#header-shape-gradient) rgb(88, 83, 193);
 }
 
-.card-img{
+.card-img {
     height: 7rem;
     aspect-ratio: 16/9;
 }
 
-.trash-can{
+.trash-can {
     color: red
 }
 
-.trash-can:hover{
+.trash-can:hover {
     cursor: pointer;
 }
 
-.card{
+.card {
     font-size: 1.25rem;
+}
+
+.card-title {
+    font-size: calc(1vw + 8px);
+    white-space: nowrap;
 }
 
 /* .lower-cart-body{
     font-size: 1.5rem;
 } */
+@media (max-width: 660px) {  
+    .card-title {
+        font-size: calc(1vw + 10px);
+        white-space: nowrap;
+    }
+}

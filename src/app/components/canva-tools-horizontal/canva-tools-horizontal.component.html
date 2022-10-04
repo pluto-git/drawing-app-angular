@@ -29,18 +29,27 @@
             </div>
             <div data-bs-toggle="tooltip" data-bs-placement="me-auto"
                 [title]="'canvaToolsHorizontalComponent.buttons.save' | transloco">
-                <li class="save-btn nav-item noselect" *transloco="let t" (click)="onSave()">
+                <li class="save-btn nav-item noselect" *transloco="let t"
+                    (click)="onSaveBtn('same', getBoardName()); this.openSnackBar('Saved successfully!', 'Dismiss')">
                     <a class="nav-link active px-3" aria-current="page">
                         {{t('canvaToolsHorizontalComponent.buttons.save')}}</a>
                 </li>
             </div>
             <div data-bs-toggle="tooltip" data-bs-placement="me-auto"
                 [title]="'canvaToolsHorizontalComponent.buttons.saveNew' | transloco">
-                <li class="save-btn nav-item noselect" *transloco="let t" (click)="onSave('new')">
+
+                <li class="save-btn nav-item noselect" *transloco="let t" (click)="openDialog()">
                     <a class="nav-link active px-3" aria-current="page">
                         {{t('canvaToolsHorizontalComponent.buttons.saveNew')}}</a>
                 </li>
+
+                <!-- <li class="save-btn nav-item noselect" *transloco="let t" (click)="onSaveBtn('new')">
+                    <a class="nav-link active px-3" aria-current="page">
+                        {{t('canvaToolsHorizontalComponent.buttons.saveNew')}}</a>
+                </li> -->
             </div>
+
         </ul>
+
     </div>
 </nav>
