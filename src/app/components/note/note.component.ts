@@ -67,16 +67,20 @@ export class NoteComponent implements AfterViewInit, Note {
     this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
 
     // because of resizing...
-    // if (this.initialCanvasX !== undefined && this.initialCanvasY !== undefined && this.initialPercX !== undefined && this.initialPercY !== undefined) {
-    //   this.positionX = this.initialPercX * canvas.offsetWidth;
-    //   this.positionY = this.initialPercY * canvas.offsetHeight;
-    // }
+    if (this.initialCanvasX !== undefined && this.initialCanvasY !== undefined && this.initialPercX !== undefined && this.initialPercY !== undefined) {
+      this.positionX = this.initialPercX * canvas.offsetWidth;
+      this.positionY = this.initialPercY * canvas.offsetHeight;
+    }
+
+    note.style.left = this.positionX + 'px';
+    note.style.top = this.positionY + 'px';
+
 
     this.initialCanvasX = canvas.offsetWidth;
     this.initialCanvasY = canvas.offsetHeight;
     this.initialPercX = this.positionX / this.initialCanvasX;
     this.initialPercY = this.positionY / this.initialCanvasY;
-    
+
     //this.fitText(note.id);
 
   }
