@@ -64,7 +64,7 @@ export class NoteComponent implements AfterViewInit, Note {
     const note = this.note.nativeElement;
     const canvas = <HTMLCanvasElement>document.getElementById('canvas');
     note.style.backgroundColor = this.color;
-
+    this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
 
     // because of resizing...
     // if (this.initialCanvasX !== undefined && this.initialCanvasY !== undefined && this.initialPercX !== undefined && this.initialPercY !== undefined) {
@@ -87,7 +87,7 @@ export class NoteComponent implements AfterViewInit, Note {
 
 
     const note = this.note.nativeElement;
-    this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
+    
     // console.log(this.op.opData);
     // console.log(this.op.operations);
 
