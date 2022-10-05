@@ -98,11 +98,11 @@ export class NoteComponent implements AfterViewInit, Note {
   public dragEnd($event: CdkDragEnd): void {
     // as we ending dragEnd we update positions' information:
 
-    const relativePos = $event.source.getFreeDragPosition();
-    this.positionX = parseFloat(this.note.nativeElement.style.left) + relativePos.x;
-    this.positionY = parseFloat(this.note.nativeElement.style.top) + relativePos.y;
-    this.dragPosition = { x: relativePos.x, y: relativePos.y }; //for programm. positioning
-    this.updateNoteDimensions({ x: relativePos.x, y: relativePos.y });
+    // const relativePos = $event.source.getFreeDragPosition();
+    // this.positionX = parseFloat(this.note.nativeElement.style.left) + relativePos.x;
+    // this.positionY = parseFloat(this.note.nativeElement.style.top) + relativePos.y;
+    // this.dragPosition = { x: relativePos.x, y: relativePos.y }; //for programm. positioning
+    // this.updateNoteDimensions({ x: relativePos.x, y: relativePos.y });
 
   }
 
