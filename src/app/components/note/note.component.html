@@ -1,6 +1,6 @@
 <div [id]="id" class="note-box noselect text-fit padding-vert justify-content-center show"
     (dblclick)="this.popupNoteComponent.editModal('noteModal', $event)" [cdkDragBoundary]="dragZone" cdkDrag
-    [cdkDragDisabled]="dragDisabled" (cdkDragEnded)="dragEnd($event)" [cdkDragFreeDragPosition]="dragPosition" #note>
+    [cdkDragDisabled]="dragDisabled" (cdkDragEnded)="dragEnd($event)"  #note>
     {{message}}
     <div class="menu">
 

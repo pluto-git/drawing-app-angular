@@ -85,9 +85,9 @@ export class NoteComponent implements AfterViewInit, Note {
     // console.log(document.getElementsByClassName('note-box').length);
     //this.setUIBehaviour();
 
-    const note = this.note.nativeElement;
+    // const note = this.note.nativeElement;
     // this.isHidden ? note.classList.add('hide') : note.classList.remove('hide');
-    this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
+    // this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
     // console.log(this.op.opData);
     // console.log(this.op.operations);
 
