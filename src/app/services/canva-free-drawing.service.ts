@@ -54,19 +54,13 @@ export class CanvaFreeDrawingService {
     this.mouseUpSub = mouseUp.subscribe(() => {
       this.cPush(canvas);
       //to add 'draw' to an array of operations
-      // console.log(this.op.actStep + ' is here');
       this.op.operations[this.op.actStep] = 'draw';
+      //and the save is not the last operation
+      this.op.isLastStepSave = false;
     });
 
   }
-  private fixCanvasSizes(): void {
-    const canvases = document.getElementsByTagName("canvas");
-    for (var i = 0; i < canvases.length; i++) {
-      let canvas = canvases[i];
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    }
-  }
+
 
   private DrawingImplementation(canvas: HTMLCanvasElement, mouseDown: any, mouseMove: any, mouseUp: ObservableInput<any>) {
     this.mainSub = mouseDown
@@ -93,8 +87,7 @@ export class CanvaFreeDrawingService {
 
         const prevPos = this.getPosition(res[0], isTouch, rect);
         const currentPos = this.getPosition(res[1], isTouch, rect);
-        // const prevPos = this.scalePosition(this.getPosition(res[0], isTouch, rect));
-        // const currentPos = this.scalePosition(this.getPosition(res[1], isTouch, rect));
+
         this.drawOnCanvas(prevPos, currentPos);
       });
   }
@@ -129,11 +122,11 @@ export class CanvaFreeDrawingService {
     if (isTouch === true) {
       //if it is a touch event
       return {
-        x: (res.changedTouches[0].clientX - rect.left)* this.ratio as number,
-        y: (res.changedTouches[0].clientY - rect.top)*this.ratio as number
+        x: (res.changedTouches[0].clientX - rect.left) * this.ratio as number,
+        y: (res.changedTouches[0].clientY - rect.top) * this.ratio as number
       };
     } else {
-      //if mouse event:
+      //if a mouse event:
       return {
         x: (res.clientX - rect.left) * this.ratio as number,
         y: (res.clientY - rect.top) * this.ratio as number
@@ -181,8 +174,7 @@ export class CanvaFreeDrawingService {
     this.getContextFromTools(currentTool, canvas);
 
 
-    ////////with notes...
-
+    ////////with notes... just for easiness. should have been in another service:
     this.op.opData && this.op.opData.forEach((el: any) => {
       const noteComponent = el.instance;
       if ((typeof el === 'object' && el !== null && el.instance !== undefined) &&
@@ -203,26 +195,17 @@ export class CanvaFreeDrawingService {
         noteComponent.initialPercY = noteComponent.positionY / noteComponent.initialCanvasY;
 
       }
-    }
-    );
-
+    });
 
     console.log('Resize completed');
   }
 
 
-  public cPush(canvas: HTMLCanvasElement, maxPushes: number = 10): void {
+  public cPush(canvas: HTMLCanvasElement): void {
 
     this.op.actStep++;
     this.op.opData[this.op.actStep] = canvas.toDataURL();
     this.op.opDataDimensions[this.op.actStep] = { width: canvas.width, height: canvas.height };
-
-    // if (this.op.opData.length > maxPushes) {
-    //   this.op.opData.shift();
-    //   this.op.opDataDimensions.shift();
-    //   this.op.operations.shift();
-    //   this.op.actStep--;
-    // }
 
   }
 
@@ -385,4 +368,12 @@ export class CanvaFreeDrawingService {
 
   }
   */
+  // private fixCanvasSizes(): void {
+  //   const canvases = document.getElementsByTagName("canvas");
+  //   for (var i = 0; i < canvases.length; i++) {
+  //     let canvas = canvases[i];
+  //     canvas.width = canvas.offsetWidth;
+  //     canvas.height = canvas.offsetHeight;
+  //   }
+  // }
 }

@@ -1,12 +1,10 @@
-import { Injectable, Type, ApplicationRef } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 
 import { Note } from '../models/note';
 import { NoteComponent } from '../components/note/note.component';
 import { CanvaComponent } from '../components/canva/canva.component';
 
 import { OperationControlService } from './operation-control.service';
-
-declare let html2canvas: any;
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +18,14 @@ export class NoteControlService {
 
   public noteId: number = 0; //needed to be set up in components! at least to 0
 
-  constructor(private op: OperationControlService, private af: ApplicationRef) { }
+  constructor(private op: OperationControlService) { }
 
   public addNote(): void {
     //console.log('here we are adding note');
     this.addDraggableNote(NoteComponent, this.note);
     this.op.operations[this.op.actStep] = 'add-note';
+    //for saves
+    this.op.isLastStepSave = false;
   }
 
   public editNote(editId: string, operationName: string = 'edit-note'): void {
@@ -38,6 +38,8 @@ export class NoteControlService {
     //hide it
     component.instance.isHidden = true;
     this.op.operations[this.op.actStep] = operationName;
+    //for saves
+    this.op.isLastStepSave = false;
   }
 
   public noteUndo(): void {
@@ -174,6 +176,7 @@ export class NoteControlService {
     this.op.operations[this.op.actStep] = 'remove-note';
     this.op.opData[this.op.actStep] = componentRef.instance.id;//removed note id
     this.op.opDataDimensions[this.op.actStep] = false;
+    this.op.isLastStepSave = false;
 
   }
 
@@ -252,9 +255,6 @@ export class NoteControlService {
     component.instance.isHidden = isHidden;
   }
 
-  ngOnDestroy(): void {
-
-  }
 
   // private fixCanvasSizes(): void {
   //   const canvases = document.getElementsByTagName("canvas");

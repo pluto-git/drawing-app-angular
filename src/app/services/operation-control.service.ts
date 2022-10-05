@@ -15,9 +15,12 @@ export class OperationControlService {
   public actStep: number = -1; //the current operation step
   public visibleNotesIds: Array<string> = [];// for undo clearing everything.
   public initialStep: number = -1; //needed to correctly do undo/redo operations; especially after uploading saved data on the Board!
+  public isLastStepSave: boolean = false; //for saves needed.
+
 
   public idSubs!: Subscription; // our query params' subs
   public queryId!: string; // our query parameters!
+  public isNavigate?: boolean;
 
   //for scaling our div correctly.
   public initCanvasContainerWidth!: number;
@@ -94,6 +97,15 @@ export class OperationControlService {
       component.instance.id === id
     );
   }
+
+  
+
+
+
+
+
+
+
 
 
   // private downloadBase64File(contentType: any, base64Data: any, fileName: any): void {

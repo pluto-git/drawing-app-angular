@@ -172,11 +172,14 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
       this.op.opData[this.op.actStep] = [canvasEl.toDataURL(), this.op.visibleNotesIds];
       this.op.opDataDimensions[this.op.actStep] = [{ width: canvasEl.width, height: canvasEl.height }, false];
       this.op.operations[this.op.actStep] = 'clear-everything';
+      //for saves
+      this.op.isLastStepSave = false;
     }
 
   }
 
   public onSaveBtn(type: string = 'same', boardName: string = 'Example Board Name'): void {
+    this.op.isNavigate = true;
     this.onSave(type, boardName);
     this.openSnackBar('Saved successfully!', 'Dismiss');
   }
@@ -220,14 +223,19 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
       (oldItems.length === 0) && (id = 0);
       newBoard.id = id;
       oldItems.push(newBoard);
-      //changing url (query params) without refresh and Angular now 
-      //knows the URL unlike with Location!
-      this.router.navigate([environment.routes.CANVA], { queryParams: { id: (newBoard.id).toString() } });
+
+     
+      //because save can be done at other urls.
+      if (this.op.isNavigate === true) {
+        //changing url (query params) without refresh and Angular now 
+        //knows the URL unlike with Location!
+        this.router.navigate([environment.routes.CANVA], { queryParams: { id: (newBoard.id).toString() } });
+      }
     }
 
     localStorage.setItem('boardsArray', JSON.stringify(oldItems));
 
-    this.op.addOperation('save-data', 0, 0);
+    this.op.isLastStepSave = true;
 
   }
 

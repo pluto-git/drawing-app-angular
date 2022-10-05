@@ -67,9 +67,11 @@ export class CanvaComponent {
     //for dpi
     this.ratio = window.devicePixelRatio;
     this.op.subsToQueryParams();
+    this.op.isNavigate = true;
 
     this.noteSvc.noteId = 0;
 
+    //test positions.
     // const canvas = document.querySelector('canvas')
     // canvas!.addEventListener('mousedown', function (event) {
     //   const rect = canvas!.getBoundingClientRect()
@@ -80,17 +82,11 @@ export class CanvaComponent {
 
   }
 
-  private fixCanvasSizes(): void {
-    const canvases = document.getElementsByTagName("canvas");
-    for (var i = 0; i < canvases.length; i++) {
-      let canvas = canvases[i];
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    }
-  }
+
 
   canExit(): boolean {
-    if (this.op.operations[this.op.actStep] !== 'save-data') {
+    if (this.op.isLastStepSave === false) {
+      this.op.isNavigate = false;
       this.toolComponent.onSave('same', this.op.boardName);
     }
     return true;
@@ -99,14 +95,12 @@ export class CanvaComponent {
 
   public ngAfterViewInit(): void {
 
-
     //setting up dimensions...
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
     canvasEl.width = this.canvas.nativeElement.offsetWidth * this.ratio;
     canvasEl.height = this.canvas.nativeElement.offsetHeight * this.ratio;
 
     //finding an item in array
-
     // console.log(this.op.queryId);
     const foundBoard = this.findBoard(Number(this.op.queryId));
     foundBoard && this.uploadSavedData(canvasEl, foundBoard);
@@ -126,12 +120,13 @@ export class CanvaComponent {
     }
     //pushing for undo/redo as the above 2 conditions don't add the operation name!
     this.op.operations.push('draw');
+    //to not save this state
+    this.op.isLastStepSave = true;
 
     //pick Pen and start drawing... to not make errors with later operations.
     this.pickTool(tools.pen, "canvas");
     //pick the standard tool!
     this.pickTool(tools.select, 'canvas');
-
 
     this.cd.detectChanges();
 
@@ -142,10 +137,13 @@ export class CanvaComponent {
 
         const numId = parseInt(note.id.replace(/\D/g, ''));
         if (numId >= this.noteSvc.noteId) { this.noteSvc.noteId = numId + 1 }
-        console.log(this.noteSvc.noteId);
+        //console.log(this.noteSvc.noteId);
       }
+
       )
     }
+
+
   }
 
   private findBoard(id: number): Board | undefined {
@@ -190,13 +188,10 @@ export class CanvaComponent {
 
   private callDrawingMethod(tool: string, canvas: HTMLCanvasElement): void {
 
-    // console.log(this.op.opData);
     //calling methods depending on the conditions
     tool === tools.pen && this.drawingSvc.pickPen(canvas);
     tool === tools.eraser && this.drawingSvc.pickEraser(canvas, 10);
     tool === tools.select && this.drawingSvc.pickSelect();
-    //for textarea we'll implement later.
-    //tool == tools.textarea && this.drawingSvc.pickTextarea(canvas);
     tool === tools.sticker && this.drawingSvc.unsubscribeDrawing();
 
   }
@@ -218,16 +213,8 @@ export class CanvaComponent {
     //set tool cursor
     this.setCursor(canvasEl);
 
-    // (className === tools.select) && this.onSelectBehaviour(NoteComponent, false);
-    // (className !== tools.select) && this.onSelectBehaviour(NoteComponent, true);
   }
 
-  private onSelectBehaviour(component: Type<any>, disableDraggingCursor: boolean = false): void {
-
-    //this.noteSvc.toggleDragging(component, disableDragging);
-    // this.noteSvc.disableDraggingForAllComponents(disableDragging);
-
-  }
 
 
   public removeClassFromHTMLCollection(collection: HTMLCollectionOf<Element>, removedClass: string): void {
@@ -235,22 +222,18 @@ export class CanvaComponent {
     collection && Array.from(collection).forEach(el =>
       el.classList.remove(removedClass)
     );
+
   }
 
   private setCursor(canvasEl: HTMLCanvasElement): void {
+
     canvasEl.style.cursor = 'auto';
     (this.currentTool === tools.pen) && (canvasEl.style.cursor = cursors.pen);
     (this.currentTool === tools.eraser) && (canvasEl.style.cursor = cursors.eraser);
     (this.currentTool === tools.select) && (canvasEl.style.cursor = cursors.select);
-    (this.currentTool === tools.textarea) && (canvasEl.style.cursor = cursors.text);
     (this.currentTool === tools.sticker) && (canvasEl.style.cursor = 'auto');
 
   }
-
-
-
-
-
 
   ngOnDestroy(): void {
 
@@ -260,6 +243,7 @@ export class CanvaComponent {
     this.op.operations = [];
     this.op.visibleNotesIds = [];
     this.op.initialStep = -1;
+    this.op.isLastStepSave = false;
     this.op.boardName = 'Example Board Name';
 
     this.drawingSvc.unsubscribeDrawing();
@@ -269,6 +253,8 @@ export class CanvaComponent {
     ///for our query params
     this.op.idSubs && this.op.unsubToQueryParams();
 
+
     this.noteSvc.noteId = 0;
   }
+
 }
