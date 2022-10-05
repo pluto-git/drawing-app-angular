@@ -61,7 +61,6 @@ export class NoteComponent implements AfterViewInit, Note {
 
   ngAfterViewInit(): void {
 
-
     const note = this.note.nativeElement;
     const canvas = <HTMLCanvasElement>document.getElementById('canvas');
     note.style.backgroundColor = this.color;
@@ -72,10 +71,10 @@ export class NoteComponent implements AfterViewInit, Note {
     //   this.positionY = this.initialPercY * canvas.offsetHeight;
     // }
 
-    this.initialCanvasX = canvas.offsetWidth;
-    this.initialCanvasY = canvas.offsetHeight;
-    this.initialPercX = this.positionX / this.initialCanvasX;
-    this.initialPercY = this.positionY / this.initialCanvasY;
+    // this.initialCanvasX = canvas.offsetWidth;
+    // this.initialCanvasY = canvas.offsetHeight;
+    // this.initialPercX = this.positionX / this.initialCanvasX;
+    // this.initialPercY = this.positionY / this.initialCanvasY;
 
     //this.fitText(note.id);
 
@@ -83,11 +82,11 @@ export class NoteComponent implements AfterViewInit, Note {
 
   ngAfterViewChecked(): void {
     // console.log(document.getElementsByClassName('note-box').length);
-    this.setUIBehaviour();
+    //this.setUIBehaviour();
 
-    const note = this.note.nativeElement;
+    //const note = this.note.nativeElement;
     // this.isHidden ? note.classList.add('hide') : note.classList.remove('hide');
-    this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
+    // this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
     // console.log(this.op.opData);
     // console.log(this.op.operations);
 
