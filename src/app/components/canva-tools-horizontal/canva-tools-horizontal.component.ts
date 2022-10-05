@@ -34,7 +34,7 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
     const cStep = this.op.actStep;
     const cOperations = this.op.opData;
 
-    console.log(this.op.boardName);
+    // console.log(this.op.boardName);
     // console.log('init step : ' + this.op.initialStep);
     // console.log('actual step: ' + this.op.actStep);
 

@@ -176,6 +176,7 @@ export class NoteControlService {
     this.op.operations[this.op.actStep] = 'remove-note';
     this.op.opData[this.op.actStep] = componentRef.instance.id;//removed note id
     this.op.opDataDimensions[this.op.actStep] = false;
+    
     this.op.isLastStepSave = false;
 
   }

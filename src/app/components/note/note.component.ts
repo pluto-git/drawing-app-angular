@@ -64,7 +64,8 @@ export class NoteComponent implements AfterViewInit, Note {
     const note = this.note.nativeElement;
     const canvas = <HTMLCanvasElement>document.getElementById('canvas');
     note.style.backgroundColor = this.color;
-
+    this.note.nativeElement.style.setProperty('--leftPos', this.initialPosition.x + "px");
+    this.note.nativeElement.style.setProperty('--topPos', this.initialPosition.y + "px");
     // because of resizing...
     // if (this.initialCanvasX !== undefined && this.initialCanvasY !== undefined && this.initialPercX !== undefined && this.initialPercY !== undefined) {
     //   this.positionX = this.initialPercX * canvas.offsetWidth;
@@ -84,16 +85,16 @@ export class NoteComponent implements AfterViewInit, Note {
     // console.log(document.getElementsByClassName('note-box').length);
     //this.setUIBehaviour();
 
-    //const note = this.note.nativeElement;
+    const note = this.note.nativeElement;
     // this.isHidden ? note.classList.add('hide') : note.classList.remove('hide');
-    // this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
+    this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
     // console.log(this.op.opData);
     // console.log(this.op.operations);
 
   }
 
- 
- 
+
+
   public dragEnd($event: CdkDragEnd): void {
     // as we ending dragEnd we update positions' information:
 
@@ -146,7 +147,9 @@ export class NoteComponent implements AfterViewInit, Note {
     //removing this note
     const target = event.target as Element;
     //get our id to remove... check .html file for this component
+
     const id = "noteId" + target.id.replace(/[^0-9]/g, '');
+    console.log(id);
     if (id === undefined) { return; }
 
     this.noteSVC.removeNote(id);
