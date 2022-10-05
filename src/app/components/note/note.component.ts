@@ -72,11 +72,11 @@ export class NoteComponent implements AfterViewInit, Note {
     //   this.positionY = this.initialPercY * canvas.offsetHeight;
     // }
 
-    this.initialCanvasX = canvas.offsetWidth;
-    this.initialCanvasY = canvas.offsetHeight;
-    this.initialPercX = this.positionX / this.initialCanvasX;
-    this.initialPercY = this.positionY / this.initialCanvasY;
-    
+    // this.initialCanvasX = canvas.offsetWidth;
+    // this.initialCanvasY = canvas.offsetHeight;
+    // this.initialPercX = this.positionX / this.initialCanvasX;
+    // this.initialPercY = this.positionY / this.initialCanvasY;
+  
     //this.fitText(note.id);
 
   }
@@ -87,7 +87,8 @@ export class NoteComponent implements AfterViewInit, Note {
 
 
     const note = this.note.nativeElement;
-    
+    this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
+
     // console.log(this.op.opData);
     // console.log(this.op.operations);
 
