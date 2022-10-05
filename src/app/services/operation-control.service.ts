@@ -30,6 +30,7 @@ export class OperationControlService {
   public initWindowWidth!: number;
   public scaleRatio: number = 1;
 
+  
   //for our boards
   public boardName: string = 'Example Board Name';
 
