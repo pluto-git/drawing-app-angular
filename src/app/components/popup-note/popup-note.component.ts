@@ -1,10 +1,9 @@
-import { Component, Injector, ChangeDetectorRef } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { colors } from './colors';
 import { CanvaComponent } from '../canva/canva.component';
 import { NoteControlService } from '../../services/note-control.service';
-import { Note } from '../../models/note';
 
 
 declare var bootstrap: any;
@@ -22,7 +21,7 @@ export class PopupNoteComponent {
   public colorChanged: boolean = false;
   private canvaComponent!: CanvaComponent; // to be injected.
 
-  constructor(private _injector: Injector, private noteSvc: NoteControlService, private cd: ChangeDetectorRef) {
+  constructor(private _injector: Injector, private noteSvc: NoteControlService) {
     this.canvaComponent = this._injector.get<CanvaComponent>(CanvaComponent);
   }
 
@@ -37,7 +36,7 @@ export class PopupNoteComponent {
   }
 
   onDisabled(): boolean {
-  
+
     if (this.colorChanged === false) {
       return true;
     } else if (this.form.valid === false) {
@@ -55,13 +54,14 @@ export class PopupNoteComponent {
     this.colorChanged = false;
   }
 
-  private handleNote(modalId: string, id: string = 'exampleFormControlTextarea1', mode: string = 'add'): void {
+  private handleNote(modalId: string, id: string = 'exampleFormControlTextarea1', mode: string = 'add', canvasId: string = 'canvas'): void {
 
     const bgClr = getComputedStyle(<HTMLElement>document.getElementById(id), null).getPropertyValue("background-color");
 
+    const canvas = <HTMLCanvasElement>document.getElementById(canvasId);
     this.noteSvc.note = {
-      id: 'noteId' + this.noteSvc.noteId, message: this.form.controls['modalNote'].value!, color: bgClr, positionX: 200, positionY: 200 + 5 * (this.noteSvc.noteId + 1), editId: '',
-      isHidden: false,
+      id: 'noteId' + this.noteSvc.noteId, message: this.form.controls['modalNote'].value!, color: bgClr, positionX: 20 + 0.5 * (this.noteSvc.noteId + 1), positionY: 20, editId: '',
+      isHidden: false, initialCanvasSize: { width: canvas.offsetWidth, height: canvas.offsetHeight },
       isDisabled: false, dragZone: '.outer-container', type: 'note', dragDisabled: false
     };
 
@@ -119,14 +119,6 @@ export class PopupNoteComponent {
     const t = document.getElementById(modalTextareaId)! as HTMLTextAreaElement;
     t.value = foundNote.message;
     this.form.controls['modalNote'].setValue(foundNote.message);
-    // this.form.controls['modalNote'].markAsTouched();
-    // this.form.controls['modalNote'].markAsDirty();
-    // console.log(this.form);
-    // this.form.controls['modalNote'].updateValueAndValidity;
-    // this.form.markAllAsTouched();
-
-    // this.cd.detectChanges();
-    // console.log(this.form.controls['modalNote'].value!);
   }
 
   private getCurrentId(event: Event): string {

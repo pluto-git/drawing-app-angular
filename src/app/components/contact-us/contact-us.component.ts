@@ -77,7 +77,7 @@ export class ContactUsComponent {
     this.feedbackSvc.create(data)
       .subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
           this.ClearFeedbackForm();
         },
         error: (e) => console.error(e)

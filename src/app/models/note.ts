@@ -10,9 +10,16 @@ export interface Note {
     editId?: string,
     dragZone: string,
     isDisabled?: boolean,
-    initialCanvasX?: number,
-    initialCanvasY?: number,
-    initialPercX?: number,
-    initialPercY?: number,
-    lastRelativeCoordinates?: Array<{ x: number, y: number }>
+    // for our initial canvas size
+    initialCanvasSize: { width: number, height: number },
+
+    
+    // in pixels for dragging back
+    lastOffsetCoordinates?: Array<{ x: number, y: number }>,
+    //in pixels to get set positionX/positionY
+    lastPositions?: Array<{ x: number, y: number }>,
+    //canva sizes on each position change/drag
+    lastCanvasSize?: Array<{ width: number, height: number }>
 }
+
+// positionX and positionY are percents!!!!

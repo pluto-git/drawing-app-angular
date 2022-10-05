@@ -1,4 +1,4 @@
-import { Injectable, ComponentRef, ComponentDecorator, ɵComponentType } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Note } from '../models/note';
 import { Subscription } from "rxjs";
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   providedIn: 'root'
 })
 export class OperationControlService {
+
 
   public operations: Array<string> = []; //draw, add-note, edit-note, remove-note, clear-note
   public opData: Array<any> = []; // will hold data which is related to our operations... strings and component refs
@@ -30,9 +31,11 @@ export class OperationControlService {
   public initWindowWidth!: number;
   public scaleRatio: number = 1;
 
-  
+
   //for our boards
   public boardName: string = 'Example Board Name';
+
+
 
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router) { }
@@ -79,10 +82,7 @@ export class OperationControlService {
         isDisabled: foundNote.isDisabled,
         dragDisabled: foundNote.dragDisabled,
         dragZone: foundNote.dragZone,
-        initialCanvasX: foundNote.initialCanvasX,
-        initialCanvasY: foundNote.initialCanvasY,
-        initialPercX: foundNote.initialPercX,
-        initialPercY: foundNote.initialPercY
+        initialCanvasSize: foundNote.initialCanvasSize
       })
       // foundNote && notes.push(foundNote);
     })
@@ -98,24 +98,5 @@ export class OperationControlService {
       component.instance.id === id
     );
   }
-
-  
-
-
-
-
-
-
-
-
-
-  // private downloadBase64File(contentType: any, base64Data: any, fileName: any): void {
-  //   // this.downloadBase64File('image/png',t.replace("data:image/png;base64,", ""),'image');
-  //   const linkSource = `data:${contentType};base64,${base64Data}`;
-  //   const downloadLink = document.createElement("a");
-  //   downloadLink.href = linkSource;
-  //   downloadLink.download = fileName;
-  //   downloadLink.click();
-  // }
 
 }

@@ -8,8 +8,6 @@ import { OperationControlService } from '../../services/operation-control.servic
 import { Note } from 'src/app/models/note';
 
 
-
-
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
@@ -27,20 +25,19 @@ export class NoteComponent implements AfterViewInit, Note {
   public color: string = "gold";
   public positionX!: number;
   public positionY!: number;
-  public initialCanvasX!: number;
-  public initialCanvasY!: number;
-  public initialPercX!: number;
-  public initialPercY!: number;
+
   public isHidden: boolean = false;
   public dragDisabled!: boolean;
-  public lastRelativeCoordinates?: { x: number; y: number; }[];
+  public lastOffsetCoordinates!: { x: number; y: number; }[] | undefined;
+  public lastCanvasSize?: { width: number; height: number; }[] | undefined;
+  public lastPositions?: { x: number; y: number; }[] | undefined;
+  public initialCanvasSize!: { width: number; height: number };
 
   //a popup component instance that we inject via Constructor
   public popupNoteComponent!: PopupNoteComponent;
 
   //-- for starting positioning.
   public position = 'absolute';
-  public initialPosition!: { x: number, y: number };
   //-- to move elements correctly.. using Drag & drop Material CDK
   public coordStep: number = 0; // to save dragging operations for redo/undo...
   public dragPosition: { x: number, y: number } = { x: 0, y: 0 };
@@ -55,7 +52,6 @@ export class NoteComponent implements AfterViewInit, Note {
 
   ngOnInit(): void {
     //setting up our initial positions...
-    this.initialPosition = { x: this.positionX, y: this.positionY };
 
   }
 
@@ -63,50 +59,52 @@ export class NoteComponent implements AfterViewInit, Note {
 
     const note = this.note.nativeElement;
     const canvas = <HTMLCanvasElement>document.getElementById('canvas');
+
     note.style.backgroundColor = this.color;
-    this.note.nativeElement.style.setProperty('--leftPos', this.initialPosition.x + "px");
-    this.note.nativeElement.style.setProperty('--topPos', this.initialPosition.y + "px");
-    // because of resizing...
-    // if (this.initialCanvasX !== undefined && this.initialCanvasY !== undefined && this.initialPercX !== undefined && this.initialPercY !== undefined) {
-    //   this.positionX = this.initialPercX * canvas.offsetWidth;
-    //   this.positionY = this.initialPercY * canvas.offsetHeight;
-    // }
+    this.note.nativeElement.style.setProperty('--leftPos', this.positionX + "%");
+    this.note.nativeElement.style.setProperty('--topPos', this.positionY + "%");
 
-    // this.initialCanvasX = canvas.offsetWidth;
-    // this.initialCanvasY = canvas.offsetHeight;
-    // this.initialPercX = this.positionX / this.initialCanvasX;
-    // this.initialPercY = this.positionY / this.initialCanvasY;
-
-    //this.fitText(note.id);
-
+    this.cd.detectChanges();
+    // this.cd.detectChanges();
   }
 
   ngAfterViewChecked(): void {
-    // console.log(document.getElementsByClassName('note-box').length);
-    //this.setUIBehaviour();
 
-    // const note = this.note.nativeElement;
-    // this.isHidden ? note.classList.add('hide') : note.classList.remove('hide');
-    // this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
+    this.setUIBehaviour();
+    const note = this.note.nativeElement;
+    this.isHidden ? note.style.display = 'none' : note.style.display = 'flex';
+
+
+
     // console.log(this.op.opData);
-    // console.log(this.op.operations);
-
   }
 
 
+  public getAbsoluteNotePosition(canvasId: string = 'canvas'): { left: number, top: number } {
+    //return note positions in PIXELS!
+    const canvas = <HTMLCanvasElement>document.getElementById('canvas');
+    const left = this.note.nativeElement.getBoundingClientRect().left - canvas.getBoundingClientRect().left;
+    const top = this.note.nativeElement.getBoundingClientRect().top - canvas.getBoundingClientRect().top;
+    return { left: left, top: top }
+  }
 
   public dragEnd($event: CdkDragEnd): void {
     // as we ending dragEnd we update positions' information:
 
-    // const relativePos = $event.source.getFreeDragPosition();
-    // this.positionX = parseFloat(this.note.nativeElement.style.left) + relativePos.x;
-    // this.positionY = parseFloat(this.note.nativeElement.style.top) + relativePos.y;
-    // this.dragPosition = { x: relativePos.x, y: relativePos.y }; //for programm. positioning
-    // this.updateNoteDimensions({ x: relativePos.x, y: relativePos.y });
+    //offset position from the dragS
+    const relativePos = $event.source.getFreeDragPosition();
+    //our note pos after the drag
+    const absolutePosition = this.getAbsoluteNotePosition('canvas');
+
+    this.dragPosition = { x: relativePos.x, y: relativePos.y }; //for programm. positioning
+    this.updateNoteDimensions({ x: relativePos.x, y: relativePos.y }, absolutePosition);
 
   }
 
-  private updateNoteDimensions(relativePos: { x: number, y: number }): boolean {
+  private updateNoteDimensions(relativePos: { x: number, y: number },
+    absolutePos: { left: number, top: number }, canvasId: string = 'canvas'): boolean {
+
+    const canvas = <HTMLCanvasElement>document.getElementById(canvasId);
 
     const currentNoteId = this.note.nativeElement.id;
     const idx = this.op.opData.findIndex((component: any) =>
@@ -116,12 +114,21 @@ export class NoteComponent implements AfterViewInit, Note {
     if (idx === -1) { return false; }
 
     //if the note is found:
+
+    //converting positions to percents!
+    this.positionX = <number>absolutePos.left / canvas.offsetWidth * 100;
+    this.positionY = <number>absolutePos.top / canvas.offsetHeight * 100;
+    
     this.op.opData[idx].instance.positionX = this.positionX;
     this.op.opData[idx].instance.positionY = this.positionY;
-    this.coordStep++; //to increase for next pushes.
 
-    //for undo, redo..
-    this.op.opData[idx].instance.lastRelativeCoordinates[this.coordStep] = ({ x: relativePos.x, y: relativePos.y });
+    this.coordStep++; //to increase for next pushes.
+    //for undo, redo.. + to calculate our positions less, (to have more precision)
+    this.op.opData[idx].instance.lastCanvasSize[this.coordStep] = ({ width: canvas.offsetWidth, height: canvas.offsetHeight });
+    this.op.opData[idx].instance.lastOffsetCoordinates[this.coordStep] = ({ x: relativePos.x, y: relativePos.y });
+    this.op.opData[idx].instance.lastPositions[this.coordStep] = ({ x: this.positionX, y: this.positionY });
+
+
     //adding our operation to the arrays for undo/redo..
     this.op.addOperation('drag', this.id, false);
 
@@ -139,6 +146,7 @@ export class NoteComponent implements AfterViewInit, Note {
       this.dragDisabled = false;
       this.note.nativeElement.classList.add('dragging-cursor');
     }
+
     this.cd.detectChanges();
   }
 
@@ -149,7 +157,7 @@ export class NoteComponent implements AfterViewInit, Note {
     //get our id to remove... check .html file for this component
 
     const id = "noteId" + target.id.replace(/[^0-9]/g, '');
-    console.log(id);
+    // console.log(id);
     if (id === undefined) { return; }
 
     this.noteSVC.removeNote(id);
@@ -162,14 +170,13 @@ export class NoteComponent implements AfterViewInit, Note {
 
     if (this.coordStep < 1) return;
 
-    //if the prev position exists:
-    const prevRelCoordinates = this.lastRelativeCoordinates![this.coordStep];
-    //change coordinates for pure info...
-    this.positionX -= prevRelCoordinates.x;
-    this.positionY -= prevRelCoordinates.y;
 
-    //actually going one operation back
-    this.dragPosition = { x: this.lastRelativeCoordinates![this.coordStep - 1].x, y: this.lastRelativeCoordinates![this.coordStep - 1].y };
+    //change coordinates for pure info...
+    this.positionX = this.lastPositions![this.coordStep - 1].x;
+    this.positionY = this.lastPositions![this.coordStep - 1].y;
+
+
+    this.dragPosition = { x: this.lastOffsetCoordinates![this.coordStep - 1].x, y: this.lastOffsetCoordinates![this.coordStep - 1].y };
 
     this.coordStep -= 1;
   }
@@ -178,14 +185,14 @@ export class NoteComponent implements AfterViewInit, Note {
   //could have written for one method but that d decrease readability with *(-1) on condition.
   moveToNextPos(): void {
 
-    if (!this.lastRelativeCoordinates![this.coordStep + 1]) { return; }
+    if (!this.lastOffsetCoordinates![this.coordStep + 1]) { return; }
 
-    //if the next positon exists:
-    const nextRelCoordinates = this.lastRelativeCoordinates![this.coordStep + 1];
     //change coordinates for pure info...
-    this.positionX += nextRelCoordinates.x;
-    this.positionY += nextRelCoordinates.y;
-    this.dragPosition = { x: this.lastRelativeCoordinates![this.coordStep + 1].x, y: this.lastRelativeCoordinates![this.coordStep + 1].y };
+    this.positionX = this.lastPositions![this.coordStep + 1].x;
+    this.positionY = this.lastPositions![this.coordStep + 1].y;
+
+    //actually going one operation back
+    this.dragPosition = { x: this.lastOffsetCoordinates![this.coordStep + 1].x, y: this.lastOffsetCoordinates![this.coordStep + 1].y };
 
     this.coordStep += 1;
   }

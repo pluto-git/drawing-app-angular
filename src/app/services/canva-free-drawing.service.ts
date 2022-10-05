@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, merge, ObservableInput, Subscription } from 'rxjs';
-import { switchMap, pairwise, takeUntil, scan } from 'rxjs/operators';
+import { switchMap, pairwise, takeUntil } from 'rxjs/operators';
 
 import { tools } from '.././components/canva/tools';
 import { OperationControlService } from './operation-control.service';
@@ -180,24 +180,12 @@ export class CanvaFreeDrawingService {
       if ((typeof el === 'object' && el !== null && el.instance !== undefined) &&
         !el.instance.isHidden) {
 
-        //resizing notes -external to canvas objects:
-
-        noteComponent.positionX = canvas.offsetWidth * noteComponent.initialPercX;
-        noteComponent.positionY = canvas.offsetHeight * noteComponent.initialPercY;
-        // noteComponent.note.nativeElement.style.position = 'absolute';
-        noteComponent.note.nativeElement.style.left = noteComponent.positionX + 'px';
-        noteComponent.note.nativeElement.style.top = noteComponent.positionY + 'px';
-
-        //new values after done changing...
-        noteComponent.initialCanvasX = canvas.offsetWidth;
-        noteComponent.initialCanvasY = canvas.offsetHeight;
-        noteComponent.initialPercX = noteComponent.positionX / noteComponent.initialCanvasX;
-        noteComponent.initialPercY = noteComponent.positionY / noteComponent.initialCanvasY;
+        noteComponent.initialCanvasSize = { width: canvas.offsetWidth, height: canvas.offsetHeight }
 
       }
     });
 
-    console.log('Resize completed');
+    // console.log('Resize completed');
   }
 
 
@@ -323,6 +311,10 @@ export class CanvaFreeDrawingService {
 
 
 
+
+
+
+
   ///---- Other possible functions to implement
 
   /*
@@ -366,14 +358,6 @@ export class CanvaFreeDrawingService {
     canvasEl.parentElement!.appendChild(t);
     console.log(t.getBoundingClientRect());
 
-  }
-  */
-  // private fixCanvasSizes(): void {
-  //   const canvases = document.getElementsByTagName("canvas");
-  //   for (var i = 0; i < canvases.length; i++) {
-  //     let canvas = canvases[i];
-  //     canvas.width = canvas.offsetWidth;
-  //     canvas.height = canvas.offsetHeight;
-  //   }
-  // }
+  }*/
+
 }

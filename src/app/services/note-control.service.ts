@@ -1,5 +1,4 @@
 import { Injectable, Type } from '@angular/core';
-
 import { Note } from '../models/note';
 import { NoteComponent } from '../components/note/note.component';
 import { CanvaComponent } from '../components/canva/canva.component';
@@ -128,7 +127,7 @@ export class NoteControlService {
 
   }
 
-  public createNoteComponent(componentClass: Type<any>, note: Note): any {
+  public createNoteComponent(componentClass: Type<any>, note: Note, canvasId: string = 'canvas'): any {
     const childComponentRef = this.canvaComponent.container.createComponent(componentClass);
 
     if (childComponentRef) {
@@ -144,11 +143,10 @@ export class NoteControlService {
       childComponent.id = note.id;
       childComponent.isHidden = note.isHidden;
       childComponent.dragDisabled = note.isDisabled;
-      childComponent.initialCanvasX = note.initialCanvasX;
-      childComponent.initialCanvasY = note.initialCanvasY;
-      childComponent.initialPercX = note.initialPercX;
-      childComponent.initialPercY = note.initialPercY;
-      childComponent.lastRelativeCoordinates = [{ x: 0, y: 0 }];
+      childComponent.initialCanvasSize = note.initialCanvasSize;
+      childComponent.lastPositions = [{ x: note.positionX, y: note.positionY }]
+      childComponent.lastOffsetCoordinates = [{ x: 0, y: 0 }];
+      childComponent.lastCanvasSize = [note.initialCanvasSize];
 
     }
     return childComponentRef;
@@ -176,7 +174,7 @@ export class NoteControlService {
     this.op.operations[this.op.actStep] = 'remove-note';
     this.op.opData[this.op.actStep] = componentRef.instance.id;//removed note id
     this.op.opDataDimensions[this.op.actStep] = false;
-    
+
     this.op.isLastStepSave = false;
 
   }
@@ -238,7 +236,7 @@ export class NoteControlService {
     components && components.forEach((el: any) => {
       if (typeof el === 'object' && el !== null && el.instance !== undefined) {
         el.instance.isDisabled = isDragDisabled;
-        console.log(el.instance.isDisabled);
+        // console.log(el.instance.isDisabled);
       }
     }
     );

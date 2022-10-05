@@ -1,5 +1,5 @@
 import {
-  Component, Type, ElementRef, HostListener, ViewChild, ViewContainerRef, ChangeDetectorRef
+  Component, ElementRef, HostListener, ViewChild, ViewContainerRef, ChangeDetectorRef
 } from '@angular/core';
 
 
@@ -43,7 +43,7 @@ export class CanvaComponent {
   public previousTool!: string; // previous selected tool (for stickers);
   private resizeTimeout!: ReturnType<typeof setTimeout>; //for resizing.
 
-
+  //in case someone wants a handler on refresh...
   // @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
   //   console.log("Processing beforeunload...");
   //   event.preventDefault();
@@ -64,14 +64,13 @@ export class CanvaComponent {
   }
 
   public ngOnInit(): void {
-    //for dpi
-    this.ratio = window.devicePixelRatio;
-    this.op.subsToQueryParams();
-    this.op.isNavigate = true;
+    this.ratio = window.devicePixelRatio; //dpi for canvas
+    this.op.subsToQueryParams(); //for save
+    this.op.isNavigate = true; //for save
 
     this.noteSvc.noteId = 0;
 
-    //test positions.
+    //quick test positions.
     // const canvas = document.querySelector('canvas')
     // canvas!.addEventListener('mousedown', function (event) {
     //   const rect = canvas!.getBoundingClientRect()
@@ -101,10 +100,8 @@ export class CanvaComponent {
     canvasEl.height = this.canvas.nativeElement.offsetHeight * this.ratio;
 
     //finding an item in array
-    // console.log(this.op.queryId);
     const foundBoard = this.findBoard(Number(this.op.queryId));
     foundBoard && this.uploadSavedData(canvasEl, foundBoard);
-    //console.log(foundBoard);
 
     if (foundBoard) {
       this.op.boardName = foundBoard.title;
@@ -137,12 +134,11 @@ export class CanvaComponent {
 
         const numId = parseInt(note.id.replace(/\D/g, ''));
         if (numId >= this.noteSvc.noteId) { this.noteSvc.noteId = numId + 1 }
-        //console.log(this.noteSvc.noteId);
+
       }
 
       )
     }
-
 
   }
 

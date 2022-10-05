@@ -92,10 +92,10 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
       this.noteSvc.noteUndo();
     } else if (this.op.operations[this.op.actStep].includes('clear')) {
 
-      console.log('exception undo');
+      // console.log('exception undo');
       let tempDrawStep = this.op.actStep;
 
-      console.log(tempDrawStep);
+      // console.log(tempDrawStep);
       //canvas
       while (this.op.operations[tempDrawStep] !== 'draw') { tempDrawStep--; }
       //console.log(this.op.operations[tempDrawStep]);
@@ -132,9 +132,9 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
       this.noteSvc.noteRedo();
     } else if (this.op.operations[this.op.actStep + 1].includes('clear')) {
 
-      console.log('exception redo');
+      // console.log('exception redo');
       this.drawingSvc.clearCanvas(document.getElementById(id) as HTMLCanvasElement);
-      console.log(this.op.opData[this.op.actStep + 1][1].length);
+      // console.log(this.op.opData[this.op.actStep + 1][1].length);
       this.op.opData[this.op.actStep + 1][1].length !== 0 && this.noteSvc.toggleHidingForAllComponents(true, this.op.opData);
 
       this.op.actStep++;
@@ -217,14 +217,14 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
     }
     if (type === 'new' || this.op.queryId === 'new') {
-      console.log('here');
+      // console.log('here');
       let id = 0;
       (oldItems.length > 0) && (id = Math.max(...oldItems.map((o: any) => o.id)) + 1);
       (oldItems.length === 0) && (id = 0);
       newBoard.id = id;
       oldItems.push(newBoard);
 
-     
+
       //because save can be done at other urls.
       if (this.op.isNavigate === true) {
         //changing url (query params) without refresh and Angular now 
