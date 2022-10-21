@@ -1,0 +1,13 @@
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {  
+    .custom-width{
+        max-width: 70%;
+    }
+}
+ 
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {  
+    .custom-width{
+        max-width: 50%;
+    }
+}

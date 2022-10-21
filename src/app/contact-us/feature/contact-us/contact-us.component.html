@@ -1,0 +1,80 @@
+<!-- Default form contact -->
+<form (ngSubmit)="onSubmit()" class="text-center border border-light p-5 container custom-width"
+    [formGroup]="contactUsForm">
+
+    <h2 class=" mb-4" *transloco="let t">{{t('contactUsComponent.header')}}</h2>
+
+    <!-- Name -->
+    <div class="form-group mb-4">
+        <input type="text" id="firstName" name="firstName" class="form-control"
+            [placeholder]="'contactUsComponent.name' | transloco" formControlName="firstName" required>
+        <div *transloco="let t">
+            <div *ngIf="firstName!.invalid && (firstName!.dirty || firstName!.touched)" class="alert alert-danger">
+
+                <div *ngIf="firstName!.errors?.['required']">
+                    {{t('contactUsComponent.nameReq')}}
+                </div>
+                <div *ngIf="firstName!.errors?.['minlength']">
+                    {{t('contactUsComponent.nameLength')}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Email -->
+    <div class="form-group mb-4" *transloco="let t">
+        <input type="email" id="email" name="email" class="form-control"
+            [placeholder]="'contactUsComponent.email' | transloco" formControlName="email" required>
+        <div *ngIf="email!.invalid && (email!.dirty || email!.touched)" class="alert alert-danger">
+            <div *ngIf="email!.errors?.['required']">
+                {{t('contactUsComponent.emailReq')}}
+            </div>
+            <div *ngIf="email!.errors?.['email']">
+                {{t('contactUsComponent.emailWrongFormat')}}
+            </div>
+        </div>
+    </div>
+    <!-- Subject -->
+    <div class="form-group mb-4" *transloco="let t">
+        <label>{{t('contactUsComponent.subjectHeader')}}</label>
+
+        <select class="browser-default custom-select mx-2" formControlName="subject" required name="subject"
+            id="subject">
+            <option [selected]="selectOption" disabled>
+                {{t('contactUsComponent.option0')}}
+            </option>
+            <option>{{t('contactUsComponent.option1')}}</option>
+            <option>{{t('contactUsComponent.option2')}}</option>
+            <option>
+                {{t('contactUsComponent.option3')}}</option>
+
+        </select>
+
+
+        <div *ngIf="subject!.invalid && (subject!.dirty || subject!.touched)" class="alert alert-danger">
+            <div *ngIf="subject!.errors?.['required']">
+                {{t('contactUsComponent.subjectReq')}}
+            </div>
+        </div>
+    </div>
+    <!-- Message -->
+    <div class="form-group" *transloco="let t">
+        <textarea class="form-control rounded-0 " id="message" name="message" rows="3"
+            [placeholder]="'contactUsComponent.message' | transloco" formControlName="message" required></textarea>
+        <div *ngIf="message!.invalid && (message!.dirty || message!.touched)" class="alert alert-danger">
+            <div *ngIf="message!.errors?.['required']">
+                {{t('contactUsComponent.messageReq')}}
+            </div>
+            <div *ngIf="message!.errors?.['minlength']">
+                {{t('contactUsComponent.messageLength')}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Send button -->
+    <div class="">
+        <div><button class="btn btn-info btn-block mt-3" type="submit" [disabled]="!contactUsForm.valid"
+                name="sendButton" id="sendButton" *transloco="let t">{{t('contactUsComponent.sendBtn')}}</button></div>
+        <div *ngIf="isSuccess">Successfully sent!<i class="fa-solid fa-check"></i></div>
+    </div>
+</form>
+<!-- Default form contact -->

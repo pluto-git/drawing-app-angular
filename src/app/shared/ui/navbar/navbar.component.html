@@ -1,0 +1,60 @@
+<header class="primaryColorBG">
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand noselect" routerLink="/" [matTooltip]="'navbarComponent.goToDashboard' | transloco"
+        aria-label="Button that displays a Dashboard tooltip" matTooltipClass="tooltipStyle">
+        <img src="../../../../assets/icons/favicon.ico" height="32" alt="Draw0"> Draw0
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+        (click)="isCollapsed = !isCollapsed">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto" *transloco="let t">
+          <li class="nav-item" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
+            [matTooltip]="'navbarComponent.goTo' | transloco" matTooltipClass="tooltipStyle">
+            <a class="nav-link active" aria-current="page" [routerLink]="dashboard"
+              routerLinkActive="active-link">{{t('navbarComponent.dashboard')}}</a>
+          </li>
+          <li class="nav-item" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
+            [matTooltip]="'navbarComponent.goTo' | transloco" matTooltipClass="tooltipStyle">
+            <a class="nav-link active" aria-current="page" [routerLink]="about"
+              routerLinkActive="active-link">{{t('navbarComponent.about')}}</a>
+          </li>
+          <li class="nav-item" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
+            [matTooltip]="'navbarComponent.goTo' | transloco" matTooltipClass="tooltipStyle">
+            <a class="nav-link active" aria-current="page" [routerLink]="contact"
+              routerLinkActive="active-link">{{t('navbarComponent.contactUs')}}</a>
+          </li>
+          <li *ngIf="(this.aFA.user | async)" class="nav-item" data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show" [matTooltip]="'navbarComponent.goTo' | transloco"
+            matTooltipClass="tooltipStyle">
+            <a class="nav-link active" aria-current="page" [routerLink]="welcome"
+              routerLinkActive="active-link">{{t('navbarComponent.welcomePage')}}</a>
+          </li>
+        </ul>
+
+        <div class="d-flex align-items-center" *transloco="let t">
+          <!-- Hiding it as the translation for the site is not ready -->
+          <!-- <div class="btn langs mx-1" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
+            [matTooltip]="'navbarComponent.changeLang' | transloco"
+            aria-label="Button that displays a change language tooltip">
+            {{t('navbarComponent.langs.en')}}</div>
+          <div class="btn langs mx-1" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
+            [matTooltip]="'navbarComponent.changeLang' | transloco"
+            aria-label="Button that displays a change language tooltip">
+            {{t('navbarComponent.langs.uk')}}</div>
+          <div class="mx-1"> -->
+
+          <button *ngIf="(this.aFA.user | async)" class="btn" mat-flat-button color="primary" (click)="logout()">
+            Log out
+          </button>
+          <button *ngIf="!(this.aFA.user | async)" class="btn" mat-flat-button color="warn" (click)="login()">Sign
+            In</button>
+
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

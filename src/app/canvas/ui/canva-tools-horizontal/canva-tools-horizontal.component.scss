@@ -1,0 +1,44 @@
+a {
+    cursor: pointer;
+}
+
+.disabled {
+    /*This makes it not clickable*/
+    pointer-events: none;
+
+    /*This grays it out to look disabled*/
+    opacity: 0.4;
+
+}
+
+.noselect {
+    
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }
+
+
+
+@media (max-width: 440px) {  
+    div>li>a{
+        font-size: large;
+        padding-left: 0px !important;
+    }
+}
+@media (max-width: 374px) {  
+    div>li>a{
+        font-size: medium;
+        padding-left: 0px !important;
+    }
+}
+@media (max-width: 340px) {  
+    div>li>a{
+        font-size: small;
+        padding-left: 0px !important;
+    }
+}

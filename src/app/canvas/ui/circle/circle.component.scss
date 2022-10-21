@@ -1,0 +1,12 @@
+/* color picker */
+.modal-color {
+    cursor: pointer;
+    margin: 0em 0.25em;
+}
+
+.modal-color :hover {
+    cursor: pointer;
+    transform: scale(1.08);
+    filter: url(#inset-shadow);
+
+}

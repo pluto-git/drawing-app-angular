@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light border py-0">
+    <div class="container-fluid">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex flex-row">
+            <div data-bs-toggle="tooltip" data-bs-placement="me-auto"
+                [title]="'canvaToolsHorizontalComponent.buttons.undo' | transloco ">
+                <li class="nav-item undoBtn noselect" (click)="
+            onUndo('canvas')">
+
+                    <a class="nav-link active px-3" aria-current="page"><img
+                            src="../../../../assets/icons/tools/undo-icon-svgrepo-com.svg" height="16" width="16"
+                            [alt]="'canvaToolsHorizontalComponent.buttons.undo' | transloco "></a>
+                </li>
+            </div>
+            <div data-bs-toggle="tooltip" data-bs-placement="me-auto"
+                [title]="'canvaToolsHorizontalComponent.buttons.redo' | transloco">
+                <li class="nav-item redoBtn noselect" (click)="
+            onRedo('canvas')">
+                    <a class="nav-link active px-3" aria-current="page"><img
+                            src="../../../../assets/icons/tools/redo-icon-svgrepo-com.svg" height="16" width="16"
+                            [alt]="'canvaToolsHorizontalComponent.buttons.redo' | transloco "></a>
+                </li>
+            </div>
+            <div data-bs-toggle="tooltip" data-bs-placement="me-auto"
+                [title]="'canvaToolsHorizontalComponent.buttons.clearFrame' | transloco">
+                <li class="nav-item noselect" *transloco="let t" (click)="onClear('canvas')">
+                    <a class="nav-link active px-3" aria-current="page">
+                        {{t('canvaToolsHorizontalComponent.buttons.clearFrame')}}</a>
+                </li>
+            </div>
+            <div data-bs-toggle="tooltip" data-bs-placement="me-auto"
+                [title]="'canvaToolsHorizontalComponent.buttons.save' | transloco">
+                <li class="save-btn nav-item noselect" *transloco="let t"
+                    (click)="onSaveBtn('same', getBoardName()); this.openSnackBar('Saved successfully!', 'Dismiss')">
+                    <a class="nav-link active px-3" aria-current="page">
+                        {{t('canvaToolsHorizontalComponent.buttons.save')}}</a>
+                </li>
+            </div>
+            <div data-bs-toggle="tooltip" data-bs-placement="me-auto"
+                [title]="'canvaToolsHorizontalComponent.buttons.saveNew' | transloco">
+
+                <li class="save-btn nav-item noselect" *transloco="let t" (click)="openDialog()">
+                    <a class="nav-link active px-3" aria-current="page">
+                        {{t('canvaToolsHorizontalComponent.buttons.saveNew')}}</a>
+                </li>
+
+                <!-- <li class="save-btn nav-item noselect" *transloco="let t" (click)="onSaveBtn('new')">
+                    <a class="nav-link active px-3" aria-current="page">
+                        {{t('canvaToolsHorizontalComponent.buttons.saveNew')}}</a>
+                </li> -->
+            </div>
+
+        </ul>
+
+    </div>
+</nav>

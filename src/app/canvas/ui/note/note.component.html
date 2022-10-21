@@ -1,0 +1,16 @@
+<div [id]="id" class="note-box noselect text-fit padding-vert justify-content-center show"
+    (dblclick)="this.popupNoteComponent.editModal('noteModal', $event)" [cdkDragBoundary]="dragZone" cdkDrag
+    [cdkDragDisabled]="dragDisabled" (cdkDragEnded)="dragEnd($event)" [cdkDragFreeDragPosition]="dragPosition" #note>
+    {{message}}
+    <div class="menu">
+        <mat-icon mat-icon-button [matMenuTriggerFor]="menu" aria-label="Note Menu" class="menu-pointer">more_vert
+        </mat-icon>
+
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="removeMe($event)" [id]="'remove '+id" *transloco="let t">
+                {{t('noteComponent.removeBtn')}}
+            </button>
+        </mat-menu>
+    </div>
+</div>
+

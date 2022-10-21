@@ -1,0 +1,28 @@
+.page-404 {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+h1,h2{
+    margin: 0;
+    font-size: 200%;
+}
+
+.red-color{
+    color:red;
+    text-align: center;
+}
+
+.inner-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.go-back{
+   margin-top: 3%;
+   align-self: center;
+}

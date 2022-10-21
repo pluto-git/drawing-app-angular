@@ -1,0 +1,24 @@
+<section class="container ">
+    <article *transloco="let t" class="">
+        <div>
+            <h1>
+                {{t('aboutComponent.header')}}
+            </h1>
+            <h3>
+                {{t('aboutComponent.text1')}}
+            </h3>
+            <ul>
+                <li>{{t('aboutComponent.text2')}}</li>
+                <li>{{t('aboutComponent.text3')}}
+                </li>
+            </ul>
+            <div class="text-center">
+                <button class="btn btn-primary" data-g-action="launch draw0" data-g-event="draw0" data-g-label="hero"
+                    [routerLink]="dashboard">{{t('aboutComponent.launchBtn')}}</button>
+            </div>
+        </div>
+        <div>
+            <img [alt]="'aboutComponent.altImg' | transloco" src="../../../../assets/icons/about.jpg" class="img-fluid mt-3 mb-3">
+        </div>
+    </article>
+</section>

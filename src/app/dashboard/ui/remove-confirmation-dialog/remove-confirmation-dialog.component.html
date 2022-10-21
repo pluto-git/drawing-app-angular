@@ -1,0 +1,7 @@
+<div mat-dialog-content>
+    <p *transloco="let t" class="text-center fs-danger">{{t('removeConfirmationDialog.sureToRemove')}}</p>
+</div>
+<div mat-dialog-actions *transloco="let t">
+    <button mat-button (click)="onCancel()" cdkFocusInitial>{{t('saveAsDialogComponent.cancelBtn')}}</button>
+    <button mat-button [mat-dialog-close]="data" >{{t('removeConfirmationDialog.removeBtn')}}</button>
+</div>

@@ -1,0 +1,58 @@
+<section class="container h-100" *transloco="let t">
+
+    <!-- Card -->
+    <div class="container">
+        <div class="d-flex justify-content-between">
+            <div>
+                <h1>{{t('dashboardComponent.header')}}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-6 mb-2" *ngFor="let col of boardItems; let index = index">
+                <div class="card">
+                    <img class="card-img-top card-img" [src]='col.previewImage' alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{col.title}}</h5>
+
+                        <a [routerLink]="canva" [queryParams]="{id: col.id}" class="btn btn-primary"
+                            data-bs-toggle="tooltip" data-bs-placement="me-auto"
+                            [title]="'dashboardComponent.editBoard' | transloco">
+                            {{t('dashboardComponent.editBoard')}}</a>
+
+                        <div class="d-flex justify-content-between lower-cart-body">
+                            <div data-bs-toggle="tooltip" data-bs-placement="me-auto"
+                                [title]="'dashboardComponent.lastDate' | transloco"><i
+                                    class="fa-regular fa-calendar"></i>{{" "+col.date}}</div>
+
+                            <div (click)="openRemoveDialog(col.id)" data-bs-toggle="tooltip" data-bs-placement="me-auto"
+                                [title]="'dashboardComponent.altTrashCan' | transloco"><i
+                                    class="fa-regular fa-trash-can trash-can"></i></div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Card end -->
+
+    <!-- Create new board button -->
+    <div class="pt-3 pb-3 text-center">
+        <div class="" *ngIf="boardItems.length === 0">
+            <p>{{t('dashboardComponent.text1')}}</p>
+            <p>{{t('dashboardComponent.text2')}}</p>
+        </div>
+        <div>
+            <svg matTooltip="Create new board" aria-label="Button that displays 'Create new board'"
+                matTooltipClass="tooltipStyle" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
+                fill="rgb(82, 197, 94)" class="bi bi-plus-circle" role="button" viewBox="0 0 16 16"
+                [title]="'dashboardComponent.alt' | transloco" [routerLink]="canva" [queryParams]="{id: 'new'}">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                <path
+                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+            </svg>
+        </div>
+    </div>
+
+</section>

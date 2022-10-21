@@ -1,0 +1,56 @@
+<!-- Modal -->
+<div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title mx-2" id="noteModalLabel" *transloco="let t">{{t('popupNoteComponent.header')}}
+                </h4>
+                <div>
+                    <app-circle [id]="colors.yellow.id" [colorFill]="colors.yellow.value"></app-circle>
+                    <app-circle [id]="colors.green.id" [colorFill]="colors.green.value"></app-circle>
+                    <app-circle [id]="colors.cyan.id" [colorFill]="colors.cyan.value"></app-circle>
+                    <app-circle [id]="colors.pink.id" [colorFill]="colors.pink.value"></app-circle>
+                    <app-circle [id]="colors.orange.id" [colorFill]="colors.orange.value"></app-circle>
+                    <app-circle [isWhiteCircle]="true"></app-circle>
+
+                    <!-- to add shadows -->
+                    <svg height="0" width="0" (click)="this.circleComponent.changeTextareaColor(colors.yellow.id)">
+
+                        <filter id='inset-shadow'>
+                            <!-- Shadow offset -->
+                            <feOffset dx='0' dy='0' />
+                            <!-- Shadow blur -->
+                            <feGaussianBlur stdDeviation='1.5' result='offset-blur' />
+                            <!-- Invert drop shadow to make an inset shadow-->
+                            <feComposite operator='out' in='SourceGraphic' in2='offset-blur' result='inverse' />
+                            <!-- Cut colour inside shadow -->
+                            <feFlood flood-color='black' flood-opacity='.95' result='color' />
+                            <feComposite operator='in' in='color' in2='inverse' result='shadow' />
+                            <!-- Placing shadow over element -->
+                            <feComposite operator='over' in='shadow' in2='SourceGraphic' />
+                        </filter>
+                        <filter id="shadow2">
+                            <feDropShadow dx="0" dy="0" stdDeviation="1" flood-color="gray" />
+                        </filter>
+                    </svg>
+                    <!-- the end of 'to add shadows' -->
+
+                </div>
+
+            </div>
+            
+            <div class="modal-body p-0" [formGroup]="form" *transloco="let t">
+                <textarea formControlName="modalNote" class="note-textarea form-control"
+                    id="exampleFormControlTextarea1" rows="5"></textarea>
+                <p *ngIf="form.controls['modalNote'].value!.toString().length>30">{{t('popupNoteComponent.limit')}}</p>
+            </div>
+            <div class="modal-footer" *transloco="let t">
+                <button type="button" class="btn border border-secondary px-4 " data-bs-dismiss="modal"
+                    (click)="closeModal('noteModal')">{{t('popupNoteComponent.cancel')}}</button>
+
+                <button type="button" class="btn btn-primary save-btn" [disabled]="form.valid === false"
+                    (click)="onSaveNote('noteModal')">{{t('popupNoteComponent.save')}}</button>
+            </div>
+        </div>
+    </div>
+</div>

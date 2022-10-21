@@ -1,0 +1,12 @@
+<div mat-dialog-content>
+    <p *transloco="let t"> {{t('saveAsDialogComponent.saveAsBtn')}} </p>
+    <mat-form-field appearance="fill">
+        <mat-label *transloco="let t">{{t('saveAsDialogComponent.boardLabel')}}</mat-label>
+        <input matInput [(ngModel)]="data.boardName">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions *transloco="let t">
+    <button mat-button (click)="onNoClick()">{{t('saveAsDialogComponent.cancelBtn')}}</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>{{t('saveAsDialogComponent.proceedBtn')}}</button>
+
+</div>

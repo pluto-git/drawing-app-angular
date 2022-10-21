@@ -1,0 +1,17 @@
+<!-- Sidebar navigation -->
+<div class="container">
+
+    <!-- Main content -->
+
+    <h1>Welcome!</h1>
+    <div class="row" *ngIf="authService.userData as user">
+        <div class="col-md-12">
+            <div class="media">
+                <img class="align-self-start mr-5 img-thumbnail rounded-circle"
+                    src="{{(user.photoURL) ? user.photoURL : '../../../../../../assets/icons/dummy-user.png'}}"
+                    alt="{{user.displayName}}">
+                <h1><strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
+            </div>
+        </div>
+    </div>
+</div>

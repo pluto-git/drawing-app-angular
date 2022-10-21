@@ -1,0 +1,98 @@
+{
+    "aboutComponent": {
+        "header": "Про нас",
+        "text1": "Візуалізуйте свої ідеї новим способом",
+        "text2": "Розкрийте творчість за допомогою Draw0.",
+        "text3": "Намалюйте свої ідеї в стилі дошки, користуючись доступом інтерактивного полотна прямо з вашого веб-браузера. ",
+        "launchBtn": "Запуск Draw0",
+        "altImg": "візуалізуйте зображення"
+    },
+    "pageNotFoundComponent": {
+        "text1": "Упс!",
+        "text2": "Сторінку не знайдено. ",
+        "text3": "Сторінка, яку ви шукаєте, не існує.",
+        "goBackBtn": "Назад"
+    },
+    "canvaComponent": {
+        "tools": {
+            "pen": "Ручка",
+            "eraser": "Ластик",
+            "select": "Вибрати",
+            "textarea": "Текст",
+            "note": "Нотатка"
+        }
+    },
+    "canvaToolsHorizontalComponent": {
+        "buttons": {
+            "redo": "Повторити",
+            "undo": "Скасувати",
+            "clearFrame": "Очистити фрейм",
+            "save": "Зберегти",
+            "saveNew": "Зберегти як нове"
+        }
+    },
+    "contactUsComponent": {
+        "header": "Зв'язатися з нами",
+        "name": "Ім'я",
+        "email": "Ел. пошта",
+        "message": "Повідомлення...",
+        "nameReq": "Ім'я є обов'язковим.",
+        "nameLength": "Не менше 3 символів",
+        "emailReq": "Ел. пошта є обов'язкова.",
+        "emailWrongFormat": "Формат ел. пошти невірний",
+        "subjectHeader": "Тема",
+        "subjectReq": "Тема є обов'язковою.",
+        "option0": "Виберіть тему",
+        "option1": "Зворотний зв'язок",
+        "option2": "Повідомити про помилку",
+        "option3": "Запит",
+        "messageReq": "Повідомлення є обов'язковим.",
+        "messageLength": "Повідомлення має містити не менше 10 символів.",
+        "sendBtn": "Надіслати"
+    },
+    "dashboardComponent": {
+        "header": "Дошка",
+        "text1": "Зараз у вас немає жодних дощок-файлів.",
+        "text2": "Для початку натисніть кнопку \"+\" ",
+        "alt": "Нова дошка",
+        "editBoard": "Редагувати дошку",
+        "altTrashCan": "Видалити дошку",
+        "lastDate": "Остання дата зміни"
+    },
+    "footbarComponent": {
+        "dashboard": "Дошка",
+        "about": "Про нас",
+        "contactUs": "Зв'язатися з нами"
+    },
+    "navbarComponent": {
+        "dashboard": "Дошка",
+        "about": "Про нас",
+        "contactUs": "Зв'язатися з нами",
+        "welcomePage": "Привіт!",
+        "langs": {
+            "en": "анг",
+            "uk": "укр"
+        },
+        "goToDashboard": "Дошка",
+        "goTo": "Перейти на сторінку",
+        "changeLang": "Змінити мову",
+        "loginBtn": "Логін"
+    },
+    "popupNoteComponent": {
+        "header": "Стікер",
+        "cancel": "Відмінити",
+        "save": "Зберегти",
+        "colors": {
+            "yellow": "Жовтий",
+            "green": "Зелений",
+            "cyan": "Синій",
+            "pink": "Рожевий",
+            "orange": "Помаранчевий",
+            "white": "Білий"
+        }
+    },
+    "noteComponent": {
+        "removeBtn": "Видалити",
+        "boardLabel": "Ім'я дошки"
+    }
+}

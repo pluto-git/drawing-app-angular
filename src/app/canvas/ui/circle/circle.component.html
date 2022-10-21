@@ -1,0 +1,18 @@
+<ng-container *ngIf="!isWhiteCircle">
+    <svg class="modal-color" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 -2 30 30"
+        (click)="changeTextareaColor(ellipse.id)">
+        <ellipse #ellipse [id]="id" [attr.fill]="colorFill" width="26px" height="26px" viewBox="0 0 30 30" cx="13"
+            cy="13" rx="13" ry="13" class="with-arrow" />
+        <path class="d-none" d="M 7,12 L 11,17 M 10,17 L19,8 " stroke="rgb(250,250,250)" stroke-width="2.5" />
+    </svg>
+</ng-container>
+
+<ng-container *ngIf="isWhiteCircle">
+    <svg class="modal-color" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 -2 30 30"
+        (click)="changeTextareaColor(colors.white.id)">
+        <ellipse [id]="colors.white.id" [attr.fill]="colors.white.value" width="26px" height="26px" viewBox="0 0 26 26"
+            cx="13" cy="13" rx="13" ry="13" stroke="#e6e6e6" />
+        <path d="M 6,6 L 20,20" stroke="#bfbfbf" stroke-width="1" />
+        <ellipse cx="13" cy="13" rx="5" ry="5" fill="gray" />
+    </svg>
+</ng-container>

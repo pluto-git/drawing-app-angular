@@ -1,0 +1,88 @@
+.outer-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    transform: scale(var(--scaleX), var(--scaleY));
+    /* z-index: 21; */
+}
+
+.canvas {
+
+    height: inherit;
+    width: 100%;
+    background-color: white;
+    overflow: hidden;
+    display: flex;
+    z-index: 20;
+}
+/* 
+.hidden-canvas{
+
+    height: inherits;
+    width: 100%;
+    background-color: grey;
+    overflow: hidden;
+    z-index: -19;
+
+    
+} */
+
+
+.rel{
+    position: relative;
+}
+
+section {
+    background-color: #f1f3f4;
+    text-align: center;
+}
+
+.tools {
+    width: 3em;
+    padding: 0px;
+    z-index: 10;
+    background-color: #ffffff;
+    border-radius: 2em;
+    border: 2px solid #dadce0;
+
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Old versions of Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+/* usual cursors to select tools */
+.vertical-tool {
+    cursor: pointer;
+}
+
+/* selected tool */
+.selected {
+    fill: gold;
+}
+
+
+@media (max-height: 560px) {
+    .vertical-tool {
+        margin-top: 0px !important;
+    }
+}
+
+@media (max-height: 480px) {
+    .vertical-tool {
+        margin-bottom: 1px !important;
+    }
+}
