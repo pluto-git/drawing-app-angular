@@ -20,7 +20,7 @@ export class CircleComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.isWhiteCircle);
+    console.log(this.colorChanged);
   }
 
   public changeTextareaColor(colorCircleId: string, id: string = 'exampleFormControlTextarea1'): void {

@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { TranslocoRootModule } from 'src/app/shared/utils/transloco-root.module';
 
 export interface DialogData {
@@ -16,7 +17,7 @@ export interface DialogData {
   templateUrl: './save-as-dialog.component.html',
   styleUrls: ['./save-as-dialog.component.scss'],
   standalone: true,
-  imports: [MatFormFieldModule, FormsModule, MatDialogModule, TranslocoRootModule, MatButtonModule]
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatDialogModule, TranslocoRootModule, MatButtonModule]
 })
 export class SaveAsDialogComponent {
 

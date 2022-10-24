@@ -1,5 +1,5 @@
 import {
-  Component, ElementRef, HostListener, ViewChild, ViewContainerRef, ChangeDetectorRef
+  Component, ElementRef, HostListener, ViewChild, ViewContainerRef, ChangeDetectorRef, Injector
 } from '@angular/core';
 import { cursors } from '../../data-access/cursors';
 import { Board } from '../../data-access/models/board';
@@ -9,9 +9,7 @@ import { OperationControlService } from '../../data-access/services/operation-co
 import { tools } from '../../data-access/tools';
 import { NoteComponent } from '../../ui/note/note.component';
 import { CanvaToolsHorizontalComponent } from '../../ui/canva-tools-horizontal/canva-tools-horizontal.component';
-
-
-declare var bootstrap: any;
+import { BoardApiService } from '../../data-access/services/board-api.service';
 
 @Component({
   selector: 'app-canva',
@@ -24,7 +22,8 @@ export class CanvaComponent {
   constructor(private drawingSvc: CanvaFreeDrawingService, private noteSvc: NoteControlService
     , private op: OperationControlService,
     private cd: ChangeDetectorRef,
-    private toolComponent: CanvaToolsHorizontalComponent
+    private toolComponent: CanvaToolsHorizontalComponent,
+    private boardSvc: BoardApiService
   ) {
 
   }
@@ -42,13 +41,7 @@ export class CanvaComponent {
   public previousTool!: string; // previous selected tool (for stickers);
   private resizeTimeout!: ReturnType<typeof setTimeout>; //for resizing.
 
-  //in case someone wants a handler on refresh...
-  // @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
-  //   console.log("Processing beforeunload...");
-  //   event.preventDefault();
-  //   this.toolComponent.onSave();
-  //   event.returnValue = false;
-  // }
+  private foundBoard!: Board;
 
   //listening to window resize
   @HostListener("window:resize", [])
@@ -69,15 +62,6 @@ export class CanvaComponent {
 
     this.noteSvc.noteId = 0;
 
-    //quick test positions.
-    // const canvas = document.querySelector('canvas')
-    // canvas!.addEventListener('mousedown', function (event) {
-    //   const rect = canvas!.getBoundingClientRect()
-    //   const x = event.clientX - rect.left
-    //   const y = event.clientY - rect.top
-    //   alert("x: " + x + " y: " + y)
-    // }) 
-
   }
 
 
@@ -92,26 +76,27 @@ export class CanvaComponent {
   }
 
 
-  public ngAfterViewInit(): void {
+  public async ngAfterViewInit(): Promise<void> {
 
     //setting up dimensions...
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
     canvasEl.width = this.canvas.nativeElement.offsetWidth * this.ratio;
     canvasEl.height = this.canvas.nativeElement.offsetHeight * this.ratio;
 
-    //finding an item in array
-    const foundBoard = this.findBoard(Number(this.op.queryId));
-    foundBoard && this.uploadSavedData(canvasEl, foundBoard);
+    const data = await this.findBoard(this.op.queryId);
+    this.foundBoard = data.canvasData;
 
-    if (foundBoard) {
-      this.op.boardName = foundBoard.title;
+    this.foundBoard && this.uploadSavedData(canvasEl, this.foundBoard);
+
+    if (this.foundBoard) {
+      this.op.boardName = this.foundBoard.title;
       this.op.actStep++;
-      this.op.opData[this.op.actStep] = foundBoard.canvasData;
-      this.op.opDataDimensions[this.op.actStep] = { width: foundBoard.canvasDimensions.width, height: foundBoard.canvasDimensions.height };
+      this.op.opData[this.op.actStep] = this.foundBoard.canvasData;
+      this.op.opDataDimensions[this.op.actStep] = { width: this.foundBoard.canvasDimensions.width, height: this.foundBoard.canvasDimensions.height };
       this.op.initialStep = this.op.operations.length;
     }
     //if a new board:
-    if (!foundBoard) {
+    if (!this.foundBoard) {
       this.drawingSvc.cPush(canvasEl);
       this.op.initialStep = 0;
     }
@@ -142,14 +127,10 @@ export class CanvaComponent {
 
   }
 
-  private findBoard(id: number): Board | undefined {
-    const oldItems: Array<any> = JSON.parse(localStorage.getItem('boardsArray')!) || [];
-    const foundBoard = oldItems.find(el => el.id === id);
-
-    if (foundBoard === undefined) return;
-
-    return foundBoard;
+  private async findBoard(id: string): Promise<any> {
+    return this.boardSvc.getOne(id).toPromise();
   }
+
 
   public uploadSavedData(canvas: HTMLCanvasElement, foundBoard: Board): void {
     if (!canvas) return;

@@ -14,6 +14,7 @@ export class NavbarComponent {
 
   public isCollapsed = true;
   //our routes.
+  public canvas = '/'+ AppRoutes.canvas;
   public dashboard = '/' + AppRoutes.dashboard;
   public about = '/' + AppRoutes.about;
   public contact = '/' + AppRoutes.contactUs;

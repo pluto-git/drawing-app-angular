@@ -38,7 +38,7 @@
                 </div>
 
             </div>
-            
+
             <div class="modal-body p-0" [formGroup]="form" *transloco="let t">
                 <textarea formControlName="modalNote" class="note-textarea form-control"
                     id="exampleFormControlTextarea1" rows="5"></textarea>
@@ -48,7 +48,7 @@
                 <button type="button" class="btn border border-secondary px-4 " data-bs-dismiss="modal"
                     (click)="closeModal('noteModal')">{{t('popupNoteComponent.cancel')}}</button>
 
-                <button type="button" class="btn btn-primary save-btn" [disabled]="form.valid === false"
+                <button type="button" class="btn btn-primary save-btn" [disabled]="this.form.valid === false"
                     (click)="onSaveNote('noteModal')">{{t('popupNoteComponent.save')}}</button>
             </div>
         </div>

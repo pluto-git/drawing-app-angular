@@ -14,11 +14,11 @@ const routes: Routes = [
   {
     path: '', component: WrapperComponent, children: [
       {
-        path: '', redirectTo: "dashboard", pathMatch: 'full'
+        path: '', redirectTo: AppRoutes.dashboard, pathMatch: 'full'
       },
       {
         path: AppRoutes.dashboard, loadChildren: () =>
-          import('../../../dashboard/feature/dashboard-home/dashboard-home.module').then(m => m.DashboardHomeModule)
+          import('../../../dashboard/feature/dashboard-home/dashboard-home.module').then(m => m.DashboardHomeModule),
       },
       {
         path: AppRoutes.about, loadChildren: () =>

@@ -1,4 +1,4 @@
-import { Component, Injector} from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { colors } from '../../data-access/colors';
 import { NoteControlService } from '../../data-access/services/note-control.service';
@@ -35,19 +35,6 @@ export class PopupNoteComponent {
 
   ngAfterViewInit(): void {
     this.noteSvc.canvaComponent = this.canvaComponent;
-  }
-
-  onDisabled(): boolean {
-
-    if (this.circleComponent.colorChanged === false) {
-      return true;
-    } else if (this.form.valid === false) {
-      return true;
-    }
-    else {
-      return false;
-    }
-
   }
 
   public onSaveNote(modalId: string, id: string = 'exampleFormControlTextarea1'): void {

@@ -27,8 +27,11 @@
             "redo": "Повторити",
             "undo": "Скасувати",
             "clearFrame": "Очистити фрейм",
+            "moreOptions": "Більше кнопок",
             "save": "Зберегти",
-            "saveNew": "Зберегти як нове"
+            "saveNew": "Зберегти як нове",
+            "download": "Завантажити",
+            "signInHint": "Авторизуйся для дії"
         }
     },
     "contactUsComponent": {
@@ -65,6 +68,7 @@
         "contactUs": "Зв'язатися з нами"
     },
     "navbarComponent": {
+        "launchNav": "Розпочати",
         "dashboard": "Дошка",
         "about": "Про нас",
         "contactUs": "Зв'язатися з нами",

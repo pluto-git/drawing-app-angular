@@ -9,7 +9,7 @@ import {
 
 import { AppRoutes } from '../routes';
 import { Router } from '@angular/router';
-import { Subscription, take } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -104,6 +104,7 @@ export class AuthService {
       this.router.navigate([AppRoutes.dashboard]);
     });
   }
+
   // Auth logic to run auth providers
   AuthLogin(provider: any): Promise<void> {
     return this.afAuth
@@ -135,11 +136,28 @@ export class AuthService {
     });
     this.router.navigate([AppRoutes.dashboard]);
   }
+
+  //careful with changes of the header format
+  getAuthHeaders(): { authorization: string } {
+    const user = JSON.parse(localStorage.getItem('user')!);
+
+    if (user !== null) {
+      return {
+        authorization: "Bearer " + user.stsTokenManager.accessToken
+      }
+    }
+
+    return {
+      authorization: 'Bearer ' + ""
+    }
+
+  }
+
   // Sign out
   SignOut(): Promise<void> {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['']);
+      this.router.navigate([AppRoutes.about]);
     });
   }
 

@@ -1,5 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/shared/data-access/services/auth.service';
 import { Feedback } from '../../data-access/services/feedback.model';
 import { FeedbackService } from '../../data-access/services/feedback.service';
 
@@ -17,18 +19,20 @@ export class ContactUsComponent implements OnInit {
     message: new FormControl('', [Validators.required, Validators.minLength(10)])
   });
 
-  feedback: Feedback = {
+  public feedback: Feedback = {
     firstName: '',
     email: '',
     subject: '',
     message: ''
   };
 
-  feedbacks?: Feedback[];
-  isSuccess: boolean = false;
-  selectOption: boolean = true;
+  public feedbacks?: Feedback[];
+  public isSuccess: boolean = false;
+  public selectOption: boolean = true;
+
 
   constructor(private feedbackSvc: FeedbackService) {
+
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -41,9 +45,7 @@ export class ContactUsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-
-
+    
   }
 
 
@@ -113,6 +115,5 @@ export class ContactUsComponent implements OnInit {
   //       error: (e) => console.error(e)
   //     });
   // }
-
 
 }

@@ -27,7 +27,7 @@
                         {{t('canvaToolsHorizontalComponent.buttons.clearFrame')}}</a>
                 </li>
             </div>
-            <div data-bs-toggle="tooltip" data-bs-placement="me-auto"
+            <div [class.disabled]="!(this.aFA.user | async)" data-bs-toggle="tooltip" data-bs-placement="me-auto"
                 [title]="'canvaToolsHorizontalComponent.buttons.save' | transloco">
                 <li class="save-btn nav-item noselect" *transloco="let t"
                     (click)="onSaveBtn('same', getBoardName()); this.openSnackBar('Saved successfully!', 'Dismiss')">
@@ -35,19 +35,19 @@
                         {{t('canvaToolsHorizontalComponent.buttons.save')}}</a>
                 </li>
             </div>
-            <div data-bs-toggle="tooltip" data-bs-placement="me-auto"
+            <div [class.disabled]="!(this.aFA.user | async)" data-bs-toggle="tooltip" data-bs-placement="me-auto"
                 [title]="'canvaToolsHorizontalComponent.buttons.saveNew' | transloco">
 
                 <li class="save-btn nav-item noselect" *transloco="let t" (click)="openDialog()">
                     <a class="nav-link active px-3" aria-current="page">
                         {{t('canvaToolsHorizontalComponent.buttons.saveNew')}}</a>
                 </li>
-
-                <!-- <li class="save-btn nav-item noselect" *transloco="let t" (click)="onSaveBtn('new')">
-                    <a class="nav-link active px-3" aria-current="page">
-                        {{t('canvaToolsHorizontalComponent.buttons.saveNew')}}</a>
-                </li> -->
             </div>
+            <button data-bs-toggle="tooltip" data-bs-placement="me-auto"
+                [title]="'canvaToolsHorizontalComponent.buttons.download' | transloco" mat-icon-button
+                (click)="onDownload()">
+                <mat-icon>save_alt</mat-icon>
+            </button>
 
         </ul>
 

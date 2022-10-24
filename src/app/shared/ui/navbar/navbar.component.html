@@ -12,7 +12,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto" *transloco="let t">
-          <li class="nav-item" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
+          <li *ngIf="(this.aFA.user | async)" class="nav-item" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
             [matTooltip]="'navbarComponent.goTo' | transloco" matTooltipClass="tooltipStyle">
             <a class="nav-link active" aria-current="page" [routerLink]="dashboard"
               routerLinkActive="active-link">{{t('navbarComponent.dashboard')}}</a>
@@ -36,17 +36,6 @@
         </ul>
 
         <div class="d-flex align-items-center" *transloco="let t">
-          <!-- Hiding it as the translation for the site is not ready -->
-          <!-- <div class="btn langs mx-1" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
-            [matTooltip]="'navbarComponent.changeLang' | transloco"
-            aria-label="Button that displays a change language tooltip">
-            {{t('navbarComponent.langs.en')}}</div>
-          <div class="btn langs mx-1" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
-            [matTooltip]="'navbarComponent.changeLang' | transloco"
-            aria-label="Button that displays a change language tooltip">
-            {{t('navbarComponent.langs.uk')}}</div>
-          <div class="mx-1"> -->
-
           <button *ngIf="(this.aFA.user | async)" class="btn" mat-flat-button color="primary" (click)="logout()">
             Log out
           </button>

@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   baseURL: 'http://localhost:8080',
   feedbackRelURL: '/api/feedbacks',
+  canvasRelUrl: '/api/canvas',
   firebaseConfig: {
     apiKey: "AIzaSyA9QEdT_L7oNJvDe5lBUPvQfulERVb5-2E",
     authDomain: "draw0-auth.firebaseapp.com",

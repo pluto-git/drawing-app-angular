@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CanvasRoutingModule } from './canvas-routing.module';
@@ -10,7 +10,6 @@ import { TranslocoRootModule } from 'src/app/shared/utils/transloco-root.module'
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 
-
 @NgModule({
   declarations: [CanvaComponent],
   imports: [
@@ -21,7 +20,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     PopupNoteModule,
     TranslocoRootModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   exports: [CanvaComponent]
 })

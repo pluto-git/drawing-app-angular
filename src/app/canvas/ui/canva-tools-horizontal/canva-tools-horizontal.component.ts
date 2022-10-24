@@ -14,7 +14,9 @@ import { NoteControlService } from '../../data-access/services/note-control.serv
 import { Board } from '../../data-access/models/board';
 import { AppRoutes } from 'src/app/shared/data-access/routes';
 import { SaveAsDialogComponent } from '../save-as-dialog/save-as-dialog.component';
-
+import { BoardApiService } from '../../data-access/services/board-api.service';
+import { AuthService } from 'src/app/shared/data-access/services/auth.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-canva-tools-horizontal',
@@ -25,7 +27,9 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
   constructor(private drawingSvc: CanvaFreeDrawingService, private op: OperationControlService, private noteSvc: NoteControlService,
     private router: Router, private _snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private boardSvc: BoardApiService,
+    public aFA: AngularFireAuth
   ) {
   }
 
@@ -182,15 +186,11 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
 
   public async onSave(type: string = 'same', boardName: string = 'Example Board Name', opData: Array<any> = this.op.opData, operations: Array<string> = this.op.operations): Promise<void> {
 
-    const oldItems: any = JSON.parse(localStorage.getItem('boardsArray')!) || [];
     const lastDrawIndex = operations.lastIndexOf('draw');
-
     this.op.visibleNotesIds = this.noteSvc.getShownComponentsIds(opData);
 
-    //console.log(this.op.visibleNotesIds);
-
     const newBoard: Board = {
-      id: 0,
+      id: JSON.parse(localStorage.getItem('user')!).uid + Date.now(),
       title: boardName,
       date: new Date().toLocaleDateString(),
       canvasData: this.op.opData[lastDrawIndex],
@@ -202,45 +202,82 @@ export class CanvaToolsHorizontalComponent implements AfterViewChecked {
       previewImage: await this.getScreenShot()
     };
 
-
-
     //if we save the same or new
-    if (type !== 'new') {
+    if (type !== 'new' && this.op.queryId !== 'new') {
 
-      const foundIdx = oldItems.findIndex((x: Board) => x.id.toString() === this.op.queryId);
-      newBoard.id = Number(this.op.queryId);
-      oldItems[foundIdx] = newBoard;
+      newBoard.id = this.op.queryId;
+      this.updateBoardInDb(newBoard.id, { canvasData: newBoard })
 
     }
     if (type === 'new' || this.op.queryId === 'new') {
-      // console.log('here');
-      let id = 0;
-      (oldItems.length > 0) && (id = Math.max(...oldItems.map((o: any) => o.id)) + 1);
-      (oldItems.length === 0) && (id = 0);
-      newBoard.id = id;
-      oldItems.push(newBoard);
 
-
-      //because save can be done at other urls.
       if (this.op.isNavigate === true) {
-        //changing url (query params) without refresh and Angular now 
-        //knows the URL unlike with Location!
-        this.router.navigate([AppRoutes.canvas], { queryParams: { id: (newBoard.id).toString() } });
+
+    
+        const uid = JSON.parse(localStorage.getItem('user')!).uid;
+        console.log(uid);
+        this.saveBoardToDb({
+          id: newBoard.id,
+          canvasData: newBoard,
+          uid: uid
+        })
+
+        console.log(newBoard.id);
+        //change browser location
+        this.router.navigate([AppRoutes.canvas], { queryParams: { id: newBoard.id } });
       }
     }
 
-    localStorage.setItem('boardsArray', JSON.stringify(oldItems));
+
+
 
     this.op.isLastStepSave = true;
 
   }
 
+  private updateBoardInDb(id: string, data: { canvasData: Board; }): void {
+
+    this.boardSvc.update(id, data)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (e) => console.error(e)
+      });
+  }
+
+  private saveBoardToDb(data: {
+    id: string,
+    canvasData: Board;
+    uid: string
+  }): void {
+
+    this.boardSvc.create(data)
+      .subscribe({
+        next: (data) => { console.log(data) },
+        error: (e: Event) => console.error(e)
+      });
+  }
+
   private async getScreenShot(id: string = 'screenshot-area'): Promise<string> {
+
     const c = document.getElementById(id);
     const canvas = await html2canvas(c, { scale: "3" });
     const MIME_TYPE = "image/png";
     return canvas.toDataURL(MIME_TYPE);
+
   }
+
+  public async onDownload(): Promise<void> {
+
+    const image = await this.getScreenShot();
+    const a = <HTMLAnchorElement>document.createElement('a');
+    a.setAttribute('download', 'my-image.png');
+    a.setAttribute('href', image);
+    a.click();
+
+  }
+
 
 
 

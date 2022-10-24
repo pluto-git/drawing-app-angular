@@ -2,6 +2,7 @@ export const environment = {
   production: true,
   baseURL: 'https://pluto-drawing-app-feedback-api.herokuapp.com',
   feedbackRelURL: '/api/feedbacks',
+  canvasRelUrl: '/api/canvas',
   firebaseConfig: {
     apiKey: "AIzaSyA9QEdT_L7oNJvDe5lBUPvQfulERVb5-2E",
     authDomain: "draw0-auth.firebaseapp.com",
