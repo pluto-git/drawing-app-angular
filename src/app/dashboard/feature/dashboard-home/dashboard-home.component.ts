@@ -14,7 +14,7 @@ import { Board } from 'src/app/canvas/data-access/models/board';
 export class DashboardHomeComponent implements OnInit {
 
   public canva: string = '/' + AppRoutes.canvas
-  public boardItems!: Array<Board | any>;
+  // public boardItems!: Array<Board | any>;
   public boards: Array<Board | any> = [];
 
   @ViewChild('languageMenuTrigger') menuTrigger!: MatMenuTrigger;
@@ -23,7 +23,7 @@ export class DashboardHomeComponent implements OnInit {
     private boardService: BoardApiService) { }
 
   ngOnInit(): void {
-    this.boardItems = this.updateItems();
+    // this.boardItems = this.updateItems();
     this.getBoardsFromApi();
   }
 
@@ -31,9 +31,9 @@ export class DashboardHomeComponent implements OnInit {
 
   }
 
-  private updateItems(): Array<unknown> {
-    return JSON.parse(localStorage.getItem('boardsArray')!) || [];
-  }
+  // private updateItems(): Array<unknown> {
+  //   return JSON.parse(localStorage.getItem('boardsArray')!) || [];
+  // }
 
   public getBoardsFromApi(): void {
     const uid = JSON.parse(localStorage.getItem('user')!).uid;

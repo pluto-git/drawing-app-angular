@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseURL: 'http://localhost:8080',
+  baseURL: 'https://pluto-drawing-app-feedback-api.herokuapp.com',
   feedbackRelURL: '/api/feedbacks',
   canvasRelUrl: '/api/canvas',
   firebaseConfig: {

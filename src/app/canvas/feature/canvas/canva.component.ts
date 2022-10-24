@@ -84,21 +84,23 @@ export class CanvaComponent {
     canvasEl.height = this.canvas.nativeElement.offsetHeight * this.ratio;
 
     const data = await this.findBoard(this.op.queryId);
-    this.foundBoard = data.canvasData;
+    if (data) {
+      this.foundBoard = data.canvasData;
 
-    this.foundBoard && this.uploadSavedData(canvasEl, this.foundBoard);
+      this.foundBoard && this.uploadSavedData(canvasEl, this.foundBoard);
 
-    if (this.foundBoard) {
-      this.op.boardName = this.foundBoard.title;
-      this.op.actStep++;
-      this.op.opData[this.op.actStep] = this.foundBoard.canvasData;
-      this.op.opDataDimensions[this.op.actStep] = { width: this.foundBoard.canvasDimensions.width, height: this.foundBoard.canvasDimensions.height };
-      this.op.initialStep = this.op.operations.length;
-    }
-    //if a new board:
-    if (!this.foundBoard) {
-      this.drawingSvc.cPush(canvasEl);
-      this.op.initialStep = 0;
+      if (this.foundBoard) {
+        this.op.boardName = this.foundBoard.title;
+        this.op.actStep++;
+        this.op.opData[this.op.actStep] = this.foundBoard.canvasData;
+        this.op.opDataDimensions[this.op.actStep] = { width: this.foundBoard.canvasDimensions.width, height: this.foundBoard.canvasDimensions.height };
+        this.op.initialStep = this.op.operations.length;
+      }
+      //if a new board:
+      if (!this.foundBoard) {
+        this.drawingSvc.cPush(canvasEl);
+        this.op.initialStep = 0;
+      }
     }
     //pushing for undo/redo as the above 2 conditions don't add the operation name!
     this.op.operations.push('draw');
@@ -128,13 +130,14 @@ export class CanvaComponent {
   }
 
   private async findBoard(id: string): Promise<any> {
+    if (this.op.queryId === 'new') { return; }
     return this.boardSvc.getOne(id).toPromise();
   }
 
 
   public uploadSavedData(canvas: HTMLCanvasElement, foundBoard: Board): void {
     if (!canvas) return;
-
+    console.log(foundBoard);
     this.drawingSvc.uploadCanvas(canvas, foundBoard.canvasData, foundBoard.canvasDimensions.width, foundBoard.canvasDimensions.height);
 
     foundBoard.notesData.forEach(note => {
